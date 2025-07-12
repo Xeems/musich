@@ -1,0 +1,41 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useEffect, useRef, useState } from 'react'
+
+const addTrack = async (track: File, url: string) => {
+    if (!track || !url) return
+    const fromData = new FormData()
+    fromData.append('track', track)
+    await fetch(`/api/streamId`, {
+        method: 'post',
+        body: fromData,
+    })
+}
+export default function AddTrackComponent() {
+    const [url, setUrl] = useState<string | null>(null)
+    const songInputRef = useRef<HTMLInputElement | null>(null)
+
+    useEffect(() => {
+        setUrl(
+            `${window.location.protocol}//${window.location.hostname}:${window.location.port}`,
+        )
+        console.log(url)
+    }, [url])
+
+    return (
+        <div className="bg-white w-full h-full flex flex-col items-center p-16 gap-7">
+            <Input
+                ref={songInputRef}
+                className="max-w-2xs border border-amber-300"
+                type="file"
+                accept="audio/mp3"
+            />
+            <Button
+                onClick={() => addTrack(songInputRef.current?.files[0], url)}>
+                Send song
+            </Button>
+        </div>
+    )
+}
