@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "concurrently \"npm:next\" \"npm:ws\"",
+        "dev": "concurrently \"npm:next\"",
         "ws": "ts-node src/server/ws-server.ts",
         "next": "next dev",
         "build": "next build",
@@ -11,32 +11,42 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@hookform/resolvers": "^5.1.1",
+        "@radix-ui/react-label": "^2.1.7",
         "@radix-ui/react-slot": "^1.2.3",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "dotenv": "^17.2.0",
+        "drizzle-orm": "^0.44.3",
         "ffmpeg-static": "^5.2.0",
         "fluent-ffmpeg": "^2.1.3",
         "lucide-react": "^0.525.0",
         "next": "15.3.5",
+        "pg": "^8.16.3",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "react-hook-form": "^7.60.0",
         "tailwind-merge": "^3.3.1",
-        "ws": "^8.18.3"
+        "ws": "^8.18.3",
+        "zod": "^4.0.5"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
         "@tailwindcss/postcss": "^4",
         "@types/node": "^20",
+        "@types/pg": "^8.15.4",
         "@types/react": "^19",
         "@types/react-dom": "^19",
         "@types/ws": "^8.18.1",
         "concurrently": "^9.2.0",
+        "drizzle-kit": "^0.31.4",
         "eslint": "^9.30.1",
         "eslint-config-next": "15.3.5",
         "eslint-config-prettier": "^10.1.5",
         "prettier": "^3.6.2",
         "tailwindcss": "^4",
         "ts-node": "^10.9.2",
+        "tsx": "^4.20.3",
         "tw-animate-css": "^1.3.5",
         "typescript": "^5.8.3"
     }

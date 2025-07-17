@@ -4,15 +4,24 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useEffect, useRef, useState } from 'react'
 
-const addTrack = async (track: File, url: string) => {
-    if (!track || !url) return
-    const fromData = new FormData()
-    fromData.append('track', track)
-    await fetch(`/api/streamId`, {
-        method: 'post',
-        body: fromData,
-    })
+const addTrack = async (track: File) => {
+    const reader = track.stream().getReader()
+
+    const socket = new WebSocket('ws://localhost:4000/upload')
+    socket.binaryType = 'arraybuffer'
+
+    socket.onopen = async () => {
+        while (true) {
+            const { done, value } = await reader.read()
+            if (done) {
+                socket.close()
+                break
+            }
+            if (value) socket.send(value)
+        }
+    }
 }
+
 export default function AddTrackComponent() {
     const [url, setUrl] = useState<string | null>(null)
     const songInputRef = useRef<HTMLInputElement | null>(null)
@@ -32,8 +41,7 @@ export default function AddTrackComponent() {
                 type="file"
                 accept="audio/mp3"
             />
-            <Button
-                onClick={() => addTrack(songInputRef.current?.files[0], url)}>
+            <Button onClick={() => addTrack(songInputRef.current?.files[0])}>
                 Send song
             </Button>
         </div>
