@@ -12,48 +12,36 @@ import {
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusIcon } from 'lucide-react'
-import { useRef } from 'react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
-
-const trackUploadFromSchema = z.object({
-    name: z.string().min(2).max(255),
-    author: z.string().min(2).max(255),
-    imageFile: z
-        .custom<File>((file) => file instanceof File, {
-            message: 'Image file is required',
-        })
-        .refine((file) => file.size <= 5 * 1024 * 1024, {
-            message: 'Image must be less than 5MB',
-        })
-        .refine(
-            (file) =>
-                ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
-            {
-                message: 'Supported formats: jpg, png, webp',
-            },
-        ),
-    trackFile: z
-        .custom<File>((file) => file instanceof File, {
-            message: 'Track file is required',
-        })
-        .refine((file) => file.size <= 5 * 1024 * 1024, {
-            message: 'Track must be less than 5MB',
-        })
-        .refine((file) => ['audio/mpeg', 'audio/mp3'].includes(file.type), {
-            message: 'Only MP3 files are supported',
-        }),
-})
+import { trackUploadSchema } from '../../../@types/validators'
 
 export default function TrackUploadForm() {
-    const form = useForm<z.infer<typeof trackUploadFromSchema>>({
-        resolver: zodResolver(trackUploadFromSchema),
+    const form = useForm<z.infer<typeof trackUploadSchema>>({
+        resolver: zodResolver(trackUploadSchema),
     })
 
-    function onSubmit(values: z.infer<typeof trackUploadFromSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+    const imageFile = form.watch('imageFile')
+
+    useEffect(() => {
+        if (imageFile instanceof File === false) setPreviewUrl(null)
+        else {
+            const objectUrl = URL.createObjectURL(imageFile)
+            setPreviewUrl(objectUrl)
+
+            return () => URL.revokeObjectURL(objectUrl)
+        }
+    }, [imageFile])
+
+    async function onSubmit(values: z.infer<typeof trackUploadSchema>) {
+        const res = await fetch('/api/track', {
+            method: 'POST',
+            body: JSON.stringify(values),
+        })
+        console.log(res)
     }
 
     return (
@@ -104,11 +92,21 @@ export default function TrackUploadForm() {
                                     <label
                                         className="relative w-36 h-36 rounded border flex flex-col content-end items-center justify-center gap-2 cursor-pointer text-center hover:bg-muted transition"
                                         htmlFor="imageFileInputId">
-                                        <PlusIcon className="absolute top-1/2 left-1/2 w-10 h-10 text-muted-foreground " />
-
-                                        <p className="text-xs text-muted-foreground leading-tight">
-                                            Select image for track cover
-                                        </p>
+                                        {previewUrl ? (
+                                            <Image
+                                                src={previewUrl}
+                                                alt="Track cover"
+                                                fill
+                                                className="object-cover rounded"
+                                            />
+                                        ) : (
+                                            <>
+                                                <PlusIcon className="w-10 h-10 text-muted-foreground" />
+                                                <p className="text-xs text-muted-foreground leading-tight">
+                                                    Select image for track cover
+                                                </p>
+                                            </>
+                                        )}
                                     </label>
                                     <Input
                                         id="imageFileInputId"
