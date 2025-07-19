@@ -1,9 +1,15 @@
 import z from 'zod'
 
 export const trackUploadSchema = z.object({
-    name: z.string().min(2).max(255),
-    author: z.string().min(2).max(255),
-    imageFile: z
+    name: z
+        .string()
+        .min(2, { error: 'Too small: at least two characters' })
+        .max(255),
+    author: z
+        .string()
+        .min(2, { error: 'Too small: at least two characters' })
+        .max(255),
+    coverImageFile: z
         .custom<File>((file) => file instanceof File, {
             message: 'Image file is required',
         })

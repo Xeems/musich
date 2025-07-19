@@ -1,5 +1,5 @@
 import React from 'react'
-import TrackUploadForm from './TrackUploadForm'
+import TrackUploadForm from './TrackUploadDialog'
 
 export default function tracksPage() {
     return (
