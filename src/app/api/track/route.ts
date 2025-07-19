@@ -3,9 +3,14 @@ import { trackUploadSchema } from '../../../../@types/validators'
 
 export async function POST(request: NextRequest) {
     try {
-        const json = await request.json()
-        const data = await trackUploadSchema.parseAsync(json)
-        console.log(data)
+        const formData = await request.formData()
+        const obj: Record<string, unknown> = {}
+
+        for (const [key, value] of formData.entries()) {
+            obj[key] = value
+        }
+
+        const parsed = await trackUploadSchema.parseAsync(obj)
 
         return new NextResponse(JSON.stringify({ success: true }), {
             status: 200,
