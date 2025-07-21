@@ -30,6 +30,7 @@ export default function TrackUploadForm() {
 
     const coverImageFile = form.watch('coverImageFile')
     const previewUrl = useFilePreview(coverImageFile)
+
     const trackFile = form.watch('trackFile')
 
     async function onSubmit(values: z.infer<typeof trackUploadSchema>) {
