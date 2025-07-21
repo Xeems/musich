@@ -1,7 +1,4 @@
-// components/track-upload/TrackUploadForm.tsx
 'use client'
-
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import z from 'zod'
@@ -18,8 +15,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { DialogClose, DialogFooter } from '@/components/ui/dialog'
-import { ImageIcon, MusicIcon, UploadIcon } from 'lucide-react'
+import { ImageIcon, MusicIcon, UploadIcon, XIcon } from 'lucide-react'
 import Image from 'next/image'
+import { useFilePreview } from '@/hooks/useFilePreview'
 
 export default function TrackUploadForm() {
     const form = useForm<z.infer<typeof trackUploadSchema>>({
@@ -30,21 +28,9 @@ export default function TrackUploadForm() {
         },
     })
 
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const coverImageFile = form.watch('coverImageFile')
+    const previewUrl = useFilePreview(coverImageFile)
     const trackFile = form.watch('trackFile')
-
-    useEffect(() => {
-        if (!(coverImageFile instanceof File)) {
-            setPreviewUrl(null)
-            return
-        }
-
-        const objectUrl = URL.createObjectURL(coverImageFile)
-        setPreviewUrl(objectUrl)
-
-        return () => URL.revokeObjectURL(objectUrl)
-    }, [coverImageFile])
 
     async function onSubmit(values: z.infer<typeof trackUploadSchema>) {
         const data = new FormData()
@@ -68,9 +54,9 @@ export default function TrackUploadForm() {
     return (
         <Form {...form}>
             <form
-                className="flex flex-col gap-4"
-                onSubmit={form.handleSubmit(onSubmit)}>
-                {/* Title Field */}
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-4">
+                {/* Track Name */}
                 <FormField
                     control={form.control}
                     name="name"
@@ -88,7 +74,7 @@ export default function TrackUploadForm() {
                     )}
                 />
 
-                {/* Author Field */}
+                {/* Author */}
                 <FormField
                     control={form.control}
                     name="author"
@@ -106,18 +92,19 @@ export default function TrackUploadForm() {
                     )}
                 />
 
-                <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-3">
-                    {/* Cover Image Input */}
+                {/* File Inputs Grid */}
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                    {/* Cover Image */}
                     <FormField
                         control={form.control}
                         name="coverImageFile"
                         render={({ field: { onChange } }) => (
-                            <FormItem className="flex w-fit flex-col">
+                            <FormItem className="flex flex-col">
                                 <FormLabel>Cover Image</FormLabel>
                                 <FormControl>
                                     <label
                                         htmlFor="imageFileInputId"
-                                        className="hover:bg-muted relative flex h-36 w-36 cursor-pointer flex-col items-center justify-center gap-2 self-center rounded-md border text-center transition">
+                                        className="hover:bg-muted relative flex h-36 w-36 cursor-pointer flex-col items-center justify-center gap-2 rounded-md border text-center transition">
                                         {previewUrl ? (
                                             <Image
                                                 src={previewUrl}
@@ -126,7 +113,7 @@ export default function TrackUploadForm() {
                                                 className="rounded object-cover"
                                             />
                                         ) : (
-                                            <>
+                                            <div>
                                                 <ImageIcon className="text-primary mx-auto mb-2 h-8 w-8" />
                                                 <p className="text-primary text-sm font-medium">
                                                     Click to upload
@@ -134,7 +121,7 @@ export default function TrackUploadForm() {
                                                 <p className="text-xs text-gray-500">
                                                     Square images only
                                                 </p>
-                                            </>
+                                            </div>
                                         )}
                                         <Input
                                             id="imageFileInputId"
@@ -155,18 +142,17 @@ export default function TrackUploadForm() {
                         )}
                     />
 
-                    {/* Track File Input */}
+                    {/* Track File */}
                     <FormField
                         control={form.control}
                         name="trackFile"
                         render={({ field: { onChange } }) => (
-                            <FormItem className="flex flex-col space-y-2 md:col-span-2">
-                                <FormLabel>Track file</FormLabel>
+                            <FormItem className="flex flex-col md:col-span-2">
+                                <FormLabel>Track File</FormLabel>
                                 <FormControl>
-                                    <div className="flex flex-col space-y-2">
+                                    <div>
                                         <Input
                                             id="trackFileInput"
-                                            className="max-w-full"
                                             type="file"
                                             accept="audio/mp3"
                                             onChange={(e) =>
@@ -177,11 +163,11 @@ export default function TrackUploadForm() {
                                             }
                                         />
                                         {trackFile && (
-                                            <div className="flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-100/70 p-3 text-sm shadow-sm">
+                                            <div className="mt-2 flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-100/70 p-3 text-sm shadow-sm">
                                                 <div className="shrink-0 rounded bg-emerald-200 p-1">
                                                     <MusicIcon className="text-success h-4 w-4" />
                                                 </div>
-                                                <div className="flex w-0 flex-1 flex-col overflow-hidden">
+                                                <div className="flex flex-1 flex-col overflow-hidden">
                                                     <span className="text-primary-content truncate font-medium">
                                                         {trackFile.name}
                                                     </span>
@@ -204,13 +190,15 @@ export default function TrackUploadForm() {
                     />
                 </div>
 
-                <DialogFooter className="gap-4">
+                {/* Footer */}
+                <DialogFooter>
                     <DialogClose asChild>
-                        <Button size="lg" variant="secondary">
+                        <Button variant="secondary" size="lg">
+                            <XIcon />
                             Cancel
                         </Button>
                     </DialogClose>
-                    <Button size="lg" type="submit">
+                    <Button type="submit" size="lg">
                         <UploadIcon />
                         Submit
                     </Button>
