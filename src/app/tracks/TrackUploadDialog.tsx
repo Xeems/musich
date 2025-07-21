@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FileMusicIcon, PlusIcon } from 'lucide-react'
+import { ImageIcon, MusicIcon, UploadIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -19,7 +19,11 @@ import z from 'zod'
 import { trackUploadSchema } from '../../../@types/validators'
 import {
     Dialog,
+    DialogClose,
     DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog'
@@ -38,13 +42,15 @@ export default function TrackUploadForm() {
     const trackFile = form.watch('trackFile')
 
     useEffect(() => {
-        if (coverImageFile instanceof File === false) setPreviewUrl(null)
-        else {
-            const objectUrl = URL.createObjectURL(coverImageFile)
-            setPreviewUrl(objectUrl)
-
-            return () => URL.revokeObjectURL(objectUrl)
+        if (!(coverImageFile instanceof File)) {
+            setPreviewUrl(null)
+            return
         }
+
+        const objectUrl = URL.createObjectURL(coverImageFile)
+        setPreviewUrl(objectUrl)
+
+        return () => URL.revokeObjectURL(objectUrl)
     }, [coverImageFile])
 
     async function onSubmit(values: z.infer<typeof trackUploadSchema>) {
@@ -52,7 +58,7 @@ export default function TrackUploadForm() {
         data.append('author', values.author)
         data.append('name', values.name)
         data.append(
-            'imageFile',
+            'coverImageFile',
             values.coverImageFile,
             values.coverImageFile.name,
         )
@@ -62,6 +68,7 @@ export default function TrackUploadForm() {
             method: 'POST',
             body: data,
         })
+
         console.log(res)
     }
 
@@ -70,144 +77,101 @@ export default function TrackUploadForm() {
             <DialogTrigger asChild>
                 <Button>Upload new track</Button>
             </DialogTrigger>
-            <DialogContent className="w-full max-w-md p-4">
-                <DialogTitle>Track upload</DialogTitle>
+            <DialogContent className="-md p-6 md:max-w-xl [&>button:last-child]:hidden">
+                <DialogHeader className="gap-1">
+                    <DialogTitle className="text-primary flex flex-row items-center gap-x-2 text-2xl font-semibold">
+                        <MusicIcon /> Track upload
+                    </DialogTitle>
+                    <DialogDescription>
+                        Share your music with the world. Fill in the details
+                        below to upload your track.
+                    </DialogDescription>
+                </DialogHeader>
+
                 <Form {...form}>
                     <form
-                        className="flex flex-col gap-y-4"
+                        className="flex flex-col gap-4"
                         onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className="flex flex-col justify-stretch gap-4 p-0 md:flex-row">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Name</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                        {/* Title Field */}
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Name</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            placeholder="Enter track title"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* Author Field */}
+                        <FormField
+                            control={form.control}
+                            name="author"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Author</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            placeholder="Enter artist name"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                            <FormField
-                                control={form.control}
-                                name="author"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Author</FormLabel>
-                                        <FormControl>
-                                            <Input {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        <div className="flex max-w-full flex-col justify-stretch gap-4 md:flex-row">
+                        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-3">
+                            {/* Cover Image Input*/}
                             <FormField
                                 control={form.control}
                                 name="coverImageFile"
-                                render={({
-                                    // Оставвлять поле не контролируемым
-                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                    field: { onChange, value, ...field },
-                                }) => (
-                                    <FormItem className="w-fit">
+                                render={({ field: { onChange } }) => (
+                                    <FormItem className="flex w-fit flex-col">
+                                        <FormLabel>Cover Image</FormLabel>
                                         <FormControl>
-                                            <div>
-                                                <label
-                                                    className="hover:bg-muted relative flex h-36 w-36 cursor-pointer flex-col content-end items-center justify-center gap-2 rounded border text-center transition"
-                                                    htmlFor="imageFileInputId">
-                                                    {previewUrl ? (
-                                                        <Image
-                                                            src={previewUrl}
-                                                            alt="Track cover"
-                                                            fill
-                                                            className="rounded object-cover"
-                                                        />
-                                                    ) : (
-                                                        <>
-                                                            <PlusIcon className="text-muted-foreground h-10 w-10" />
-                                                            <p className="text-muted-foreground text-xs leading-tight">
-                                                                Select image for
-                                                                track cover
+                                            <label
+                                                htmlFor="imageFileInputId"
+                                                className="hover:bg-muted relative flex h-36 w-36 cursor-pointer flex-col items-center justify-center gap-2 self-center rounded-md border text-center transition">
+                                                {previewUrl ? (
+                                                    <Image
+                                                        src={previewUrl}
+                                                        alt="Track cover"
+                                                        fill
+                                                        className="rounded object-cover"
+                                                    />
+                                                ) : (
+                                                    <>
+                                                        <div className="text-center">
+                                                            <ImageIcon className="text-primary mx-auto mb-2 h-8 w-8" />
+                                                            <p className="text-primary text-sm font-medium">
+                                                                Click to upload
                                                             </p>
-                                                        </>
-                                                    )}
-                                                </label>
+                                                            <p className="text-xs text-gray-500">
+                                                                Square images
+                                                                only
+                                                            </p>
+                                                        </div>
+                                                    </>
+                                                )}
                                                 <Input
                                                     id="imageFileInputId"
                                                     hidden
                                                     type="file"
                                                     accept="image/jpeg, image/png, image/webp"
-                                                    placeholder="Track author"
-                                                    onChange={(event) => {
+                                                    onChange={(e) =>
                                                         onChange(
-                                                            event.target
-                                                                ?.files?.[0] ??
+                                                            e.target
+                                                                .files?.[0] ??
                                                                 undefined,
                                                         )
-                                                    }}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="trackFile"
-                                render={({
-                                    // Смотри поле imageFile
-                                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                                    field: { onChange, value, ...field },
-                                }) => (
-                                    <FormItem>
-                                        <FormLabel>Track file</FormLabel>
-                                        <FormControl>
-                                            <label
-                                                htmlFor="trackFileInput"
-                                                className="flex w-full min-w-0">
-                                                {trackFile && (
-                                                    <div className="w-full text-white">
-                                                        <div className="flex flex-col overflow-hidden rounded-2xl border bg-amber-500 p-4">
-                                                            <FileMusicIcon />
-                                                            <span className="truncate overflow-hidden text-sm font-medium whitespace-nowrap">
-                                                                {trackFile.name}
-                                                            </span>
-                                                            <span>
-                                                                {(
-                                                                    trackFile.size /
-                                                                    1024 /
-                                                                    1024
-                                                                ).toFixed(
-                                                                    2,
-                                                                )}{' '}
-                                                                MB
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                <Input
-                                                    hidden={
-                                                        trackFile !== undefined
                                                     }
-                                                    id="trackFileInput"
-                                                    type="file"
-                                                    accept="audio/mp3"
-                                                    placeholder="Track file"
-                                                    onChange={(event) => {
-                                                        onChange(
-                                                            event.target
-                                                                ?.files?.[0] ??
-                                                                undefined,
-                                                        )
-                                                    }}
                                                 />
                                             </label>
                                         </FormControl>
@@ -215,11 +179,74 @@ export default function TrackUploadForm() {
                                     </FormItem>
                                 )}
                             />
+
+                            {/* Track File Input*/}
+                            <FormField
+                                control={form.control}
+                                name="trackFile"
+                                render={({ field: { onChange } }) => (
+                                    <FormItem className="flex flex-col space-y-2 md:col-span-2">
+                                        <FormLabel className="h-fit items-start">
+                                            Track file
+                                        </FormLabel>
+                                        <FormControl>
+                                            <div className="flex flex-col space-y-2">
+                                                <Input
+                                                    className="max-w-full"
+                                                    id="trackFileInput"
+                                                    type="file"
+                                                    accept="audio/mp3"
+                                                    onChange={(e) =>
+                                                        onChange(
+                                                            e.target
+                                                                .files?.[0] ??
+                                                                undefined,
+                                                        )
+                                                    }
+                                                />
+
+                                                {trackFile && (
+                                                    <div className="flex items-center gap-3 rounded-lg border border-emerald-200 bg-emerald-100/70 p-3 text-sm shadow-sm">
+                                                        <div className="shrink-0 rounded bg-emerald-200 p-1">
+                                                            <MusicIcon className="text-success h-4 w-4" />
+                                                        </div>
+                                                        <div className="flex w-0 flex-1 flex-col overflow-hidden">
+                                                            <span className="text-primary-content truncate font-medium">
+                                                                {trackFile.name}
+                                                            </span>
+                                                            <span className="text-muted-content truncate text-sm">
+                                                                (
+                                                                {(
+                                                                    trackFile.size /
+                                                                    1024 /
+                                                                    1024
+                                                                ).toFixed(
+                                                                    2,
+                                                                )}{' '}
+                                                                MB)
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                         </div>
 
-                        <Button type="submit" className="w-20">
-                            Submit
-                        </Button>
+                        <DialogFooter className="gap-4">
+                            <DialogClose asChild>
+                                <Button size="lg" variant={'secondary'}>
+                                    Cancel
+                                </Button>
+                            </DialogClose>
+                            <Button size="lg" type="submit">
+                                <UploadIcon />
+                                Submit
+                            </Button>
+                        </DialogFooter>
                     </form>
                 </Form>
             </DialogContent>

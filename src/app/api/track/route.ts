@@ -11,10 +11,6 @@ export async function POST(request: NextRequest) {
         }
 
         const parsed = await trackUploadSchema.parseAsync(obj)
-<<<<<<< HEAD
-=======
-        console.log(parsed)
->>>>>>> a4f2488 (track upload dialog)
 
         return new NextResponse(JSON.stringify({ success: true }), {
             status: 200,
