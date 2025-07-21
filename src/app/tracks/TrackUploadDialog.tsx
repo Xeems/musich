@@ -1,4 +1,3 @@
-// components/track-upload/TrackUploadDialog.tsx
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -12,10 +11,12 @@ import {
 } from '@/components/ui/dialog'
 import { MusicIcon } from 'lucide-react'
 import TrackUploadForm from './TrackUploadForm'
+import { useState } from 'react'
 
 export default function TrackUploadDialog() {
+    const [isOpen, setIsOpen] = useState(false)
     return (
-        <Dialog>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button>Upload new track</Button>
             </DialogTrigger>
@@ -30,7 +31,7 @@ export default function TrackUploadDialog() {
                     </DialogDescription>
                 </DialogHeader>
 
-                <TrackUploadForm />
+                <TrackUploadForm onSuccess={() => setIsOpen(false)} />
             </DialogContent>
         </Dialog>
     )

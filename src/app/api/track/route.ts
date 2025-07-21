@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
             saveFile(parsed.trackFile, trackDir, 'track'),
         ])
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const dbData = await db.insert(trackTable).values({
             author: parsed.author,
             name: parsed.name,

@@ -19,7 +19,11 @@ import { ImageIcon, MusicIcon, UploadIcon, XIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useFilePreview } from '@/hooks/useFilePreview'
 
-export default function TrackUploadForm() {
+type TrackUploadFormProps = {
+    onSuccess?: () => void
+}
+
+export default function TrackUploadForm({ onSuccess }: TrackUploadFormProps) {
     const form = useForm<z.infer<typeof trackUploadSchema>>({
         resolver: zodResolver(trackUploadSchema),
         defaultValues: {
@@ -49,7 +53,14 @@ export default function TrackUploadForm() {
             body: data,
         })
 
-        console.log(res)
+        if (res.ok) {
+            onSuccess?.()
+
+            form.reset()
+        } else {
+            const error = await res.json()
+            console.error('Upload failed:', error)
+        }
     }
 
     return (
