@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
             name: parsed.name,
             filePath: trackUrl,
             imagePath: coverUrl,
+            createdAt: new Date(),
         })
 
         return new NextResponse(JSON.stringify({ success: true }), {
