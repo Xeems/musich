@@ -1,9 +1,9 @@
 // app/api/tracks/route.ts
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/db'
 import { trackTable } from '@/db/schema'
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const offset = Number(searchParams.get('offset') || '0')
     const limit = Number(searchParams.get('limit') || '5')

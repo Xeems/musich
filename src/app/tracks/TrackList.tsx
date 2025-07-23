@@ -1,21 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import TrackCard from './TrackCard'
-import { Button } from '@/components/ui/button'
-
-export type TrackType = {
-    id: string
-    name: string
-    author: string
-    coverImage: File | URL
-}
+import { TrackType } from '../../../@types/track'
 
 type Props = {
-    initialTracks: TrackType[]
+    initialTracks?: TrackType[]
 }
 
-const tracksCountOnPage = 1
+const tracksCountOnPage = 20
 
 async function fetchTracks(
     offset: number,
@@ -24,33 +17,64 @@ async function fetchTracks(
     const res = await fetch(`/api/track/list?offset=${offset}&limit=${limit}`)
     const data = await res.json()
 
-    return data.map((track: any) => ({
+    const tracks: TrackType[] = data.map((track: TrackType) => ({
         id: track.id,
         name: track.name,
         author: track.author,
-        coverImage: track.imagePath ? new URL(track.imagePath) : '',
+        imageName: track.imageName,
     }))
+    return tracks
 }
 
-export default function TrackList({ initialTracks }: Props) {
+export default function TrackList({ initialTracks = [] }: Props) {
     const [offset, setOffset] = useState(tracksCountOnPage)
-    const [tracks, setTracks] = useState(initialTracks)
+    const [tracks, setTracks] = useState<TrackType[]>(initialTracks)
+    const [hasMore, setHasMore] = useState(true)
+    const observerRef = useRef<HTMLDivElement | null>(null)
 
-    const loadTracks = async () => {
+    const loadTracks = useCallback(async () => {
         const newTracks = await fetchTracks(offset, tracksCountOnPage)
-        if (newTracks && newTracks.length > 0) {
-            setTracks((tracks) => [...tracks, ...newTracks])
-            setOffset((offset) => offset + tracksCountOnPage)
+        if (newTracks.length === 0) {
+            setHasMore(false)
+            return
         }
-    }
+
+        setTracks((prev) => [...prev, ...newTracks])
+        setOffset((prev) => prev + tracksCountOnPage)
+    }, [offset])
+
+    useEffect(() => {
+        if (!hasMore) return
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    loadTracks()
+                }
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 1.0,
+            },
+        )
+
+        const current = observerRef.current
+        if (current) observer.observe(current)
+
+        return () => {
+            if (current) observer.unobserve(current)
+        }
+    }, [loadTracks, hasMore])
 
     return (
-        <div>
-            {tracks &&
-                tracks.map((track, index) => (
-                    <TrackCard key={`${index} '_' ${track.id}`} track={track} />
-                ))}
-            <Button onClick={() => loadTracks()} />
+        <div className="flex w-1/3 flex-col space-y-2">
+            {tracks.map((track) => (
+                <TrackCard key={track.id} track={track} />
+            ))}
+
+            {/* sentinel div for intersection observer */}
+            {hasMore && <div ref={observerRef} className="h-10" />}
         </div>
     )
 }

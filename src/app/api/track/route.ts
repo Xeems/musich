@@ -4,7 +4,6 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import { db } from '@/db'
 import { trackTable } from '@/db/schema'
-import { ZodError } from 'zod'
 import { randomUUID } from 'crypto'
 
 async function saveFile(
@@ -18,7 +17,7 @@ async function saveFile(
     const filename = `${prefix}_${randomUUID()}_${safeName}`
     const filepath = path.join(dir, filename)
     await fs.writeFile(filepath, buffer)
-    return filepath
+    return filename
 }
 
 export async function POST(request: NextRequest) {
@@ -43,7 +42,7 @@ export async function POST(request: NextRequest) {
             fs.mkdir(trackDir, { recursive: true }),
         ])
 
-        const [coverUrl, trackUrl] = await Promise.all([
+        const [coverName, trackName] = await Promise.all([
             saveFile(parsed.coverImageFile, coverDir, 'cover'),
             saveFile(parsed.trackFile, trackDir, 'track'),
         ])
@@ -52,8 +51,8 @@ export async function POST(request: NextRequest) {
         const dbData = await db.insert(trackTable).values({
             author: parsed.author,
             name: parsed.name,
-            filePath: trackUrl,
-            imagePath: coverUrl,
+            fileName: trackName,
+            imageName: coverName,
             createdAt: new Date(),
         })
 
@@ -63,17 +62,6 @@ export async function POST(request: NextRequest) {
         })
     } catch (error) {
         console.error('Validation error:', error)
-
-        if (error instanceof ZodError) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Validation failed',
-                    issues: error.flatten().fieldErrors,
-                },
-                { status: 422 },
-            )
-        }
 
         return new NextResponse(
             JSON.stringify({
