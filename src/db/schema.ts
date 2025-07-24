@@ -1,4 +1,4 @@
-import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, real, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 
 export const trackTable = pgTable('tracks', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
@@ -6,5 +6,6 @@ export const trackTable = pgTable('tracks', {
     author: varchar({ length: 225 }).notNull(),
     imageName: varchar({ length: 225 }),
     fileName: varchar({ length: 222 }).notNull(),
+    duration: real().notNull(),
     createdAt: timestamp().defaultNow().notNull(),
 })

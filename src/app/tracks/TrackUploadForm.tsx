@@ -18,6 +18,8 @@ import { DialogClose, DialogFooter } from '@/components/ui/dialog'
 import { ImageIcon, MusicIcon, UploadIcon, XIcon } from 'lucide-react'
 import Image from 'next/image'
 import { useFilePreview } from '@/hooks/useFilePreview'
+import useTrackMetadata from '@/hooks/useTrackMetadata'
+import { milSecToMins } from '@/lib/utils'
 
 type TrackUploadFormProps = {
     onSuccess?: () => void
@@ -36,6 +38,7 @@ export default function TrackUploadForm({ onSuccess }: TrackUploadFormProps) {
     const previewUrl = useFilePreview(coverImageFile)
 
     const trackFile = form.watch('trackFile')
+    const trackMetadata = useTrackMetadata(trackFile)
 
     async function onSubmit(values: z.infer<typeof trackUploadSchema>) {
         const data = new FormData()
@@ -183,14 +186,28 @@ export default function TrackUploadForm({ onSuccess }: TrackUploadFormProps) {
                                                     <span className="text-primary-content truncate font-medium">
                                                         {trackFile.name}
                                                     </span>
-                                                    <span className="text-muted-content truncate text-sm">
-                                                        {(
-                                                            trackFile.size /
-                                                            1024 /
-                                                            1024
-                                                        ).toFixed(2)}{' '}
-                                                        MB
-                                                    </span>
+                                                    <div className="flex flex-row justify-between pr-4">
+                                                        {/* Ugh... */}
+                                                        {trackMetadata?.format
+                                                            ?.duration ? (
+                                                            <span>
+                                                                {milSecToMins(
+                                                                    trackMetadata
+                                                                        .format
+                                                                        .duration,
+                                                                )}
+                                                            </span>
+                                                        ) : null}
+                                                        <span className="text-muted-content truncate text-sm">
+                                                            {/* Ugh x2...  */}
+                                                            {(
+                                                                trackFile.size /
+                                                                1024 /
+                                                                1024
+                                                            ).toFixed(2)}{' '}
+                                                            MB
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         )}

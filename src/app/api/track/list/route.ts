@@ -1,19 +1,14 @@
 // app/api/tracks/route.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { db } from '@/db'
-import { trackTable } from '@/db/schema'
+import getTracks from '@/actions/getTracks'
+import { TrackType } from '../../../../../@types/track'
 
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const offset = Number(searchParams.get('offset') || '0')
     const limit = Number(searchParams.get('limit') || '5')
 
-    const data = await db
-        .select()
-        .from(trackTable)
-        .orderBy(trackTable.createdAt)
-        .limit(limit)
-        .offset(offset)
+    const data = await getTracks(offset, limit)
 
-    return NextResponse.json(data)
+    return NextResponse.json(data as TrackType[])
 }

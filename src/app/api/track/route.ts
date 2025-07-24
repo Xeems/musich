@@ -5,6 +5,7 @@ import path from 'path'
 import { db } from '@/db'
 import { trackTable } from '@/db/schema'
 import { randomUUID } from 'crypto'
+import { getAudioMetadata } from '@/lib/utils'
 
 async function saveFile(
     file: File,
@@ -47,6 +48,12 @@ export async function POST(request: NextRequest) {
             saveFile(parsed.trackFile, trackDir, 'track'),
         ])
 
+        const buffer = await parsed.trackFile.arrayBuffer()
+        const trackMetadata = await getAudioMetadata(buffer)
+        const duration = trackMetadata?.format.duration
+
+        if (!duration) throw new Error('No track duration in metadata')
+
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const dbData = await db.insert(trackTable).values({
             author: parsed.author,
@@ -54,6 +61,7 @@ export async function POST(request: NextRequest) {
             fileName: trackName,
             imageName: coverName,
             createdAt: new Date(),
+            duration: duration,
         })
 
         return new NextResponse(JSON.stringify({ success: true }), {

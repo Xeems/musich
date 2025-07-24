@@ -5,18 +5,22 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import React from 'react'
-import { TrackType } from '../../../@types/track'
+import { TrackType } from '../../@types/track'
 import Image from 'next/image'
 
 export default function TrackCard({ track }: { track: TrackType }) {
     return (
         <Card className="flex flex-row justify-center rounded-none p-1">
-            <Image
-                src={`/api/images/${track.imageName}`}
-                width={32}
-                height={32}
-                alt=""
-            />
+            <div className="flex">
+                <Image
+                    src={`/api/images/${track.imageName}`}
+                    width={32}
+                    height={32}
+                    alt=""
+                    className="h-14 max-h-14 w-14 max-w-14"
+                />
+            </div>
+
             <CardHeader className="w-full p-0">
                 <CardTitle>{track.name}</CardTitle>
                 <CardDescription>{track.author}</CardDescription>
