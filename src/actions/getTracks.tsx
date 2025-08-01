@@ -25,6 +25,7 @@ export default async function getTracks(
             author: track.author,
             imageName: track.imageName,
             createdAt: track.createdAt,
+            duration: track.duration,
         }))
     } catch (error) {
         console.log(error)
