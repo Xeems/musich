@@ -4,4 +4,5 @@ export type TrackType = {
     author: string
     imageName: string | null
     createdAt: Date | null
+    duration: number
 }

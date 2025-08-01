@@ -1,5 +1,6 @@
 import {
     Card,
+    CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
@@ -10,7 +11,7 @@ import Image from 'next/image'
 
 export default function TrackCard({ track }: { track: TrackType }) {
     return (
-        <Card className="flex flex-row justify-center rounded-none p-1">
+        <Card className="hover:bg-primary/10 flex flex-row justify-center border-none bg-transparent p-4 shadow-none">
             <div className="flex">
                 <Image
                     src={`/api/images/${track.imageName}`}
@@ -25,6 +26,7 @@ export default function TrackCard({ track }: { track: TrackType }) {
                 <CardTitle>{track.name}</CardTitle>
                 <CardDescription>{track.author}</CardDescription>
             </CardHeader>
+            <CardContent>{track.duration}</CardContent>
         </Card>
     )
 }
