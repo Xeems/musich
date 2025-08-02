@@ -6,11 +6,8 @@ export async function GET(
     req: NextRequest,
     { params }: { params: { track: string; segment: string } },
 ) {
-    const filePath = path.resolve(
-        'D:/musichFiles/hls',
-        params.track,
-        params.segment,
-    )
+    const { track, segment } = await params
+    const filePath = path.resolve('D:/musichFiles/hls', track, segment)
 
     if (!fs.existsSync(filePath))
         return new Response('Not found', { status: 404 })

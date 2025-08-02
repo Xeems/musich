@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
     const [currentTrack, setCurrentTrack] = useState<string | null>(
-        'track_251be8b5-89e0-4a31-ab04-3a4a48a8d422_Edvard_Maya_Vika_Gigulina_-_Stereo_Love_74482819.mp3',
+        'track_355c596e-0e97-49ab-a7d7-f95f3ebaccf0_Persona_5_OST_-_Beneath_the_Mask_rain_(SkySound.cc).mp3',
     )
     const [isPlaying, setIsPlaying] = useState(false)
 
