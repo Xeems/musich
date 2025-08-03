@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { TrackType } from '../../@types/track'
 import TrackCard from './TrackCard'
 import { usePlayerStore } from '@/store'
@@ -32,7 +32,6 @@ export default function TrackList() {
                 setHasMore(false)
                 return
             }
-
             setTracks((prev) => [...prev, ...data])
             setOffset((prev) => prev + LIMIT)
         } catch (err) {
@@ -49,30 +48,6 @@ export default function TrackList() {
         hasMore,
         onIntersect: loadTracks,
     })
-
-    useEffect(() => {
-        if (!hasMore) return
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    loadTracks()
-                }
-            },
-            {
-                root: null,
-                rootMargin: '0px',
-                threshold: 1.0,
-            },
-        )
-
-        const current = observerRef.current
-        if (current) observer.observe(current)
-
-        return () => {
-            if (current) observer.unobserve(current)
-        }
-    }, [loadTracks, hasMore])
 
     const handlePlay = (track: TrackType) => {
         setQueue(tracks)

@@ -1,4 +1,4 @@
-import { TrackType } from 'music-metadata/lib/type'
+import { TrackType } from '../../@types/track'
 import { create } from 'zustand'
 
 type Store = {
