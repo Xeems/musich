@@ -10,7 +10,7 @@ export async function GET(
     try {
         const { track } = await params
         const trackPath = path.resolve(process.env.TRACK_DIR!, track)
-        const outDir = ensureHLSStream(track, trackPath)
+        const outDir = await ensureHLSStream(track, trackPath)
 
         const indexPath = path.join(outDir, 'index.m3u8')
         if (!fs.existsSync(indexPath))
