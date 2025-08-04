@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         const dbData = await db.insert(trackTable).values({
             author: parsed.author,
             name: parsed.name,
-            fileName: outDir,
+            trackDir: outDir,
             imageName: coverName,
             createdAt: new Date(),
             duration: trackMetadata.format.duration!,

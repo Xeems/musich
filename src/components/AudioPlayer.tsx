@@ -11,7 +11,7 @@ export default function AudioPlayer() {
     useEffect(() => {
         if (Hls.isSupported()) {
             const hls = new Hls()
-            hls.loadSource(`/api/hls/${currentTrack?.name}/index`)
+            hls.loadSource(`/api/hls/${currentTrack?.trackDir}/index`)
             hls.attachMedia(audioRef.current!)
             return () => hls.destroy()
         }

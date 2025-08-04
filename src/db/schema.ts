@@ -5,7 +5,7 @@ export const trackTable = pgTable('tracks', {
     name: varchar({ length: 255 }).notNull(),
     author: varchar({ length: 225 }).notNull(),
     imageName: varchar({ length: 225 }),
-    fileName: varchar({ length: 222 }).notNull(),
+    trackDir: varchar({ length: 222 }).notNull(),
     duration: real().notNull(),
     createdAt: timestamp().defaultNow().notNull(),
 })

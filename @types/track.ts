@@ -5,4 +5,5 @@ export type TrackType = {
     imageName: string | null
     createdAt: Date | null
     duration: number
+    trackDir: string | undefined
 }
