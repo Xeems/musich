@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { TrackType } from '../../@types/track'
 import TrackCard from './TrackCard'
 import { usePlayerStore } from '@/store'
@@ -38,10 +38,6 @@ export default function TrackList() {
             console.error(err)
         }
     }, [offset])
-
-    useEffect(() => {
-        loadTracks()
-    }, [])
 
     useInfiniteScroll({
         targetRef: observerRef,

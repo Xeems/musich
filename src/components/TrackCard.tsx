@@ -12,13 +12,16 @@ import { TrackType } from '../../@types/track'
 import Image from 'next/image'
 import { milSecToMins } from '@/lib/utils'
 
-function trackCardClick() {}
+type Props = {
+    track: TrackType
+    onClick: () => void
+}
 
-export default function TrackCard({ track }: { track: TrackType }) {
+export default function TrackCard({ track, onClick }: Props) {
     return (
         <Card
             tabIndex={0}
-            onClick={() => trackCardClick()}
+            onClick={() => onClick()}
             className="hover:bg-primary/10 focus:bg-primary/10 flex flex-row justify-center border-none bg-transparent px-4 py-2 shadow-none">
             <div className="relative aspect-square h-16 w-16">
                 <Image

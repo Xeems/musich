@@ -6,6 +6,7 @@ import { db } from '@/db'
 import { trackTable } from '@/db/schema'
 import { randomUUID } from 'crypto'
 import { getAudioMetadata } from '@/lib/utils'
+import { convertToHLS } from '@/lib/hlsTranscoder'
 
 async function saveFile(
     file: File,
@@ -43,25 +44,24 @@ export async function POST(request: NextRequest) {
             fs.mkdir(trackDir, { recursive: true }),
         ])
 
-        const [coverName, trackName] = await Promise.all([
+        const [coverName, outDir] = await Promise.all([
             saveFile(parsed.coverImageFile, coverDir, 'cover'),
-            saveFile(parsed.trackFile, trackDir, 'track'),
+            convertToHLS(parsed.trackFile),
         ])
 
         const buffer = await parsed.trackFile.arrayBuffer()
-        const trackMetadata = await getAudioMetadata(buffer)
-        const duration = trackMetadata?.format.duration
 
-        if (!duration) throw new Error('No track duration in metadata')
+        const trackMetadata = await getAudioMetadata(buffer)
+        if (!trackMetadata) throw new Error('No track metadata')
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const dbData = await db.insert(trackTable).values({
             author: parsed.author,
             name: parsed.name,
-            fileName: trackName,
+            fileName: outDir,
             imageName: coverName,
             createdAt: new Date(),
-            duration: duration,
+            duration: trackMetadata.format.duration!,
         })
 
         return new NextResponse(JSON.stringify({ success: true }), {
