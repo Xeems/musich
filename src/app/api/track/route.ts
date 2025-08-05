@@ -49,6 +49,8 @@ export async function POST(request: NextRequest) {
             convertToHLS(parsed.trackFile),
         ])
 
+        if (!outDir) throw new Error('track file unsaved')
+
         const buffer = await parsed.trackFile.arrayBuffer()
 
         const trackMetadata = await getAudioMetadata(buffer)
