@@ -4,15 +4,16 @@ import { usePlayerStore } from '@/store'
 import Hls from 'hls.js'
 import { useEffect, useRef, useState } from 'react'
 import { Slider } from './ui/slider'
+import { PauseIcon, PlayIcon } from 'lucide-react'
+import { Button } from './ui/button'
 
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
-    const { currentTrack, setIsPlaying } = usePlayerStore()
+    const { currentTrack, setIsPlaying, isPlaying } = usePlayerStore()
     const [currentTrackTime, setCurrentTrackTime] = useState<number>(0)
     const [bufferedPercent, setBufferedPercent] = useState<number>(0)
     const [duration, setDuration] = useState<number>(0)
 
-    // Подключение HLS
     useEffect(() => {
         if (!currentTrack || !audioRef.current) return
 
@@ -23,7 +24,6 @@ export default function AudioPlayer() {
         return () => hls.destroy()
     }, [currentTrack])
 
-    // Время воспроизведения
     useEffect(() => {
         const audio = audioRef.current
         if (!audio) return
@@ -33,7 +33,6 @@ export default function AudioPlayer() {
         return () => audio.removeEventListener('timeupdate', updateTime)
     }, [])
 
-    // Буферизация
     useEffect(() => {
         const audio = audioRef.current
         if (!audio) return
@@ -79,17 +78,36 @@ export default function AudioPlayer() {
         }
     }
 
+    const handlePauseClick = () => {
+        const audio = audioRef.current
+
+        if (!audio) return
+
+        if (audio.paused) {
+            audioRef.current?.play()
+            setIsPlaying(true)
+        } else {
+            audioRef.current?.pause()
+            setIsPlaying(false)
+        }
+    }
+
     return (
         <div className="w-full space-y-4">
             <h1 className="text-lg font-semibold">{currentTrack?.name}</h1>
 
-            <audio
-                ref={audioRef}
-                controls
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                className="w-full"
-            />
+            <audio ref={audioRef} hidden />
+
+            <Button
+                onClick={handlePauseClick}
+                variant={'ghost'}
+                className="flex h-10 w-10 items-center justify-center p-0">
+                {isPlaying ? (
+                    <PauseIcon className="size-8" />
+                ) : (
+                    <PlayIcon className="size-8" />
+                )}
+            </Button>
 
             <div className="w-full">
                 <Slider
@@ -97,7 +115,7 @@ export default function AudioPlayer() {
                     onValueChange={handleSeek}
                     max={duration || 100}
                     step={1}
-                    className="z-10"
+                    className="z-10 hover:cursor-pointer"
                     buffered={bufferedPercent}
                 />
             </div>
