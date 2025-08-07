@@ -11,6 +11,7 @@ import React from 'react'
 import { TrackType } from '../../@types/track'
 import Image from 'next/image'
 import { milSecToMins } from '@/lib/utils'
+import TrackCover from './TrackCover'
 
 type Props = {
     track: TrackType
@@ -23,15 +24,7 @@ export default function TrackCard({ track, onClick }: Props) {
             tabIndex={0}
             onClick={() => onClick()}
             className="hover:bg-primary/10 focus:bg-primary/10 flex flex-row justify-center border-none bg-transparent px-4 py-2 shadow-none">
-            <div className="relative aspect-square h-16 w-16">
-                <Image
-                    src={`/api/images/${track.imageName}`}
-                    alt=""
-                    fill
-                    className="rounded-sm object-cover"
-                    quality={75}
-                />
-            </div>
+            <TrackCover imageName={track.imageName} />
 
             <CardHeader className="text-md flex w-full flex-col items-start justify-center gap-1 px-0">
                 <CardTitle>{track.name}</CardTitle>

@@ -4,15 +4,24 @@ import { usePlayerStore } from '@/store'
 import Hls from 'hls.js'
 import { useEffect, useRef, useState } from 'react'
 import { Slider } from './ui/slider'
-import { PauseIcon, PlayIcon } from 'lucide-react'
+import { PauseIcon, PlayIcon, Volume2Icon, VolumeXIcon } from 'lucide-react'
 import { Button } from './ui/button'
+import Image from 'next/image'
+import { milSecToMins } from '@/lib/utils'
 
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
-    const { currentTrack, setIsPlaying, isPlaying } = usePlayerStore()
-    const [currentTrackTime, setCurrentTrackTime] = useState<number>(0)
+    const {
+        currentTrack,
+        setIsPlaying,
+        isPlaying,
+        currentTrackTime,
+        setCurrentTrackTime,
+    } = usePlayerStore()
+
     const [bufferedPercent, setBufferedPercent] = useState<number>(0)
     const [duration, setDuration] = useState<number>(0)
+    const [volume, setVolume] = useState<number>(0.7)
 
     useEffect(() => {
         if (!currentTrack || !audioRef.current) return
@@ -92,32 +101,68 @@ export default function AudioPlayer() {
         }
     }
 
+    useEffect(() => {
+        if (!audioRef.current) return
+        audioRef.current.volume = volume
+    }, [volume])
+
     return (
-        <div className="w-full space-y-4">
+        <div className="flex w-full flex-col items-center justify-center">
             <h1 className="text-lg font-semibold">{currentTrack?.name}</h1>
 
-            <audio ref={audioRef} hidden />
+            <audio ref={audioRef} />
 
-            <Button
-                onClick={handlePauseClick}
-                variant={'ghost'}
-                className="flex h-10 w-10 items-center justify-center p-0">
-                {isPlaying ? (
-                    <PauseIcon className="size-8" />
-                ) : (
-                    <PlayIcon className="size-8" />
+            <div className="flex w-1/3 flex-row items-center gap-2">
+                {currentTrack && (
+                    <div className="relative aspect-square h-16 w-16">
+                        <Image
+                            src={`/api/images/${currentTrack.imageName}`}
+                            alt={currentTrack?.name}
+                            fill
+                            className="rounded-sm object-cover"
+                            quality={75}
+                        />
+                    </div>
                 )}
-            </Button>
 
-            <div className="w-full">
-                <Slider
-                    value={[currentTrackTime]}
-                    onValueChange={handleSeek}
-                    max={duration || 100}
-                    step={1}
-                    className="z-10 hover:cursor-pointer"
-                    buffered={bufferedPercent}
-                />
+                <Button
+                    disabled={!currentTrack}
+                    onClick={handlePauseClick}
+                    variant={'ghost'}
+                    className="flex h-10 w-10 items-center justify-center p-0">
+                    {isPlaying ? (
+                        <PauseIcon className="size-6" />
+                    ) : (
+                        <PlayIcon className="size-6" />
+                    )}
+                </Button>
+
+                <div className="w-full">
+                    <Slider
+                        value={[currentTrackTime]}
+                        onValueChange={handleSeek}
+                        max={duration || 100}
+                        step={1}
+                        className="z-10 hover:cursor-pointer"
+                        buffered={bufferedPercent}
+                    />
+                    <p>{milSecToMins(currentTrackTime)}</p>
+                </div>
+                <div className="flex flex-row items-center gap-x-4">
+                    {volume !== 0.0 ? (
+                        <Volume2Icon className="size-6" />
+                    ) : (
+                        <VolumeXIcon className="size-6" />
+                    )}
+                    <Slider
+                        className="w-20"
+                        max={1.0}
+                        min={0.0}
+                        step={0.01}
+                        defaultValue={[volume]}
+                        onValueChange={(value) => setVolume(value[0])}
+                    />
+                </div>
             </div>
         </div>
     )
