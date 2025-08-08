@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/card'
 import React from 'react'
 import { TrackType } from '../../@types/track'
-import Image from 'next/image'
 import { milSecToMins } from '@/lib/utils'
 import TrackCover from './TrackCover'
 

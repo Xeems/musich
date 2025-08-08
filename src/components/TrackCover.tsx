@@ -1,8 +1,10 @@
 import { cn } from '@/lib/utils'
+import { Music4Icon } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
 
 type Props = {
-    imageName: string | null
+    imageName: string | undefined | null
     size?: 'small' | 'medium' | 'large'
 }
 
@@ -13,19 +15,28 @@ const sizeClasses = {
 }
 
 export default function TrackCover({ imageName, size = 'medium' }: Props) {
+    const [hasError, setHasError] = useState(false)
+
     return (
         <div
             className={cn(
                 'relative aspect-square h-16 w-16',
                 sizeClasses[size],
             )}>
-            <Image
-                src={`/api/images/${imageName}`}
-                alt={imageName}
-                fill
-                className="rounded-sm object-cover"
-                quality={75}
-            />
+            {imageName && !hasError ? (
+                <Image
+                    src={`/api/images/${imageName}`}
+                    alt={imageName}
+                    fill
+                    className="rounded-sm object-cover"
+                    quality={75}
+                    onError={() => setHasError(true)}
+                />
+            ) : (
+                <div className="bg- bg-muted flex h-full w-full items-center justify-center rounded-sm border">
+                    <Music4Icon className="text-muted-foreground" />
+                </div>
+            )}
         </div>
     )
 }

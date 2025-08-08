@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Slider } from './ui/slider'
 import { PauseIcon, PlayIcon, Volume2Icon, VolumeXIcon } from 'lucide-react'
 import { Button } from './ui/button'
-import Image from 'next/image'
 import { milSecToMins } from '@/lib/utils'
+import TrackCover from './TrackCover'
 
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -113,17 +113,7 @@ export default function AudioPlayer() {
             <audio ref={audioRef} />
 
             <div className="flex w-1/3 flex-row items-center gap-2">
-                {currentTrack && (
-                    <div className="relative aspect-square h-16 w-16">
-                        <Image
-                            src={`/api/images/${currentTrack.imageName}`}
-                            alt={currentTrack?.name}
-                            fill
-                            className="rounded-sm object-cover"
-                            quality={75}
-                        />
-                    </div>
-                )}
+                <TrackCover imageName={currentTrack?.imageName} />
 
                 <Button
                     disabled={!currentTrack}
