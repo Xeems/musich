@@ -18,37 +18,44 @@ const fetchTracks = async (
 }
 
 export default function TrackList() {
-    const [offset, setOffset] = useState(0)
     const [tracks, setTracks] = useState<TrackType[]>([])
     const [hasMore, setHasMore] = useState(true)
     const observerRef = useRef<HTMLDivElement | null>(null)
 
-    const { setCurrentTrack, setQueue } = usePlayerStore((state) => state)
+    const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
+    const setQueue = usePlayerStore((s) => s.setQueue)
 
     const loadTracks = useCallback(async () => {
         try {
+            const offset = tracks.length
             const data = await fetchTracks(offset, LIMIT)
+
             if (data.length === 0) {
                 setHasMore(false)
                 return
             }
+
             setTracks((prev) => [...prev, ...data])
-            setOffset((prev) => prev + LIMIT)
         } catch (err) {
-            console.error(err)
+            console.error('loadTracks error', err)
         }
-    }, [offset])
+    }, [tracks])
 
     useInfiniteScroll({
         targetRef: observerRef,
         hasMore,
         onIntersect: loadTracks,
+        rootMargin: '200px',
+        threshold: 0.1,
     })
 
-    const handlePlay = (track: TrackType) => {
-        setQueue(tracks)
-        setCurrentTrack(track)
-    }
+    const handlePlay = useCallback(
+        (track: TrackType) => {
+            setQueue(tracks)
+            setCurrentTrack(track)
+        },
+        [tracks, setQueue, setCurrentTrack],
+    )
 
     return (
         <div className="flex w-full flex-col space-y-2">
