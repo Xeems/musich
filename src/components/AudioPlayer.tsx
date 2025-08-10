@@ -5,28 +5,35 @@ import { Button } from './ui/button'
 import { Slider } from './ui/slider'
 import { milSecToMins } from '@/lib/utils'
 import TrackCover from './TrackCover'
-import { useAudioController } from '@/hooks/useAudioController'
-import React from 'react'
+import React, { useRef } from 'react'
+import { usePlayerStore } from '@/store'
+import { useAudioLoader } from '@/hooks/useAudioLoader'
+import { usePlayerControls } from '@/hooks/usePlayerControls'
+//import { useTrackQueue } from '@/hooks/useTrackQueue'
 
 function AudioPlayer() {
+    const audioRef = useRef<HTMLAudioElement>(null)
+
+    const currentTrack = usePlayerStore((s) => s.currentTrack)
+
+    const { bufferedPercent, duration } = useAudioLoader(currentTrack, audioRef)
+
     const {
-        audioRef,
-        currentTrack,
         isPlaying,
         currentTrackTime,
-        bufferedPercent,
-        duration,
         volume,
-        setVolume,
-        handleSeek,
         togglePlay,
-    } = useAudioController()
+        handleSeek,
+        setVolume,
+    } = usePlayerControls(audioRef)
+
+    //const { playNextTrack, playTrackByIndex } = useTrackQueue(audioRef)
 
     return (
         <div className="flex w-full flex-col items-center justify-center">
             <h1 className="text-lg font-semibold">{currentTrack?.name}</h1>
 
-            <audio ref={audioRef} />
+            <audio ref={audioRef} autoPlay />
 
             <div className="flex w-1/3 flex-row items-center gap-2">
                 <TrackCover imageName={currentTrack?.imageName} />
