@@ -19,6 +19,15 @@ export function usePlayerControls(
         return () => audio.removeEventListener('timeupdate', updateTime)
     }, [])
 
+    useEffect(() => {
+        const audio = audioRef.current
+        if (!audio) return
+        const trackEnded = () => {
+            setIsPlaying(false)
+        }
+        audio.addEventListener('ended', trackEnded)
+    }, [isPlaying, audioRef, setIsPlaying])
+
     const togglePlay = () => {
         const audio = audioRef.current
         if (!audio) return

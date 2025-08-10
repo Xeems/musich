@@ -27,14 +27,14 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+                className={`${geistSans.variable} ${geistMono.variable} pb-40 antialiased`}>
                 <div className="flex flex-row gap-x-4">
                     <Link href={'/'}>Main Page</Link>
                     <Link href={'/tracks'}>My tracks</Link>
                 </div>
+                <div className="">{children}</div>
 
                 <AudioPlayer />
-                {children}
             </body>
         </html>
     )
