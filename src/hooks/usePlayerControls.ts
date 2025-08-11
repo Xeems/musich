@@ -17,7 +17,7 @@ export function usePlayerControls(
         const updateTime = () => setCurrentTrackTime(audio.currentTime)
         audio.addEventListener('timeupdate', updateTime)
         return () => audio.removeEventListener('timeupdate', updateTime)
-    }, [])
+    }, [audioRef, setCurrentTrackTime])
 
     useEffect(() => {
         const audio = audioRef.current

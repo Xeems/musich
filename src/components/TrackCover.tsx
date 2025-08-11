@@ -28,6 +28,7 @@ export default function TrackCover({ imageName, size = 'medium' }: Props) {
                     src={`/api/images/${imageName}`}
                     alt={imageName}
                     fill
+                    sizes="full"
                     className="rounded-sm object-cover"
                     quality={75}
                     onError={() => setHasError(true)}

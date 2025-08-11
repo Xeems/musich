@@ -17,7 +17,7 @@ import { usePlayerStore } from '@/store'
 import { useAudioLoader } from '@/hooks/useAudioLoader'
 import { usePlayerControls } from '@/hooks/usePlayerControls'
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
-//import { useTrackQueue } from '@/hooks/useTrackQueue'
+import { useTrackQueue } from '@/hooks/useTrackQueue'
 
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement>(null)
@@ -35,7 +35,7 @@ export default function AudioPlayer() {
         setVolume,
     } = usePlayerControls(audioRef)
 
-    //const { playNextTrack, playTrackByIndex } = useTrackQueue(audioRef)
+    const { playNext, playPrev } = useTrackQueue(audioRef)
 
     return (
         <Card className="fixed inset-x-0 bottom-0 z-50 flex w-full flex-row items-center rounded-none px-3 py-3">
@@ -51,8 +51,10 @@ export default function AudioPlayer() {
                     </CardDescription>
                 </CardHeader>
 
+                <div className="flex flex-row items-center justify-center"></div>
                 <div className="flex flex-row items-center justify-center gap-x-2">
                     <Button
+                        onClick={playPrev}
                         variant="ghost"
                         className="h-8 w-8 rounded-full p-0">
                         <SkipBackIcon />
@@ -69,7 +71,8 @@ export default function AudioPlayer() {
                     </Button>
                     <Button
                         variant="ghost"
-                        className="h-8 w-8 rounded-full p-0">
+                        className="h-8 w-8 rounded-full p-0"
+                        onClick={playNext}>
                         <SkipForwardIcon />
                     </Button>
                 </div>
