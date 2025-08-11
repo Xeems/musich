@@ -9,7 +9,7 @@ type Props = {
 }
 
 const sizeClasses = {
-    small: 'h-12 w-12',
+    small: 'h-11 w-11',
     medium: 'h-16 w-16',
     large: 'h-24 w-24',
 }
