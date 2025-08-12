@@ -8,16 +8,6 @@ export function useTrackQueue(audioRef: RefObject<HTMLAudioElement | null>) {
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const playMode = usePlayerStore((s) => s.playMode)
 
-    const getCurrentTrackIndex = () => {
-        if (!currentTrack || queue.length === 0) return undefined
-        return queue.findIndex((t) => t.id === currentTrack.id)
-    }
-
-    const playTrackByIndex = (index: number) => {
-        if (queue.length === 0) return
-        setCurrentTrack(queue[(index + queue.length) % queue.length]) // защита от отрицательных
-    }
-
     const playNext = () => {
         const currentIndex = getCurrentTrackIndex()
         if (currentIndex === undefined) return
@@ -30,31 +20,37 @@ export function useTrackQueue(audioRef: RefObject<HTMLAudioElement | null>) {
         playTrackByIndex(currentIndex - 1)
     }
 
+    const getCurrentTrackIndex = useCallback(() => {
+        if (!currentTrack || queue.length === 0) return undefined
+        return queue.findIndex((t) => t.id === currentTrack.id)
+    }, [currentTrack, queue])
+
+    const playTrackByIndex = useCallback(
+        (index: number) => {
+            if (queue.length === 0) return
+            setCurrentTrack(queue[(index + queue.length) % queue.length])
+        },
+        [queue, setCurrentTrack],
+    )
+
     const playNextTrack = useCallback(() => {
         const currentIndex = getCurrentTrackIndex()
-        if (currentIndex === undefined) return
+        const audio = audioRef.current
+        if (currentIndex === undefined || !audio) return
 
         switch (playMode) {
             case 'loop':
-                audioRef.current?.play()
                 break
             case 'queue':
                 playTrackByIndex(currentIndex + 1)
-                audioRef.current?.play()
                 break
             case 'random':
                 const randomIndex = Math.floor(Math.random() * queue.length)
                 playTrackByIndex(randomIndex)
-                audioRef.current?.play()
                 break
         }
-    }, [
-        audioRef,
-        getCurrentTrackIndex,
-        playMode,
-        playTrackByIndex,
-        queue.length,
-    ])
+        audio.onloadeddata = () => audio.play().catch(() => {})
+    }, [audioRef, playMode, queue, getCurrentTrackIndex, playTrackByIndex])
 
     useEffect(() => {
         const audio = audioRef.current
@@ -68,7 +64,7 @@ export function useTrackQueue(audioRef: RefObject<HTMLAudioElement | null>) {
         return () => {
             audio.removeEventListener('ended', handleEnded)
         }
-    }, [audioRef, currentTrack, playMode, queue])
+    }, [audioRef, playNextTrack])
 
     return { playNextTrack, playTrackByIndex, playNext, playPrev }
 }
