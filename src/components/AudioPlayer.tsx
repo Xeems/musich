@@ -3,6 +3,9 @@
 import {
     PauseIcon,
     PlayIcon,
+    Repeat1Icon,
+    RepeatIcon,
+    ShuffleIcon,
     SkipBackIcon,
     SkipForwardIcon,
     Volume2Icon,
@@ -35,7 +38,8 @@ export default function AudioPlayer() {
         setVolume,
     } = usePlayerControls(audioRef)
 
-    const { playNext, playPrev } = useTrackQueue(audioRef)
+    const { playNext, playPrev, togglePlayMode, playMode } =
+        useTrackQueue(audioRef)
 
     return (
         <Card className="fixed inset-x-0 bottom-0 z-50 flex w-full flex-row items-center rounded-none px-3 py-3">
@@ -77,6 +81,11 @@ export default function AudioPlayer() {
                     </Button>
                 </div>
 
+                <Button variant={'ghost'} onClick={togglePlayMode}>
+                    {playMode === 'queue' && <RepeatIcon />}
+                    {playMode === 'random' && <ShuffleIcon />}
+                    {playMode === 'loop' && <Repeat1Icon />}
+                </Button>
                 <div className="flex w-full flex-row gap-x-4">
                     <Slider
                         value={[currentTrackTime]}

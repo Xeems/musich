@@ -1,12 +1,22 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { usePlayerStore } from '@/store'
 import { RefObject } from 'react'
 
+type PlayModeType = 'queue' | 'random' | 'loop'
+
 export function useTrackQueue(audioRef: RefObject<HTMLAudioElement | null>) {
+    const [playMode, setPlayMode] = useState<PlayModeType>('queue')
     const queue = usePlayerStore((s) => s.queue)
     const currentTrack = usePlayerStore((s) => s.currentTrack)
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
-    const playMode = usePlayerStore((s) => s.playMode)
+
+    const playTrackByIndex = useCallback(
+        (index: number) => {
+            if (queue.length === 0) return
+            setCurrentTrack(queue[(index + queue.length) % queue.length])
+        },
+        [queue, setCurrentTrack],
+    )
 
     const playNext = () => {
         const currentIndex = getCurrentTrackIndex()
@@ -25,14 +35,6 @@ export function useTrackQueue(audioRef: RefObject<HTMLAudioElement | null>) {
         return queue.findIndex((t) => t.id === currentTrack.id)
     }, [currentTrack, queue])
 
-    const playTrackByIndex = useCallback(
-        (index: number) => {
-            if (queue.length === 0) return
-            setCurrentTrack(queue[(index + queue.length) % queue.length])
-        },
-        [queue, setCurrentTrack],
-    )
-
     const playNextTrack = useCallback(() => {
         const currentIndex = getCurrentTrackIndex()
         const audio = audioRef.current
@@ -40,6 +42,7 @@ export function useTrackQueue(audioRef: RefObject<HTMLAudioElement | null>) {
 
         switch (playMode) {
             case 'loop':
+                audio.play()
                 break
             case 'queue':
                 playTrackByIndex(currentIndex + 1)
@@ -66,5 +69,18 @@ export function useTrackQueue(audioRef: RefObject<HTMLAudioElement | null>) {
         }
     }, [audioRef, playNextTrack])
 
-    return { playNextTrack, playTrackByIndex, playNext, playPrev }
+    const togglePlayMode = useCallback(() => {
+        setPlayMode((prev) =>
+            prev === 'queue' ? 'random' : prev === 'random' ? 'loop' : 'queue',
+        )
+    }, [])
+
+    return {
+        playNextTrack,
+        playTrackByIndex,
+        playNext,
+        playPrev,
+        playMode,
+        togglePlayMode,
+    }
 }
