@@ -14,29 +14,32 @@ export function usePlayerControls(
     useEffect(() => {
         const audio = audioRef.current
         if (!audio) return
-        const updateTime = () => setCurrentTrackTime(audio.currentTime)
-        audio.addEventListener('timeupdate', updateTime)
-        return () => audio.removeEventListener('timeupdate', updateTime)
-    }, [audioRef, setCurrentTrackTime])
 
-    useEffect(() => {
-        const audio = audioRef.current
-        if (!audio) return
-        const trackEnded = () => {
-            setIsPlaying(false)
+        const updateTime = () => setCurrentTrackTime(audio.currentTime)
+        const handlePlay = () => setIsPlaying(true)
+        const handlePause = () => setIsPlaying(false)
+        const handleEnded = () => setIsPlaying(false)
+
+        audio.addEventListener('timeupdate', updateTime)
+        audio.addEventListener('play', handlePlay)
+        audio.addEventListener('pause', handlePause)
+        audio.addEventListener('ended', handleEnded)
+
+        return () => {
+            audio.removeEventListener('timeupdate', updateTime)
+            audio.removeEventListener('play', handlePlay)
+            audio.removeEventListener('pause', handlePause)
+            audio.removeEventListener('ended', handleEnded)
         }
-        audio.addEventListener('ended', trackEnded)
-    }, [isPlaying, audioRef, setIsPlaying])
+    }, [audioRef, setCurrentTrackTime, setIsPlaying])
 
     const togglePlay = () => {
         const audio = audioRef.current
         if (!audio) return
         if (audio.paused) {
             audio.play()
-            setIsPlaying(true)
         } else {
             audio.pause()
-            setIsPlaying(false)
         }
     }
 

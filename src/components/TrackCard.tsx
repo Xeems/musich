@@ -18,14 +18,13 @@ type Props = {
     onClick?: () => void
 }
 
-function TrackCardInner({ track, onClick }: Props) {
-    //const { setCurrentTrack, isPlaying } = usePlayerStore()
+export default function TrackCardInner({ track, onClick }: Props) {
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
+    const isCurrentTrack = usePlayerStore(
+        (s) => s.currentTrack?.id === track.id,
+    )
     const currentTrackTime = usePlayerStore((s) =>
         s.currentTrack?.id === track.id ? s.currentTrackTime : 0,
-    )
-    const isPlaying = usePlayerStore((s) =>
-        s.currentTrack?.id === track.id ? s.isPlaying : false,
     )
 
     const handleClick = useCallback(() => {
@@ -37,7 +36,16 @@ function TrackCardInner({ track, onClick }: Props) {
         <Card
             tabIndex={0}
             onClick={handleClick}
-            className="hover:bg-primary/10 focus:bg-primary/10 flex flex-row justify-center border-none bg-transparent px-4 py-2 shadow-none">
+            className="hover:bg-primary/10 focus:bg-primary/10 relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-3 shadow-none">
+            {isCurrentTrack && (
+                <div
+                    className="bg-primary/10 pointer-events-none absolute top-0 bottom-0 left-0"
+                    style={{
+                        width: `${(currentTrackTime / track.duration) * 100}%`,
+                        transition: 'width 0.15s linear',
+                    }}
+                />
+            )}
             <TrackCover imageName={track.imageName ?? null} />
 
             <CardHeader className="text-md flex w-full flex-col items-start justify-center gap-1 px-0">
@@ -50,18 +58,10 @@ function TrackCardInner({ track, onClick }: Props) {
                     <span className="mr-4">{milSecToMins(track.duration)}</span>
                 </CardContent>
 
-                <div className="w-full max-w-[160px]">
-                    <div className="h-1 w-full rounded bg-slate-200">
-                        <div
-                            className="bg-primary h-1 rounded transition-[width] duration-150"
-                            style={{ width: `${12}%` }}
-                        />
-                        {isPlaying && milSecToMins(currentTrackTime)}
-                    </div>
-                </div>
+                {isCurrentTrack && milSecToMins(currentTrackTime)}
+
+                <div className="w-full max-w-[160px]"></div>
             </div>
         </Card>
     )
 }
-
-export default React.memo(TrackCardInner)

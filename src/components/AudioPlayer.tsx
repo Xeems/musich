@@ -91,7 +91,7 @@ export default function AudioPlayer() {
                         value={[currentTrackTime]}
                         onValueChange={handleSeek}
                         max={duration || 100}
-                        step={1}
+                        step={0.1}
                         className="z-10 hover:cursor-pointer"
                         buffered={bufferedPercent}
                     />
