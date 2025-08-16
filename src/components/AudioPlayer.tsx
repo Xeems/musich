@@ -38,6 +38,8 @@ export default function AudioPlayer() {
         commitSeek,
         startSeek,
         setVolume,
+        isMuted,
+        setIsMuted,
     } = usePlayerControls(audioRef)
 
     const { playNext, playPrev, togglePlayMode, playMode } =
@@ -102,11 +104,15 @@ export default function AudioPlayer() {
                 </div>
 
                 <div className="flex flex-row items-center gap-x-4">
-                    {volume !== 0 ? (
-                        <Volume2Icon className="size-6" />
-                    ) : (
-                        <VolumeXIcon className="size-6" />
-                    )}
+                    <Button
+                        variant="ghost"
+                        onClick={() => setIsMuted((prev) => !prev)}>
+                        {volume === 0 || isMuted ? (
+                            <VolumeXIcon className="size-6" />
+                        ) : (
+                            <Volume2Icon className="size-6" />
+                        )}
+                    </Button>
                     <Slider
                         className="w-20"
                         max={1.0}
