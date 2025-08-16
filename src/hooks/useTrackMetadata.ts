@@ -13,7 +13,6 @@ export default function useTrackMetadata(trackFile: File | undefined) {
         const getMetadata = async () => {
             try {
                 const metadata = await parseBlob(trackFile)
-
                 setMetadata(metadata)
             } catch (error) {
                 console.error('Failed to extract metadata:', error)

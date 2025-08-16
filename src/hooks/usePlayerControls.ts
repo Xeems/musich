@@ -10,6 +10,7 @@ export function usePlayerControls(
     const setCurrentTrackTime = usePlayerStore((s) => s.setCurrentTrackTime)
 
     const [volume, setVolume] = useState(0.7)
+    const [seekingValue, setSeekingValue] = useState<number | null>(null)
 
     useEffect(() => {
         const audio = audioRef.current
@@ -43,10 +44,21 @@ export function usePlayerControls(
         }
     }
 
-    const handleSeek = (seconds: number[]) => {
-        if (audioRef.current) {
-            audioRef.current.currentTime = seconds[0]
-        }
+    const handleSeek = (seconds: number) => {
+        const audio = audioRef.current
+        if (!audio) return
+
+        audio.currentTime = seconds
+    }
+
+    const startSeek = (seconds: number) => {
+        setSeekingValue(seconds)
+    }
+
+    const commitSeek = (seconds: number) => {
+        handleSeek(seconds)
+        setCurrentTrackTime(seconds)
+        setSeekingValue(null)
     }
 
     useEffect(() => {
@@ -59,8 +71,12 @@ export function usePlayerControls(
         isPlaying,
         togglePlay,
         handleSeek,
+        startSeek,
+        commitSeek,
         setVolume,
         currentTrackTime,
         volume,
+        seekingValue,
+        sliderValue: seekingValue ?? currentTrackTime,
     }
 }

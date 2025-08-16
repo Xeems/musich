@@ -15,7 +15,7 @@ import { Button } from './ui/button'
 import { Slider } from './ui/slider'
 import { milSecToMins } from '@/lib/utils'
 import TrackCover from './TrackCover'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { usePlayerStore } from '@/store'
 import { useAudioLoader } from '@/hooks/useAudioLoader'
 import { usePlayerControls } from '@/hooks/usePlayerControls'
@@ -34,7 +34,9 @@ export default function AudioPlayer() {
         currentTrackTime,
         volume,
         togglePlay,
-        handleSeek,
+        sliderValue,
+        commitSeek,
+        startSeek,
         setVolume,
     } = usePlayerControls(audioRef)
 
@@ -88,8 +90,9 @@ export default function AudioPlayer() {
                 </Button>
                 <div className="flex w-full flex-row gap-x-4">
                     <Slider
-                        value={[currentTrackTime]}
-                        onValueChange={handleSeek}
+                        value={[sliderValue]}
+                        onValueChange={(val) => startSeek(val[0])}
+                        onValueCommit={(val) => commitSeek(val[0])}
                         max={duration || 100}
                         step={0.1}
                         className="z-10 hover:cursor-pointer"
