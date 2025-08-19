@@ -23,7 +23,10 @@ export const users = pgTable('user_table', {
     name: varchar({ length: 255 }).notNull(),
 })
 
-export const playlistTypeEnum = pgEnum('playlist_type_enum', ['user', 'custom'])
+export const playlistTypeEnum = pgEnum('playlist_type_enum', [
+    'default',
+    'custom',
+])
 
 export const playLists = pgTable('playlist_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
