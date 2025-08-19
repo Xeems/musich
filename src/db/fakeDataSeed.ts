@@ -1,5 +1,5 @@
 import { db } from '@/db' // путь к твоей инициализации drizzle
-import { trackTable } from '@/db/schema'
+import { tracks } from '@/db/schema'
 import { faker } from '@faker-js/faker'
 
 export async function seedTracks() {
@@ -12,7 +12,7 @@ export async function seedTracks() {
     }))
 
     try {
-        await db.insert(trackTable).values(tracks)
+        await db.insert(tracks).values(tracks)
         console.log('✅ Inserted 100 fake tracks')
     } catch (error) {
         console.error('❌ Failed to insert tracks:', error)
