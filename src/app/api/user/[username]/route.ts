@@ -7,7 +7,7 @@ export async function GET(
     { params }: { params: { username: string } },
 ) {
     try {
-        const username = await params.username
+        const { username } = await params
 
         if (!username) {
             return NextResponse.json(
@@ -18,9 +18,15 @@ export async function GET(
 
         const userData = await newUserSchema.parseAsync({ username })
         const user = await getUser(userData.username)
-        console.log(user)
 
-        return NextResponse.json(user)
+        const res = NextResponse.json(user)
+        res.cookies.set('user', JSON.stringify(user), {
+            httpOnly: false,
+            path: '/',
+            maxAge: 60 * 60 * 24 * 7,
+        })
+
+        return res
     } catch (e) {
         console.error(e)
         return NextResponse.json({ error: 'Ошибка' }, { status: 500 })

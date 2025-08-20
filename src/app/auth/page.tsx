@@ -21,7 +21,7 @@ export async function createUser(username: string) {
 }
 
 export async function getUser(username: string) {
-    const res = await fetch(`/api/user/${encodeURIComponent(username)}`, {
+    const res = await fetch(`/api/user/${encodeURIComponent(username)}/`, {
         method: 'GET',
     })
 
