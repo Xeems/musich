@@ -34,3 +34,11 @@ export const trackUploadSchema = z.object({
             message: 'Only MP3 files are supported',
         }),
 })
+
+export const newUserSchema = z.object({
+    username: z
+        .string()
+        .min(5, 'Username must be at least 5 characters long')
+        .max(255, 'Username must be no more than 255 characters')
+        .nonempty(),
+})

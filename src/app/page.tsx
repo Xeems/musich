@@ -1,8 +1,12 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
+
 export default function DJ() {
     return (
-        <div className="bg-white w-full h-full flex flex-col items-center p-16 gap-7"></div>
+        <div className="flex h-full w-full flex-col items-center gap-7 bg-white p-16">
+            <Button></Button>
+        </div>
     )
 }
 
