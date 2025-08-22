@@ -1,18 +1,20 @@
+'use server'
+
 import { db } from '@/db'
-import { playLists, users } from '@/db/schema'
+import { PlaylistTable, UserTable } from '@/db/schema'
 
 export default async function createUser(name: string) {
     try {
         return await db.transaction(async (tx) => {
             const [newUser] = await tx
-                .insert(users)
+                .insert(UserTable)
                 .values({
                     name,
                 })
                 .returning()
 
             const [defaultPlaylist] = await tx
-                .insert(playLists)
+                .insert(PlaylistTable)
                 .values({
                     name: `${newUser.name}'s tracks`,
                     type: 'default',

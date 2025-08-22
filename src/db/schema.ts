@@ -8,7 +8,7 @@ import {
     varchar,
 } from 'drizzle-orm/pg-core'
 
-export const tracks = pgTable('track_table', {
+export const TrackTable = pgTable('track_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
     name: varchar({ length: 255 }).notNull(),
     author: varchar({ length: 225 }).notNull(),
@@ -18,56 +18,74 @@ export const tracks = pgTable('track_table', {
     createdAt: timestamp().defaultNow().notNull(),
 })
 
-export const users = pgTable('user_table', {
+export const UserTable = pgTable('user_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
     name: varchar({ length: 255 }).notNull(),
 })
 
-export const playlistTypeEnum = pgEnum('playlist_type_enum', [
+export const UserSessionTable = pgTable('user_session_table', {
+    id: uuid('id').primaryKey().unique().defaultRandom(),
+    userId: uuid()
+        .notNull()
+        .references(() => UserTable.id),
+})
+
+export const PlaylistTypeEnum = pgEnum('playlist_type_enum', [
     'default',
     'custom',
 ])
 
-export const playLists = pgTable('playlist_table', {
+export const PlaylistTable = pgTable('playlist_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
     name: varchar({ length: 255 }).notNull(),
     imageName: varchar({ length: 225 }),
-    type: playlistTypeEnum(),
+    type: PlaylistTypeEnum(),
     creatorId: uuid()
         .notNull()
-        .references(() => users.id),
+        .references(() => UserTable.id),
 })
 
-export const playlistTracks = pgTable('playlist_tracks_table', {
+export const PlaylistTrackTable = pgTable('playlist_tracks_table', {
     playlistId: uuid()
         .notNull()
-        .references(() => playLists.id),
+        .references(() => PlaylistTable.id),
     trackId: uuid()
         .notNull()
-        .references(() => tracks.id),
+        .references(() => TrackTable.id),
 })
 
 // RELATIONS
 
-export const tracksRelations = relations(tracks, ({ many }) => ({
-    playlistTracks: many(playlistTracks),
+export const TrackRelations = relations(TrackTable, ({ many }) => ({
+    playlistTracks: many(PlaylistTrackTable),
 }))
 
-export const playListsRelations = relations(playLists, ({ many }) => ({
-    playlistTracks: many(playlistTracks),
+export const PlaylistRelations = relations(PlaylistTable, ({ many }) => ({
+    playlistTracks: many(PlaylistTrackTable),
 }))
 
-export const playlistTracksRelations = relations(playlistTracks, ({ one }) => ({
-    playlist: one(playLists, {
-        fields: [playlistTracks.playlistId],
-        references: [playLists.id],
+export const PlaylistTrackRelations = relations(
+    PlaylistTrackTable,
+    ({ one }) => ({
+        playlist: one(PlaylistTable, {
+            fields: [PlaylistTrackTable.playlistId],
+            references: [PlaylistTable.id],
+        }),
+        track: one(TrackTable, {
+            fields: [PlaylistTrackTable.trackId],
+            references: [TrackTable.id],
+        }),
     }),
-    track: one(tracks, {
-        fields: [playlistTracks.trackId],
-        references: [tracks.id],
-    }),
+)
+
+export const UserRelations = relations(UserTable, ({ many }) => ({
+    playLists: many(PlaylistTable),
+    sessions: many(UserSessionTable),
 }))
 
-export const usersRelations = relations(users, ({ many }) => ({
-    playLists: many(playLists),
+export const UserSessionRelations = relations(UserSessionTable, ({ one }) => ({
+    user: one(UserTable, {
+        fields: [UserSessionTable.userId],
+        references: [UserTable.id],
+    }),
 }))

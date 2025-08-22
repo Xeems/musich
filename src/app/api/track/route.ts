@@ -3,7 +3,7 @@ import { trackUploadSchema } from '../../../../@types/validators'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { db } from '@/db'
-import { tracks } from '@/db/schema'
+import { TrackTable } from '@/db/schema'
 import { randomUUID } from 'crypto'
 import { getAudioMetadata } from '@/lib/utils'
 import { convertToHLS } from '@/lib/hlsTranscoder'
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         if (!trackMetadata) throw new Error('No track metadata')
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const dbData = await db.insert(tracks).values({
+        const dbData = await db.insert(TrackTable).values({
             author: parsed.author,
             name: parsed.name,
             trackDir: outDir,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { newUserSchema } from '../../../../../@types/validators'
-import getUser from '@/actions/getUser'
+import signUp from '@/actions/signUp'
 
 export async function GET(
     request: NextRequest,
@@ -17,7 +17,7 @@ export async function GET(
         }
 
         const userData = await newUserSchema.parseAsync({ username })
-        const user = await getUser(userData.username)
+        const user = await signUp(userData.username)
 
         const res = NextResponse.json(user)
         res.cookies.set('user', JSON.stringify(user), {

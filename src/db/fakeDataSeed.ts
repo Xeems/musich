@@ -1,5 +1,5 @@
 import { db } from '@/db' // путь к твоей инициализации drizzle
-import { tracks } from '@/db/schema'
+import { TrackTable } from '@/db/schema'
 import { faker } from '@faker-js/faker'
 
 export async function seedTracks() {

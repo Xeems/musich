@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/db'
-import { tracks } from '@/db/schema'
+import { TrackTable } from '@/db/schema'
 import { desc } from 'drizzle-orm'
 import { TrackType } from '../../@types/track'
 
@@ -12,8 +12,8 @@ export default async function getTracks(
     try {
         const data = await db
             .select()
-            .from(tracks)
-            .orderBy(desc(tracks.createdAt))
+            .from(TrackTable)
+            .orderBy(desc(TrackTable.createdAt))
             .limit(limit)
             .offset(offset)
 
