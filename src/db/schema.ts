@@ -1,5 +1,6 @@
 import { relations } from 'drizzle-orm'
 import {
+    boolean,
     pgEnum,
     pgTable,
     real,
@@ -28,6 +29,9 @@ export const UserSessionTable = pgTable('user_session_table', {
     userId: uuid()
         .notNull()
         .references(() => UserTable.id),
+    isEnded: boolean().default(false).notNull(),
+    createdAt: timestamp().defaultNow().notNull(),
+    endedAt: timestamp(),
 })
 
 export const PlaylistTypeEnum = pgEnum('playlist_type_enum', [
