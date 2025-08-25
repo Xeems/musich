@@ -1,8 +1,8 @@
 'use client'
 
-import createUser from '@/actions/createUser'
-import getUserBySession from '@/actions/getUserBySession'
 import signUp from '@/actions/signUp'
+import getUserBySession from '@/actions/getUserBySession'
+import signIn from '@/actions/signIn'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -12,11 +12,11 @@ export default function Auth() {
     const [username, setUsername] = useState('')
 
     const handleCreate = async () => {
-        await createUser(username)
+        await signUp(username)
     }
 
     const handleLogin = async () => {
-        await signUp(username)
+        await signIn(username)
         const user = await getUserBySession()
         console.log(user)
     }

@@ -1,36 +1,33 @@
 'use server'
 
 import { db } from '@/db'
-import { UserSessionTable, UserTable } from '@/db/schema'
-import { eq } from 'drizzle-orm'
-import { cookies } from 'next/headers'
+import { PlaylistTable, UserTable } from '@/db/schema'
 
-export default async function signUp(username: string) {
+export default async function signUp(name: string) {
     try {
-        const user = await db.query.UserTable.findFirst({
-            where: eq(UserTable.name, username),
+        return await db.transaction(async (tx) => {
+            const [newUser] = await tx
+                .insert(UserTable)
+                .values({
+                    name,
+                })
+                .returning()
+
+            const [defaultPlaylist] = await tx
+                .insert(PlaylistTable)
+                .values({
+                    name: `${newUser.name}'s tracks`,
+                    type: 'default',
+                    creatorId: newUser.id,
+                })
+                .returning()
+
+            return {
+                user: newUser,
+                playlist: defaultPlaylist,
+            }
         })
-
-        if (!user?.id) throw new Error('User not found')
-
-        const [session] = await db
-            .insert(UserSessionTable)
-            .values({
-                userId: user.id,
-            })
-            .returning({ id: UserSessionTable.id })
-
-        if (!session) return 'Session undefined'
-
-        const cookieStore = await cookies()
-        cookieStore.set('COOKIE_SESSION', session.id, {
-            secure: true,
-            httpOnly: true,
-            sameSite: 'lax',
-            expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        })
-    } catch (e) {
-        console.log(e)
-        return undefined
+    } catch (error) {
+        console.log(error)
     }
 }
