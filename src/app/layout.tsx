@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import AudioPlayer from '@/components/AudioPlayer'
 import Link from 'next/link'
+import UserInfoCard from '@/components/UserInfoCard'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -31,6 +32,7 @@ export default function RootLayout({
                 <div className="flex flex-row gap-x-4">
                     <Link href={'/'}>Main Page</Link>
                     <Link href={'/tracks'}>My tracks</Link>
+                    <UserInfoCard />
                 </div>
                 <div className="">{children}</div>
 
