@@ -5,7 +5,7 @@ import { UserSessionTable } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { cookies } from 'next/headers'
 
-export default async function logout() {
+export default async function SignOut() {
     const cookieStore = await cookies()
     const sessionId = cookieStore.get('COOKIE_SESSION')?.value
     if (!sessionId) return null

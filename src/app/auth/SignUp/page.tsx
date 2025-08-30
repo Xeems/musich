@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
 import React, { useState } from 'react'
-import logout from '@/actions/logout'
+import SignOut from '@/actions/SignOut'
 
 export default function Auth() {
     const [username, setUsername] = useState('')
@@ -23,7 +23,7 @@ export default function Auth() {
     }
 
     const handleLogout = async () => {
-        await logout()
+        await SignOut()
     }
 
     return (

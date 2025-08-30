@@ -4,12 +4,15 @@ import { db } from '@/db'
 import { UserSessionTable } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { cookies } from 'next/headers'
+import { MinimalUserType } from '../../@types/user'
 
-export default async function getUserBySession() {
+export default async function getUserBySession(): Promise<
+    MinimalUserType | undefined
+> {
     try {
         const cookieStore = await cookies()
         const sessionId = cookieStore.get('COOKIE_SESSION')?.value
-        if (!sessionId) return null
+        if (!sessionId) return undefined
 
         const session = await db.query.UserSessionTable.findFirst({
             where: eq(UserSessionTable.id, sessionId),
@@ -18,7 +21,7 @@ export default async function getUserBySession() {
             },
         })
 
-        if (!session) return null
+        if (!session) return undefined
 
         const ttl = 1000 * 60 * 60 * 24 * 7
         const expired = session.createdAt.getTime() + ttl < Date.now()
@@ -28,11 +31,12 @@ export default async function getUserBySession() {
                 .update(UserSessionTable)
                 .set({ isEnded: true, endedAt: new Date() })
                 .where(eq(UserSessionTable.id, sessionId))
-            return null
+            return undefined
         }
 
         return session.user
     } catch (e) {
         console.log(e)
+        return undefined
     }
 }
