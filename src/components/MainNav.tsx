@@ -29,7 +29,7 @@ export default function MainNav() {
                         `rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200`,
                         pathname === link.href
                             ? 'bg-gradient-to-r from-orange-100 to-orange-200 font-semibold text-orange-700 shadow-sm'
-                            : 'text-secondary-content hover:text-primary hover:bg-orange-50',
+                            : 'hover:text-primary',
                     )}>
                     {link.name}
                 </Link>
