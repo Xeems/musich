@@ -41,4 +41,24 @@ export const newUserSchema = z.object({
         .min(5, 'Username must be at least 5 characters long')
         .max(255, 'Username must be no more than 255 characters')
         .nonempty(),
+
+    firstName: z
+        .string()
+        .min(5, 'First name must be at least 5 characters long')
+        .max(255, 'First name must be no more than 255 characters')
+        .nonempty(),
+
+    lastName: z
+        .string()
+        .min(5, 'Last name must be at least 5 characters long')
+        .max(255, 'Last name must be no more than 255 characters')
+        .nonempty(),
+
+    password: z
+        .string()
+        .min(5, 'password must be at least 5 characters long')
+        .max(255, 'password must be no more than 255 characters')
+        .nonempty(),
+
+    passwordConfirm: z.string().nonempty(),
 })
