@@ -5,10 +5,10 @@ import { UserSessionTable, UserTable } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { cookies } from 'next/headers'
 
-export default async function createUserSession(username: string) {
+export default async function createUserSession(userId: string) {
     try {
         const user = await db.query.UserTable.findFirst({
-            where: eq(UserTable.name, username),
+            where: eq(UserTable.id, userId),
         })
 
         if (!user?.id) throw new Error('User not found')

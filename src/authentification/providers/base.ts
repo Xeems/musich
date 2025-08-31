@@ -61,7 +61,6 @@ export class OAuthClient<T> {
 
     private get redirectUrl() {
         const url = new URL(this.provider, process.env.OAUTH_REDIRECT_URL_BASE)
-        console.log(url)
         return url
     }
 
