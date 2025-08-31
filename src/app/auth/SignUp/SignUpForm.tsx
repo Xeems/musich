@@ -18,6 +18,7 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GoogleIcon } from '../../../../public/GoogleIcon'
+import signInOAuth from '@/authentification/actions/signInOAuth'
 
 export default function SignUpForm() {
     const form = useForm<z.infer<typeof newUserSchema>>({
@@ -186,11 +187,13 @@ export default function SignUpForm() {
                     <Separator /> <span>or</span>
                     <Separator />
                 </div>
-                <Button className="w-full border border-blue-200 bg-blue-100 text-blue-700 shadow-sm transition-all duration-200 hover:border-blue-300 hover:bg-blue-200 hover:text-blue-800 hover:shadow-md">
-                    <GoogleIcon className="size-4 text-blue-700" />
-                    Continue with the Google
-                </Button>
             </form>
+            <Button
+                onClick={async () => await signInOAuth('google')}
+                className="w-full border border-blue-200 bg-blue-100 text-blue-700 shadow-sm transition-all duration-200 hover:border-blue-300 hover:bg-blue-200 hover:text-blue-800 hover:shadow-md">
+                <GoogleIcon className="size-4 text-blue-700" />
+                Continue with the Google
+            </Button>
         </Form>
     )
 }

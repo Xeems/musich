@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 
 import getUserBySession from '@/actions/getUserBySession'
-import SignOut from '@/actions/SignOut'
+import SignOut from '@/authentification/actions/signOut'
 import { MinimalUserType } from '../../@types/user'
 import Link from 'next/link'
 import { LogInIcon, UserPlusIcon } from 'lucide-react'

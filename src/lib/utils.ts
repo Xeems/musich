@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from 'clsx'
+import { createHash } from 'crypto'
 import { parseBuffer } from 'music-metadata'
 import { twMerge } from 'tailwind-merge'
 
@@ -20,5 +21,14 @@ export async function getAudioMetadata(source: Buffer | ArrayBuffer) {
         source instanceof Buffer ? source : Buffer.from(source as ArrayBuffer)
     const metadata = await parseBuffer(buffer, 'audio/mpeg')
     return metadata
+}
+
+export function sha256Base64Url(input: string) {
+    return createHash('sha256')
+        .update(input)
+        .digest('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '')
 }
 

@@ -10,6 +10,7 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
+import { oAuthProviders, oAuthProvidersType } from '@/authentification/consts'
 
 export const UserTable = pgTable('user_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
@@ -24,7 +25,7 @@ export const UserTable = pgTable('user_table', {
         .$onUpdate(() => new Date()),
 })
 
-export const oAuthProviderEnum = pgEnum('oauth_provides', ['google'])
+export const oAuthProviderEnum = pgEnum('oauth_provides', oAuthProviders)
 
 export const OAuthAccountTable = pgTable(
     'oAuth_account_table',
