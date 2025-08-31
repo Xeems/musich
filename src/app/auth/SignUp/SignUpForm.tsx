@@ -26,6 +26,7 @@ export default function SignUpForm() {
             username: '',
             firstName: '',
             lastName: '',
+            email: '',
             password: '',
             passwordConfirm: '',
         },
@@ -91,6 +92,21 @@ export default function SignUpForm() {
                         )}
                     />
                 </div>
+
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Your Email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
                 <FormField
                     control={form.control}
                     name="password"
