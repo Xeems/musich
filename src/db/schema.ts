@@ -10,11 +10,11 @@ import {
     uuid,
     varchar,
 } from 'drizzle-orm/pg-core'
-import { oAuthProviders, oAuthProvidersType } from '@/authentification/consts'
+import { oAuthProviders } from '@/authentification/const'
 
 export const UserTable = pgTable('user_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
-    name: varchar({ length: 255 }).notNull(),
+    username: varchar({ length: 255 }).notNull(),
     email: varchar({ length: 255 }).unique().notNull(),
     password: text(),
     salt: text(),

@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/db'
-import { oAuthProviders, oAuthProvidersType } from '@/authentification/consts'
+import { oAuthProviders, oAuthProvidersType } from '@/authentification/const'
 import { OAuthAccountTable, UserTable } from '@/db/schema'
 
 export async function GET(

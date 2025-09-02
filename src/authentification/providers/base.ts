@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import crypto from 'crypto'
-import { oAuthProvidersType } from '../consts'
+import { oAuthProvidersType } from '../const'
 import createGoogleOAuthClient from './google'
 import { ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'

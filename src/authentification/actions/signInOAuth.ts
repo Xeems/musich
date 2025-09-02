@@ -1,6 +1,6 @@
 'use server'
 
-import { oAuthProvidersType } from '@/authentification/consts'
+import { oAuthProvidersType } from '@/authentification/const'
 import { getOAuthClient } from '../providers/base'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'

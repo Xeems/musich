@@ -19,25 +19,30 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GoogleIcon } from '../../../../public/GoogleIcon'
 import signInOAuth from '@/authentification/actions/signInOAuth'
+import signUp from '@/authentification/actions/signUp'
 
 export default function SignUpForm() {
     const form = useForm<z.infer<typeof newUserSchema>>({
         resolver: zodResolver(newUserSchema),
         defaultValues: {
             username: '',
-            firstName: '',
-            lastName: '',
             email: '',
             password: '',
             passwordConfirm: '',
         },
     })
 
+    const [password, passwordConfirm] = form.watch([
+        'password',
+        'passwordConfirm',
+    ])
+
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
     async function onSubmit(values: z.infer<typeof newUserSchema>) {
-        console.log(values)
+        const data = await signUp(values)
+        console.log(data)
     }
     return (
         <Form {...form}>
@@ -58,41 +63,6 @@ export default function SignUpForm() {
                         </FormItem>
                     )}
                 />
-                <div className="flex flex-row items-start justify-between gap-x-4 py-0">
-                    <FormField
-                        control={form.control}
-                        name="firstName"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>First Name</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        placeholder="Your First Name"
-                                        {...field}
-                                    />
-                                </FormControl>
-
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="lastName"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Last Name</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        placeholder="Your Last Name"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                </div>
 
                 <FormField
                     control={form.control}
