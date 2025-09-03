@@ -31,6 +31,5 @@ export default async function createUserSession(userId: string) {
         })
     } catch (e) {
         console.log(e)
-        return undefined
     }
 }

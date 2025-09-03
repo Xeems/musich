@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui/separator'
 import { GoogleIcon } from '../../../../public/GoogleIcon'
 import signInOAuth from '@/authentification/actions/signInOAuth'
 import signUp from '@/authentification/actions/signUp'
+import { d } from 'drizzle-kit/index-BAUrj6Ib'
 
 export default function SignUpForm() {
     const form = useForm<z.infer<typeof newUserSchema>>({
@@ -32,17 +33,12 @@ export default function SignUpForm() {
         },
     })
 
-    const [password, passwordConfirm] = form.watch([
-        'password',
-        'passwordConfirm',
-    ])
-
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
     async function onSubmit(values: z.infer<typeof newUserSchema>) {
         const data = await signUp(values)
-        console.log(data)
+        if (data.success === false) console.log(data.message)
     }
     return (
         <Form {...form}>

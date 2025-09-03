@@ -1,4 +1,4 @@
-import z, { email } from 'zod'
+import z from 'zod'
 
 export const trackUploadSchema = z.object({
     name: z
@@ -43,7 +43,7 @@ export const newUserSchema = z
             .max(255, 'Username must be no more than 255 characters')
             .nonempty(),
 
-        email: z.string().email().nonempty(),
+        email: z.email().nonempty(),
 
         password: z
             .string()
