@@ -14,21 +14,27 @@ export default async function signUp(
     data: z.infer<typeof newUserSchema>,
 ): Promise<ActionResultType> {
     try {
-        const userdata = await newUserSchema.safeParseAsync(data)
-        if (!userdata.data || userdata.error)
-            throw new Error('Invalid user data')
+        const parsed = await newUserSchema.safeParseAsync(data)
+        if (!parsed.data || parsed.error)
+            return {
+                success: false,
+                message: 'Invalid user data',
+            }
 
-        const user = userdata.data
+        const user = parsed.data
 
         const existingUser = await db.query.UserTable.findFirst({
             where: eq(UserTable.email, user.email),
         })
 
         if (existingUser != null)
-            throw new Error('Account already exists for this email')
+            return {
+                success: false,
+                message: 'Account already exists for this email',
+            }
 
         const salt = generateSalt()
-        const hashedPassword = await hashPassword(data.password, salt)
+        const hashedPassword = await hashPassword(user.password, salt)
 
         const newUser = await db.transaction(async (tx) => {
             const [newUser] = await tx
@@ -57,8 +63,8 @@ export default async function signUp(
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message)
-            return { success: false, message: error.message }
         }
+
         return { success: false, message: 'Unknown error' }
     }
     redirect('/')

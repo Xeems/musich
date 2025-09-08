@@ -57,3 +57,13 @@ export const newUserSchema = z
         message: 'Passwords do not match',
         path: ['passwordConfirm'],
     })
+
+export const userSignInSchema = z.object({
+    email: z.email().nonempty(),
+
+    password: z
+        .string()
+        .min(5, 'Password must be at least 5 characters long')
+        .max(255, 'Password must be no more than 255 characters')
+        .nonempty(),
+})
