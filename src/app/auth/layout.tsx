@@ -4,10 +4,10 @@ export default function AuthLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex h-full w-full flex-col items-center justify-center">
-            <div className="flex w-full max-w-1/4 flex-col gap-4">
-                {children}
-            </div>
+        <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden">
+            <div className="absolute inset-0 -z-10 bg-slate-100/50 backdrop-blur-lg" />
+
+            <div className="relative w-full max-w-md">{children}</div>
         </div>
     )
 }

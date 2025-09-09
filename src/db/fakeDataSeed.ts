@@ -9,10 +9,12 @@ export async function seedTracks() {
         imageName: faker.image.urlLoremFlickr({ category: 'music' }),
         fileName: `${faker.word.words(2).replace(/\s+/g, '_')}.mp3`,
         createdAt: new Date(),
+        duration: 180,
+        trackDir: '/fake/tracks',
     }))
 
     try {
-        await db.insert(tracks).values(tracks)
+        await db.insert(TrackTable).values(tracks)
         console.log('✅ Inserted 100 fake tracks')
     } catch (error) {
         console.error('❌ Failed to insert tracks:', error)

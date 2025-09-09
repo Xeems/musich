@@ -23,7 +23,7 @@ export default async function createUserSession(userId: string) {
         if (!session) throw new Error('Session undefined')
 
         const cookieStore = await cookies()
-        cookieStore.set('COOKIE_SESSION', session.id, {
+        cookieStore.set('SESSION_ID_COOKIE', session.id, {
             secure: true,
             httpOnly: true,
             sameSite: 'lax',

@@ -1,6 +1,6 @@
-
 module.exports = {
-    extends: ['next', 'prettier', 'plugin:prettier/recommended'],
+    extends: ['prettier', 'plugin:prettier/recommended'],
+
     ignorePatterns: ['.config/*'],
     env: {
         browser: true,
@@ -18,7 +18,9 @@ module.exports = {
                 ecmaVersion: 'latest',
                 sourceType: 'module',
             },
+            plugins: ['react-hooks'],
             rules: {
+                'react-hooks/exhaustive-deps': 'off',
                 'simple-import-sort/imports': [
                     'error',
                     {

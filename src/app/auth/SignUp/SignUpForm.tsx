@@ -14,12 +14,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { newUserSchema } from '../../../../@types/validators'
-import {
-    AlertCircleIcon,
-    EyeIcon,
-    EyeOffIcon,
-    UserPlus2Icon,
-} from 'lucide-react'
+import { AlertCircleIcon, EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GoogleIcon } from '../../../../public/GoogleIcon'

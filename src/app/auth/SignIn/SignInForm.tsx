@@ -20,13 +20,14 @@ import z from 'zod'
 import { signInSchema } from '../../../../@types/validators'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
-import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { AlertCircleIcon, EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import signInOAuth from '@/authentification/actions/signInOAuth'
 import { GoogleIcon } from '../../../../public/GoogleIcon'
 import Link from 'next/link'
 import signInCredentials from '@/authentification/actions/signInCredentials'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export default function SignInForm() {
     const form = useForm<z.infer<typeof signInSchema>>({
@@ -41,7 +42,9 @@ export default function SignInForm() {
 
     async function onSubmit(values: z.infer<typeof signInSchema>) {
         const data = await signInCredentials(values)
-        console.log(data)
+        if (data.success === false) {
+            form.setError('root', { message: data.message })
+        }
     }
 
     return (
@@ -114,6 +117,15 @@ export default function SignInForm() {
                         )}
                     />
                     <Button type="submit">Sign In</Button>
+                    {form.formState.errors.root && (
+                        <Alert variant="destructive">
+                            <AlertCircleIcon />
+                            <AlertTitle>Unable to Sign In.</AlertTitle>
+                            <AlertDescription>
+                                <p>{form.formState.errors.root.message}</p>
+                            </AlertDescription>
+                        </Alert>
+                    )}
                 </form>
                 <div className="flex w-full flex-row items-center justify-center gap-x-4 overflow-hidden px-1">
                     <Separator /> <span>or</span>
