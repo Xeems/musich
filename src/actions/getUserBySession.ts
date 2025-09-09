@@ -34,7 +34,7 @@ export default async function getUserBySession(): Promise<
             return undefined
         }
 
-        return session.user
+        return session.userId
     } catch (e) {
         console.log(e)
         return undefined

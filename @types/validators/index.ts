@@ -58,7 +58,7 @@ export const newUserSchema = z
         path: ['passwordConfirm'],
     })
 
-export const userSignInSchema = z.object({
+export const signInSchema = z.object({
     email: z.email().nonempty(),
 
     password: z

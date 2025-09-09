@@ -14,13 +14,23 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { newUserSchema } from '../../../../@types/validators'
-import { AlertCircleIcon, EyeIcon, EyeOffIcon } from 'lucide-react'
+import {
+    AlertCircleIcon,
+    EyeIcon,
+    EyeOffIcon,
+    UserPlus2Icon,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GoogleIcon } from '../../../../public/GoogleIcon'
 import signInOAuth from '@/authentification/actions/signInOAuth'
 import signUp from '@/authentification/actions/signUp'
-import { Card } from '@/components/ui/card'
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Link from 'next/link'
 
@@ -50,6 +60,15 @@ export default function SignUpForm() {
     return (
         <Form {...form}>
             <Card className="rounded-md border p-4">
+                <CardHeader className="space-y-1">
+                    <CardTitle className="text-center text-2xl font-bold">
+                        Sign Up
+                    </CardTitle>
+                    <CardDescription className="text-center">
+                        Create a new account to listen to your favorite tracks
+                        and artists
+                    </CardDescription>
+                </CardHeader>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-y-4">

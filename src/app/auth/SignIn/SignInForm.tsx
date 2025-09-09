@@ -1,6 +1,11 @@
 'use client'
 
-import { Card } from '@/components/ui/card'
+import {
+    Card,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 import {
     Form,
     FormControl,
@@ -12,7 +17,7 @@ import {
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
-import { userSignInSchema } from '../../../../@types/validators'
+import { signInSchema } from '../../../../@types/validators'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
@@ -21,10 +26,11 @@ import { Separator } from '@/components/ui/separator'
 import signInOAuth from '@/authentification/actions/signInOAuth'
 import { GoogleIcon } from '../../../../public/GoogleIcon'
 import Link from 'next/link'
+import signInCredentials from '@/authentification/actions/signInCredentials'
 
 export default function SignInForm() {
-    const form = useForm<z.infer<typeof userSignInSchema>>({
-        resolver: zodResolver(userSignInSchema),
+    const form = useForm<z.infer<typeof signInSchema>>({
+        resolver: zodResolver(signInSchema),
         defaultValues: {
             email: '',
             password: '',
@@ -33,11 +39,22 @@ export default function SignInForm() {
     const [showPassword, setShowPassword] = useState(false)
     const isSubmitting = form.formState.isSubmitting
 
-    async function onSubmit(values: z.infer<typeof userSignInSchema>) {}
+    async function onSubmit(values: z.infer<typeof signInSchema>) {
+        const data = await signInCredentials(values)
+        console.log(data)
+    }
 
     return (
         <Form {...form}>
             <Card className="rounded-md border p-4">
+                <CardHeader className="space-y-1">
+                    <CardTitle className="text-center text-2xl font-bold">
+                        Sign In
+                    </CardTitle>
+                    <CardDescription className="text-center">
+                        Enter your email and password to access your account
+                    </CardDescription>
+                </CardHeader>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="flex flex-col gap-y-4">
