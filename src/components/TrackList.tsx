@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { TrackType } from '../../@types/track'
 import TrackCard from './TrackCard'
-import { usePlayerStore } from '@/store'
+import { usePlayerStore } from '@/store/playerStore'
 import { useInfiniteScroll } from '@/hooks/useInfinteScroll'
 
 const LIMIT = 20

@@ -11,7 +11,7 @@ export default async function getUserBySession(): Promise<
 > {
     try {
         const cookieStore = await cookies()
-        const sessionId = cookieStore.get('COOKIE_SESSION')?.value
+        const sessionId = cookieStore.get('SESSION_ID_COOKIE')?.value
         if (!sessionId) return undefined
 
         const session = await db.query.UserSessionTable.findFirst({
@@ -34,9 +34,15 @@ export default async function getUserBySession(): Promise<
             return undefined
         }
 
-        return session.userId
+        const minimalUser: MinimalUserType = {
+            id: session.user.id,
+            email: session.user.email,
+            username: session.user.username,
+        }
+
+        return minimalUser
     } catch (e) {
-        console.log(e)
+        console.error(e)
         return undefined
     }
 }

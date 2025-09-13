@@ -1,6 +1,9 @@
 export type UserType = {
     id: string
-    name: string
+    username: string
+    email: string
+    createdAt: Date
+    updatedAt: Date
 }
 
-export type MinimalUserType = Pick<UserType, 'id' | 'name'>
+export type MinimalUserType = Pick<UserType, 'id' | 'username' | 'email'>

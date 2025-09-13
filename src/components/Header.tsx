@@ -1,5 +1,5 @@
 import React from 'react'
-import UserInfoCard from './UserInfoCard'
+import UserCard from './UserCard'
 import { MusicIcon } from 'lucide-react'
 import MainNav from './MainNav'
 
@@ -24,7 +24,7 @@ export default function Header() {
 
                 <MainNav />
 
-                <UserInfoCard />
+                <UserCard />
             </div>
         </header>
     )

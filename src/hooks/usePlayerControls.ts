@@ -1,4 +1,4 @@
-import { usePlayerStore } from '@/store'
+import { usePlayerStore } from '@/store/playerStore'
 import { RefObject, useEffect, useState } from 'react'
 
 export function usePlayerControls(

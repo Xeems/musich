@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { usePlayerStore } from '@/store'
+import { usePlayerStore } from '@/store/playerStore'
 import { RefObject } from 'react'
 
 type PlayModeType = 'queue' | 'random' | 'loop'

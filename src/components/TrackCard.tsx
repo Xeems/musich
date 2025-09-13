@@ -11,7 +11,7 @@ import {
 import { TrackType } from '../../@types/track'
 import { milSecToMins } from '@/lib/utils'
 import TrackCover from './TrackCover'
-import { usePlayerStore } from '@/store'
+import { usePlayerStore } from '@/store/playerStore'
 
 type Props = {
     track: TrackType
