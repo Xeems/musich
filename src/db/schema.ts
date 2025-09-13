@@ -76,7 +76,7 @@ export const PlaylistTable = pgTable('playlist_table', {
     type: PlaylistTypeEnum(),
     creatorId: uuid()
         .notNull()
-        .references(() => UserTable.id),
+        .references(() => UserTable.id, { onDelete: 'cascade' }),
 })
 
 export const PlaylistTrackTable = pgTable('playlist_tracks_table', {

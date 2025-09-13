@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/db'
 import { oAuthProviders, oAuthProvidersType } from '@/authentification/const'
-import { OAuthAccountTable, UserTable } from '@/db/schema'
+import { OAuthAccountTable, PlaylistTable, UserTable } from '@/db/schema'
 
 export async function GET(
     request: NextRequest,
@@ -61,11 +61,16 @@ function connectUserToAccount(
             const [newUser] = await trx
                 .insert(UserTable)
                 .values({
+                    username: name,
                     email: email,
-                    name: name,
                 })
-                .returning({ id: UserTable.id })
+                .returning()
             user = newUser
+
+            await trx.insert(PlaylistTable).values({
+                creatorId: newUser.id,
+                name: `${newUser.username}'s tracks`,
+            })
         }
 
         await trx
