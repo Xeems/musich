@@ -30,7 +30,6 @@ export default function TrackLikes({ track }: Props) {
         try {
             const result = await toggleTrackLike(track.id)
             if (!result.success) {
-                // откатываем, если ошибка
                 startTransition(() => {
                     setOptimistic({
                         isLiked: optimistic.isLiked,
