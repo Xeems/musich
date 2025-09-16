@@ -6,4 +6,5 @@ export type TrackType = {
     createdAt: Date | null
     duration: number
     trackDir: string | undefined
+    likesCount: number
 }

@@ -12,6 +12,9 @@ import { TrackType } from '../../@types/track'
 import { milSecToMins } from '@/lib/utils'
 import TrackCover from './TrackCover'
 import { usePlayerStore } from '@/store/playerStore'
+import { HeartIcon } from 'lucide-react'
+import { Button } from './ui/button'
+import { toggleTrackLike } from '@/actions/toggleTrackLike'
 
 type Props = {
     track: TrackType
@@ -31,6 +34,10 @@ export default function TrackCardInner({ track, onClick }: Props) {
         if (onClick) return onClick()
         setCurrentTrack(track)
     }, [onClick, setCurrentTrack, track])
+
+    const handleLikeToggle = () => {
+        toggleTrackLike(track.id)
+    }
 
     return (
         <Card
@@ -60,7 +67,11 @@ export default function TrackCardInner({ track, onClick }: Props) {
 
                 {isCurrentTrack && milSecToMins(currentTrackTime)}
 
-                <div className="w-full max-w-[160px]"></div>
+                <div className="w-full max-w-[160px]">
+                    <Button onClick={handleLikeToggle}>
+                        <HeartIcon /> {track.likesCount}
+                    </Button>
+                </div>
             </div>
         </Card>
     )

@@ -1,17 +1,19 @@
 import getUserPlaylists from '@/actions/getUserPlaylists'
 import React from 'react'
-import { Card } from './ui/card'
+import PlaylistCard from './PlaylistCard'
+import { PlaylistType } from '../../@types/playlist'
 
 // to-do find a better name for component
 export default async function PlaylistList() {
-    const playlists = await getUserPlaylists()
+    const response = await getUserPlaylists()
+    const playlists: PlaylistType[] =
+        response.success && response.data ? response.data : []
 
-    console.log(playlists)
     return (
         <div>
             {Array.isArray(playlists) &&
                 playlists.map((playlist) => (
-                    <Card key={playlist.id}>{playlist.name}</Card>
+                    <PlaylistCard key={playlist.id} playlist={playlist} />
                 ))}
         </div>
     )

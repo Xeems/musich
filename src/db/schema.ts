@@ -73,7 +73,7 @@ export const PlaylistTable = pgTable('playlist_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
     name: varchar({ length: 255 }).notNull(),
     imageName: varchar({ length: 225 }),
-    type: PlaylistTypeEnum(),
+    type: PlaylistTypeEnum().default('custom').notNull(),
     creatorId: uuid()
         .notNull()
         .references(() => UserTable.id, { onDelete: 'cascade' }),
