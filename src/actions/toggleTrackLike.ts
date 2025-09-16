@@ -4,13 +4,11 @@ import { db } from '@/db'
 import { eq, and } from 'drizzle-orm'
 import { PlaylistTable, PlaylistTrackTable } from '@/db/schema'
 import getUserBySession from './getUserBySession'
-import { MinimalActionResultType } from '../../@types/actionResult'
+import { LikeResult } from '../../@types/actionResult'
 
-export async function toggleTrackLike(
-    trackId: string,
-): Promise<MinimalActionResultType> {
+export async function toggleTrackLike(trackId: string): Promise<LikeResult> {
     const user = await getUserBySession()
-    if (!user?.id) return { success: false }
+    if (!user?.id) return { success: false, message: 'User not found' }
 
     const [defaultPlaylist] = await db
         .select()
@@ -22,10 +20,8 @@ export async function toggleTrackLike(
             ),
         )
 
-    console.log(defaultPlaylist)
-
     if (!defaultPlaylist) {
-        return { success: false }
+        return { success: false, message: 'User playlist not found' }
     }
 
     const [existing] = await db
@@ -47,12 +43,12 @@ export async function toggleTrackLike(
                     eq(PlaylistTrackTable.trackId, trackId),
                 ),
             )
-        return { success: true }
+        return { success: true, isLiked: false }
     } else {
         await db.insert(PlaylistTrackTable).values({
             playlistId: defaultPlaylist.id,
             trackId,
         })
-        return { success: true }
+        return { success: true, isLiked: true }
     }
 }

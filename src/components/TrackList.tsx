@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { TrackType } from '../../@types/track'
-import TrackCard from './TrackCard'
+import TrackCard from './track-card/TrackCard'
 import { usePlayerStore } from '@/store/playerStore'
 import { useInfiniteScroll } from '@/hooks/useInfinteScroll'
 

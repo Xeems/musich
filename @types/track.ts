@@ -7,4 +7,5 @@ export type TrackType = {
     duration: number
     trackDir: string | undefined
     likesCount: number
+    isLikedByCurrentUser: boolean
 }

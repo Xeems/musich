@@ -5,3 +5,7 @@ export type ActionResultType<T> =
 export type MinimalActionResultType = {
     success: boolean
 }
+
+export type LikeResult =
+    | { success: true; isLiked: boolean }
+    | { success: false; message: string }
