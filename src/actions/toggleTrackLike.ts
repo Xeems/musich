@@ -1,54 +1,86 @@
 'use server'
 
 import { db } from '@/db'
-import { eq, and } from 'drizzle-orm'
+import { eq, and, sql } from 'drizzle-orm'
 import { PlaylistTable, PlaylistTrackTable } from '@/db/schema'
 import getUserBySession from './getUserBySession'
 import { LikeResult } from '../../@types/actionResult'
 
 export async function toggleTrackLike(trackId: string): Promise<LikeResult> {
-    const user = await getUserBySession()
-    if (!user?.id) return { success: false, message: 'User not found' }
+    try {
+        const user = await getUserBySession()
+        if (!user?.id) return { success: false, message: 'User not found' }
 
-    const [defaultPlaylist] = await db
-        .select()
-        .from(PlaylistTable)
-        .where(
-            and(
-                eq(PlaylistTable.creatorId, user.id),
-                eq(PlaylistTable.type, 'default'),
-            ),
-        )
+        let isLiked: boolean
 
-    if (!defaultPlaylist) {
-        return { success: false, message: 'User playlist not found' }
-    }
+        const data = await db.transaction(async (tx) => {
+            const [row] = await tx
+                .select({
+                    playlistId: PlaylistTable.id,
+                    existingTrackId: PlaylistTrackTable.trackId,
+                })
+                .from(PlaylistTable)
+                .leftJoin(
+                    PlaylistTrackTable,
+                    and(
+                        eq(PlaylistTrackTable.playlistId, PlaylistTable.id),
+                        eq(PlaylistTrackTable.trackId, trackId),
+                    ),
+                )
+                .where(
+                    and(
+                        eq(PlaylistTable.creatorId, user.id),
+                        eq(PlaylistTable.type, 'default'),
+                    ),
+                )
 
-    const [existing] = await db
-        .select()
-        .from(PlaylistTrackTable)
-        .where(
-            and(
-                eq(PlaylistTrackTable.playlistId, defaultPlaylist.id),
-                eq(PlaylistTrackTable.trackId, trackId),
-            ),
-        )
+            if (row.existingTrackId) {
+                await tx
+                    .delete(PlaylistTrackTable)
+                    .where(
+                        and(
+                            eq(PlaylistTrackTable.playlistId, row.playlistId),
+                            eq(PlaylistTrackTable.trackId, trackId),
+                        ),
+                    )
+                isLiked = false
+            } else {
+                await tx.insert(PlaylistTrackTable).values({
+                    playlistId: row.playlistId,
+                    trackId,
+                })
+                isLiked = true
+            }
 
-    if (existing) {
-        await db
-            .delete(PlaylistTrackTable)
-            .where(
-                and(
-                    eq(PlaylistTrackTable.playlistId, defaultPlaylist.id),
-                    eq(PlaylistTrackTable.trackId, trackId),
-                ),
-            )
-        return { success: true, isLiked: false }
-    } else {
-        await db.insert(PlaylistTrackTable).values({
-            playlistId: defaultPlaylist.id,
-            trackId,
+            const [{ likesCount }] = await tx
+                .select({
+                    likesCount: sql<number>`COUNT(*)`,
+                })
+                .from(PlaylistTrackTable)
+                .leftJoin(
+                    PlaylistTable,
+                    eq(PlaylistTable.id, PlaylistTrackTable.playlistId),
+                )
+                .where(
+                    and(
+                        eq(PlaylistTrackTable.trackId, trackId),
+                        eq(PlaylistTable.type, 'default'),
+                    ),
+                )
+
+            return {
+                isLiked,
+                likesCount,
+            }
         })
-        return { success: true, isLiked: true }
+
+        return {
+            success: true,
+            isLiked: data.isLiked,
+            likesCount: data.likesCount,
+        }
+    } catch (error) {
+        console.error(error)
+        return { success: false, message: 'Error' }
     }
 }

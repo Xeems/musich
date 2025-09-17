@@ -7,5 +7,5 @@ export type MinimalActionResultType = {
 }
 
 export type LikeResult =
-    | { success: true; isLiked: boolean }
+    | { success: true; isLiked: boolean; likesCount: number }
     | { success: false; message: string }
