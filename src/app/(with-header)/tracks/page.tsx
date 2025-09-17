@@ -5,6 +5,7 @@ import getUserBySession from '@/actions/getUserBySession'
 
 export default async function TracksPage() {
     const user = await getUserBySession()
+
     return (
         <div className="flex h-full w-full flex-col items-center">
             <div className="flex w-full flex-col md:px-20 lg:w-1/2">
