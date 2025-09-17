@@ -1,10 +1,10 @@
 import React from 'react'
 import TrackUploadForm from './TrackUploadDialog'
 import TrackList from '@/components/TrackList'
-import getUserBySession from '@/actions/getUserBySession'
+import getCurrentUserTracks from '@/actions/getCurrentUserTracks'
 
 export default async function TracksPage() {
-    const user = await getUserBySession()
+    //const user = await getUserBySession()
 
     return (
         <div className="flex h-full w-full flex-col items-center">
@@ -13,6 +13,7 @@ export default async function TracksPage() {
                 {/* <PlaylistList /> */}
                 <div className="">
                     <TrackUploadForm />
+                    <TrackList fetchDataAction={getCurrentUserTracks} />
                 </div>
             </div>
         </div>
