@@ -9,13 +9,17 @@ import {
     DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
-import { EllipsisVerticalIcon } from 'lucide-react'
+import { EllipsisVerticalIcon, Trash2Icon } from 'lucide-react'
 
 export default function TrackCardMenu() {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
-                <Button>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    variant={'ghost'}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                    }}>
                     <EllipsisVerticalIcon />
                 </Button>
             </DropdownMenuTrigger>
@@ -25,7 +29,10 @@ export default function TrackCardMenu() {
                     <DropdownMenuItem>in-progress</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Delete from by library</DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Trash2Icon className="text-destructive" />
+                    Delete from мy library
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

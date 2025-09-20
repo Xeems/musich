@@ -1,6 +1,6 @@
 import React from 'react'
 import TrackUploadForm from './TrackUploadDialog'
-import TrackList from '@/components/TrackList'
+import TrackList from '@/components/track-list/TrackList'
 
 export default async function TracksPage() {
     return (

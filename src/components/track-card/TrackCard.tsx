@@ -13,14 +13,19 @@ import { milSecToMins } from '@/lib/utils'
 import TrackCover from '../TrackCover'
 import { usePlayerStore } from '@/store/playerStore'
 import TrackLikes from './TrackLikes'
+import TrackCardMenu from './TrackCardMenu'
 
 type Props = {
     track: TrackType
     onClick?: () => void
-    displayOption: 'default' | 'userLibary'
+    displayOption?: 'default' | 'userLibary'
 }
 
-export default function TrackCard({ track, onClick }: Props) {
+export default function TrackCard({
+    track,
+    onClick,
+    displayOption = 'default',
+}: Props) {
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const isCurrentTrack = usePlayerStore(
         (s) => s.currentTrack?.id === track.id,
@@ -68,6 +73,7 @@ export default function TrackCard({ track, onClick }: Props) {
                 </div>
 
                 <TrackLikes track={track} />
+                <TrackCardMenu />
             </CardContent>
         </Card>
     )
