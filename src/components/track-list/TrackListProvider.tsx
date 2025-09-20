@@ -11,9 +11,11 @@ type Props = {
 }
 
 export default function TrackListProvider({ initialTracks, source }: Props) {
-    const { setSource } = useTracksStore()
+    const { setSource, setInitial } = useTracksStore()
 
     useEffect(() => {
+        if (Array.isArray(initialTracks)) setInitial(initialTracks)
+
         setSource(source)
     }, [source])
 

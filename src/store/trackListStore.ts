@@ -11,7 +11,7 @@ type State = {
     hasMore: boolean
     loading: boolean
 
-    setInitial?: (tracks: TrackType[], source: string, limit?: number) => void
+    setInitial: (tracks: TrackType[]) => void
     loadMore: () => Promise<void>
     setSource: (url: string, limit?: number) => void
 }
@@ -20,14 +20,14 @@ export const useTracksStore = create<State>((set, get) => ({
     tracks: [],
     source: '',
     offset: 0,
-    limit: 1,
+    limit: 20,
     hasMore: true,
     loading: false,
 
-    setInitial: (tracks, source, limit = 20) =>
+    setInitial: (tracks, limit = 20) =>
         set({
             tracks,
-            source,
+            //source,
             offset: tracks.length || 0,
             limit,
             hasMore: tracks.length === limit,

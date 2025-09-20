@@ -1,5 +1,3 @@
-'use client'
-
 import { useInfiniteScroll } from '@/hooks/useInfinteScroll'
 import React, { useRef } from 'react'
 
