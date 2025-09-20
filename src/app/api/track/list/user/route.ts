@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { TrackType } from '../../../../../@types/track'
 import { db } from '@/db'
 import { PlaylistTable, PlaylistTrackTable, TrackTable } from '@/db/schema'
-import { desc, eq, sql } from 'drizzle-orm'
+import { and, desc, eq, sql } from 'drizzle-orm'
 import getUserBySession from '@/actions/getUserBySession'
+import { TrackType } from '../../../../../../@types/track'
 
 export async function GET(req: NextRequest) {
     try {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         const offset = Number(searchParams.get('offset') || '0')
         const limit = Number(searchParams.get('limit') || '20')
         const user = await getUserBySession()
-        const userId = user?.id ?? null
+        if (!user?.id) throw new Error('User not found')
 
         const data = await db
             .select({
@@ -23,34 +23,27 @@ export async function GET(req: NextRequest) {
                 duration: TrackTable.duration,
                 trackDir: TrackTable.trackDir,
                 likesCount: sql<number>`
-                            COUNT(
-                                CASE 
-                                    WHEN ${PlaylistTable.type} = 'default' 
-                                    THEN ${PlaylistTrackTable.trackId} 
-                                END
-                            )
-                        `,
-                isLikedByCurrentUser: userId
-                    ? sql<boolean>`
-                        BOOL_OR(
-                            CASE 
-                                WHEN ${PlaylistTable.type} = 'default'
-                                  AND ${PlaylistTable.creatorId} = ${userId}
-                                THEN TRUE
-                                ELSE FALSE
-                            END
-                        )
-                    `
-                    : sql<boolean>`FALSE`,
+            COUNT(
+                CASE 
+                    WHEN ${PlaylistTable.type} = 'default' 
+                    THEN ${PlaylistTrackTable.trackId} 
+                END
+            )
+        `,
+                isLikedByCurrentUser: sql<boolean>`TRUE`,
             })
             .from(TrackTable)
-            .leftJoin(
+            .innerJoin(
                 PlaylistTrackTable,
                 eq(TrackTable.id, PlaylistTrackTable.trackId),
             )
-            .leftJoin(
+            .innerJoin(
                 PlaylistTable,
-                eq(PlaylistTable.id, PlaylistTrackTable.playlistId),
+                and(
+                    eq(PlaylistTable.id, PlaylistTrackTable.playlistId),
+                    eq(PlaylistTable.type, 'default'),
+                    eq(PlaylistTable.creatorId, user.id),
+                ),
             )
             .groupBy(TrackTable.id)
             .orderBy(desc(TrackTable.createdAt))

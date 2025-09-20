@@ -5,18 +5,14 @@ import { TrackType } from '../../@types/track'
 import TrackCard from './track-card/TrackCard'
 import { usePlayerStore } from '@/store/playerStore'
 import { useInfiniteScroll } from '@/hooks/useInfinteScroll'
-import { ActionResultType } from '../../@types/actionResult'
 
 const LIMIT = 20
 
 type TrackListProps = {
-    fetchDataAction: (
-        offset: number,
-        limit: number,
-    ) => Awaited<ActionResultType<TrackType[]>>
+    fetchEndpoint: string
 }
 
-export default function TrackList({ fetchDataAction }: TrackListProps) {
+export default function TrackList({ fetchEndpoint }: TrackListProps) {
     const [tracks, setTracks] = useState<TrackType[]>([])
     const [hasMore, setHasMore] = useState(true)
     const observerRef = useRef<HTMLDivElement | null>(null)
@@ -27,20 +23,16 @@ export default function TrackList({ fetchDataAction }: TrackListProps) {
     const loadTracks = useCallback(async () => {
         try {
             const offset = tracks.length
-            const res = await fetchDataAction(offset, LIMIT)
-
-            if (res.success === true) {
-                if (res.data?.length === 0) {
-                    setHasMore(false)
-                    return
-                }
-
-                setTracks((prev) => [...prev, ...res.data])
-            }
+            const res = await fetch(
+                `${fetchEndpoint}?offset=${offset}&limit=${LIMIT}`,
+            )
+            if (!res.ok) throw new Error('Failed to fetch tracks')
+            const data: TrackType[] = await res.json()
+            setTracks((prev) => [...prev, ...data])
         } catch (err) {
             console.error('loadTracks error', err)
         }
-    }, [tracks])
+    }, [tracks.length, fetchEndpoint])
 
     useInfiniteScroll({
         targetRef: observerRef,

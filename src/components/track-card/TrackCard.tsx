@@ -17,9 +17,10 @@ import TrackLikes from './TrackLikes'
 type Props = {
     track: TrackType
     onClick?: () => void
+    displayOption: 'default' | 'userLibary'
 }
 
-export default function TrackCardInner({ track, onClick }: Props) {
+export default function TrackCard({ track, onClick }: Props) {
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const isCurrentTrack = usePlayerStore(
         (s) => s.currentTrack?.id === track.id,
@@ -54,14 +55,20 @@ export default function TrackCardInner({ track, onClick }: Props) {
                 <CardDescription>{track.author}</CardDescription>
             </CardHeader>
 
-            <div className="flex flex-1 flex-col items-end justify-center gap-2">
-                <CardContent className="flex items-center">
-                    <span className="mr-4">{milSecToMins(track.duration)}</span>
-                </CardContent>
+            <CardContent className="flex flex-row items-center justify-center gap-4">
+                <div className="flex flex-row gap-x-1">
+                    {isCurrentTrack && (
+                        <>
+                            <span>{milSecToMins(currentTrackTime)}</span>
+                            <span>/</span>
+                        </>
+                    )}
 
-                {isCurrentTrack && milSecToMins(currentTrackTime)}
-            </div>
-            <TrackLikes track={track} />
+                    <span>{milSecToMins(track.duration)}</span>
+                </div>
+
+                <TrackLikes track={track} />
+            </CardContent>
         </Card>
     )
 }
