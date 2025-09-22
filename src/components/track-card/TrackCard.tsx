@@ -17,7 +17,7 @@ import TrackCardMenu from './TrackCardMenu'
 
 type Props = {
     track: TrackType
-    onClick?: () => void
+    onClick?: (track: TrackType) => void
     displayOption?: 'default' | 'userLibary'
 }
 
@@ -32,7 +32,7 @@ function TrackCardBase({ track, onClick, displayOption = 'default' }: Props) {
     return (
         <Card
             tabIndex={0}
-            onClick={onClick}
+            onClick={() => onClick?.(track)}
             className="hover:bg-primary/10 focus:bg-primary/10 relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-3 shadow-none">
             {isCurrentTrack && (
                 <div
