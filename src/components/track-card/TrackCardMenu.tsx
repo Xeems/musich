@@ -15,11 +15,7 @@ export default function TrackCardMenu() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button
-                    variant={'ghost'}
-                    onClick={(e) => {
-                        e.stopPropagation()
-                    }}>
+                <Button variant={'ghost'} onClick={(e) => {}}>
                     <EllipsisVerticalIcon />
                 </Button>
             </DropdownMenuTrigger>

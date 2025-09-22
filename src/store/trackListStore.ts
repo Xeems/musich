@@ -11,58 +11,61 @@ type State = {
     hasMore: boolean
     loading: boolean
 
-    setInitial: (tracks: TrackType[]) => void
+    setInitial: (tracks: TrackType[], limit?: number) => void
     loadMore: () => Promise<void>
     setSource: (url: string, limit?: number) => void
 }
+
+const DEFFAULTLIMIT = 1 as const
 
 export const useTracksStore = create<State>((set, get) => ({
     tracks: [],
     source: '',
     offset: 0,
-    limit: 20,
+    limit: DEFFAULTLIMIT,
     hasMore: true,
     loading: false,
 
-    setInitial: (tracks, limit = 20) =>
-        set({
+    setInitial: (tracks, limit = DEFFAULTLIMIT) =>
+        set(() => ({
             tracks,
-            //source,
             offset: tracks.length || 0,
             limit,
             hasMore: tracks.length === limit,
-        }),
+        })),
 
     loadMore: async () => {
-        const { loading, hasMore, offset, limit, source, tracks } = get()
+        const { loading, hasMore, offset, limit, source } = get()
         if (loading || !hasMore) return
 
         set({ loading: true })
 
-        const res = await fetch(`${source}?offset=${offset}&limit=${limit}`)
-        const data: TrackType[] = await res.json()
+        try {
+            const res = await fetch(`${source}?offset=${offset}&limit=${limit}`)
+            const data: TrackType[] = await res.json()
 
-        if (data.length === 0) {
-            set({ hasMore: false })
-        } else {
-            set({
-                tracks: [...tracks, ...data],
-                offset: offset + data.length,
-                hasMore: data.length === limit,
-            })
+            if (data.length === 0) {
+                set({ hasMore: false })
+            } else {
+                set((state) => ({
+                    tracks: [...state.tracks, ...data],
+                    offset: state.offset + data.length,
+                    hasMore: data.length === state.limit,
+                }))
+            }
+        } finally {
+            set({ loading: false })
         }
-
-        set({ loading: false })
     },
 
-    setSource: (url, limit = 1) => {
-        set({
+    setSource: (url, limit = DEFFAULTLIMIT) => {
+        set(() => ({
             source: url,
             tracks: [],
             offset: 0,
             limit,
             hasMore: true,
-        })
+        }))
         get().loadMore()
     },
 }))

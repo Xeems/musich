@@ -1,10 +1,8 @@
 'use client'
 
-import { useCallback } from 'react'
 import { TrackType } from '../../../@types/track'
 import TrackCard from '../track-card/TrackCard'
 import { usePlayerStore } from '@/store/playerStore'
-
 import { useTracksStore } from '@/store/trackListStore'
 import InfiniteScrollTrigger from './infiniteScrollTrigger'
 
@@ -14,18 +12,10 @@ export default function TrackList() {
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const setQueue = usePlayerStore((s) => s.setQueue)
 
-    const handleLoadTracks = () => {
-        console.log('first')
-        loadMore()
+    function handlePlay(track: TrackType) {
+        setQueue(tracks)
+        setCurrentTrack(track)
     }
-
-    const handlePlay = useCallback(
-        (track: TrackType) => {
-            setQueue(tracks)
-            setCurrentTrack(track)
-        },
-        [tracks, setQueue, setCurrentTrack],
-    )
 
     return (
         <div className="flex w-full flex-col space-y-2">
@@ -39,7 +29,7 @@ export default function TrackList() {
 
             <InfiniteScrollTrigger
                 hasMore={hasMore}
-                onIntersect={handleLoadTracks}
+                onIntersect={() => loadMore()}
             />
         </div>
     )

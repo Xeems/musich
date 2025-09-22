@@ -20,7 +20,7 @@ export default function InfiniteScrollTrigger({ hasMore, onIntersect }: Props) {
     return (
         <>
             {hasMore && (
-                <div ref={observerRef} className="h-10 text-center">
+                <div ref={observerRef} className="text-center">
                     Loading...
                 </div>
             )}

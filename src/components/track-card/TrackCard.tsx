@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback } from 'react'
+import React, { memo, useCallback } from 'react'
 import {
     Card,
     CardContent,
@@ -21,12 +21,7 @@ type Props = {
     displayOption?: 'default' | 'userLibary'
 }
 
-export default function TrackCard({
-    track,
-    onClick,
-    displayOption = 'default',
-}: Props) {
-    const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
+function TrackCardBase({ track, onClick, displayOption = 'default' }: Props) {
     const isCurrentTrack = usePlayerStore(
         (s) => s.currentTrack?.id === track.id,
     )
@@ -34,15 +29,10 @@ export default function TrackCard({
         s.currentTrack?.id === track.id ? s.currentTrackTime : 0,
     )
 
-    const handleClick = useCallback(() => {
-        if (onClick) return onClick()
-        setCurrentTrack(track)
-    }, [onClick, setCurrentTrack, track])
-
     return (
         <Card
             tabIndex={0}
-            onClick={handleClick}
+            onClick={onClick}
             className="hover:bg-primary/10 focus:bg-primary/10 relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-3 shadow-none">
             {isCurrentTrack && (
                 <div
@@ -68,7 +58,6 @@ export default function TrackCard({
                             <span>/</span>
                         </>
                     )}
-
                     <span>{milSecToMins(track.duration)}</span>
                 </div>
 
@@ -78,3 +67,5 @@ export default function TrackCard({
         </Card>
     )
 }
+
+export default memo(TrackCardBase)

@@ -15,7 +15,6 @@ export default function TrackListProvider({ initialTracks, source }: Props) {
 
     useEffect(() => {
         if (Array.isArray(initialTracks)) setInitial(initialTracks)
-
         setSource(source)
     }, [source])
 

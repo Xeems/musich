@@ -26,7 +26,6 @@ export default function TrackLikes({ track }: Props) {
     return (
         <Button
             onClick={(e) => {
-                e.stopPropagation()
                 handleLikeToggle()
             }}
             variant={'outline'}>

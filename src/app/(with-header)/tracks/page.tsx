@@ -1,6 +1,6 @@
 import React from 'react'
 import TrackUploadForm from './TrackUploadDialog'
-import TrackList from '@/components/track-list/TrackList'
+import TrackListProvider from '@/components/track-list/TrackListProvider'
 
 export default async function TracksPage() {
     return (
@@ -10,7 +10,7 @@ export default async function TracksPage() {
                 {/* <PlaylistList /> */}
                 <div className="">
                     <TrackUploadForm />
-                    <TrackList fetchEndpoint="/api/track/list/user" />
+                    <TrackListProvider source="/api/track/list/user" />
                 </div>
             </div>
         </div>
