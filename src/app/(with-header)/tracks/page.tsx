@@ -10,7 +10,10 @@ export default async function TracksPage() {
                 {/* <PlaylistList /> */}
                 <div className="">
                     <TrackUploadForm />
-                    <TrackListProvider source="/api/track/list/user" />
+                    <TrackListProvider
+                        displayOption="userLibary"
+                        source="/api/track/list/user"
+                    />
                 </div>
             </div>
         </div>

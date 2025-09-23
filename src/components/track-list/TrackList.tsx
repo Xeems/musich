@@ -3,12 +3,12 @@
 import { TrackType } from '../../../@types/track'
 import TrackCard from '../track-card/TrackCard'
 import { usePlayerStore } from '@/store/playerStore'
-import { useTracksStore } from '@/store/trackListStore'
+import { useTrackListStore } from '@/store/trackListStore'
 import InfiniteScrollTrigger from './infiniteScrollTrigger'
 import { useCallback, useEffect, useRef } from 'react'
 
 export default function TrackList() {
-    const { tracks, hasMore, loadMore } = useTracksStore()
+    const { tracks, hasMore, loadMore } = useTrackListStore()
 
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const setQueue = usePlayerStore((s) => s.setQueue)
@@ -35,7 +35,9 @@ export default function TrackList() {
 
             <InfiniteScrollTrigger
                 hasMore={hasMore}
-                onIntersect={() => loadMore()}
+                onIntersect={() => {
+                    loadMore()
+                }}
             />
         </div>
     )

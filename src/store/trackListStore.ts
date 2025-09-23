@@ -3,6 +3,8 @@
 import { create } from 'zustand'
 import { TrackType } from '../../@types/track'
 
+export type TrackListDisplayOption = 'default' | 'userLibary'
+
 type State = {
     tracks: TrackType[]
     source: string
@@ -10,21 +12,24 @@ type State = {
     limit: number
     hasMore: boolean
     loading: boolean
+    displayOption?: TrackListDisplayOption
 
     setInitial: (tracks: TrackType[], limit?: number) => void
     loadMore: () => Promise<void>
-    setSource: (url: string, limit?: number) => void
+    setSource: (url: string) => void
+    setDisplayOption: (displauOption: TrackListDisplayOption) => void
 }
 
 const DEFFAULTLIMIT = 1 as const
 
-export const useTracksStore = create<State>((set, get) => ({
+export const useTrackListStore = create<State>((set, get) => ({
     tracks: [],
     source: '',
     offset: 0,
     limit: DEFFAULTLIMIT,
     hasMore: true,
     loading: false,
+    displayOption: 'default',
 
     setInitial: (tracks, limit = DEFFAULTLIMIT) =>
         set(() => ({
@@ -58,14 +63,16 @@ export const useTracksStore = create<State>((set, get) => ({
         }
     },
 
-    setSource: (url, limit = DEFFAULTLIMIT) => {
+    setSource: (url) => {
         set(() => ({
             source: url,
             tracks: [],
             offset: 0,
-            limit,
             hasMore: true,
         }))
         get().loadMore()
     },
+
+    setDisplayOption: (option: TrackListDisplayOption) =>
+        set({ displayOption: option }),
 }))

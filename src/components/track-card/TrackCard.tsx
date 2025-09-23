@@ -14,20 +14,22 @@ import TrackCover from '../TrackCover'
 import { usePlayerStore } from '@/store/playerStore'
 import TrackLikes from './TrackLikes'
 import TrackCardMenu from './TrackCardMenu'
+import { useTrackListStore } from '@/store/trackListStore'
 
 type Props = {
     track: TrackType
     onClick?: (track: TrackType) => void
-    displayOption?: 'default' | 'userLibary'
 }
 
-function TrackCardBase({ track, onClick, displayOption = 'default' }: Props) {
+function TrackCardBase({ track, onClick }: Props) {
     const isCurrentTrack = usePlayerStore(
         (s) => s.currentTrack?.id === track.id,
     )
     const currentTrackTime = usePlayerStore((s) =>
         s.currentTrack?.id === track.id ? s.currentTrackTime : 0,
     )
+
+    const displayOption = useTrackListStore((s) => s.displayOption)
 
     return (
         <Card
