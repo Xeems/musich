@@ -4,8 +4,8 @@ import { TrackType } from '../../../@types/track'
 import TrackCard from '../track-card/TrackCard'
 import { usePlayerStore } from '@/store/playerStore'
 import { useTrackListStore } from '@/store/trackListStore'
-import InfiniteScrollTrigger from './infiniteScrollTrigger'
 import { useCallback, useEffect, useRef } from 'react'
+import InfiniteScrollTrigger from './InfiniteScrollTrigger'
 
 export default function TrackList() {
     const { tracks, hasMore, loadMore } = useTrackListStore()

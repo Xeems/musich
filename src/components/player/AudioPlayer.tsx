@@ -11,36 +11,23 @@ import {
     Volume2Icon,
     VolumeXIcon,
 } from 'lucide-react'
-import { Button } from './ui/button'
-import { Slider } from './ui/slider'
-import { milSecToMins } from '@/lib/utils'
-import TrackCover from './TrackCover'
+import { Button } from '../ui/button'
+import { Slider } from '../ui/slider'
+import TrackCover from '../TrackCover'
 import { useRef } from 'react'
 import { usePlayerStore } from '@/store/playerStore'
-import { useAudioLoader } from '@/hooks/useAudioLoader'
 import { usePlayerControls } from '@/hooks/usePlayerControls'
-import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { useTrackQueue } from '@/hooks/useTrackQueue'
+import TrackTimeSlider from './TrackTimeSlider'
 
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement>(null)
 
     const currentTrack = usePlayerStore((s) => s.currentTrack)
 
-    const { bufferedPercent, duration } = useAudioLoader(currentTrack, audioRef)
-
-    const {
-        isPlaying,
-        currentTrackTime,
-        volume,
-        togglePlay,
-        sliderValue,
-        commitSeek,
-        startSeek,
-        setVolume,
-        isMuted,
-        setIsMuted,
-    } = usePlayerControls(audioRef)
+    const { isPlaying, volume, togglePlay, setVolume, isMuted, setIsMuted } =
+        usePlayerControls(audioRef)
 
     const { playNext, playPrev, togglePlayMode, playMode } =
         useTrackQueue(audioRef)
@@ -90,18 +77,8 @@ export default function AudioPlayer() {
                     {playMode === 'random' && <ShuffleIcon />}
                     {playMode === 'loop' && <Repeat1Icon />}
                 </Button>
-                <div className="flex w-full flex-row gap-x-4">
-                    <Slider
-                        value={[sliderValue]}
-                        onValueChange={(val) => startSeek(val[0])}
-                        onValueCommit={(val) => commitSeek(val[0])}
-                        max={duration || 100}
-                        step={0.1}
-                        className="z-10 hover:cursor-pointer"
-                        buffered={bufferedPercent}
-                    />
-                    <p>{milSecToMins(currentTrackTime)}</p>
-                </div>
+
+                <TrackTimeSlider audioRef={audioRef} track={currentTrack} />
 
                 <div className="flex flex-row items-center gap-x-4">
                     <Button

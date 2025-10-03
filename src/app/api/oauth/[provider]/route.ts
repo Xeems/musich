@@ -70,6 +70,7 @@ function connectUserToAccount(
             await trx.insert(PlaylistTable).values({
                 creatorId: newUser.id,
                 name: `${newUser.username}'s tracks`,
+                type: 'default',
             })
         }
 

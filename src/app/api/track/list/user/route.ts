@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/db'
 import getUserBySession from '@/actions/getUserBySession'
-import { TrackType } from '../../../../../../@types/track'
 import { sql } from 'drizzle-orm'
 
 export async function GET(req: NextRequest) {
