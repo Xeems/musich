@@ -29,11 +29,10 @@ export default function TrackTimeSlider({ audioRef, track }: Props) {
     } = usePlayerControls(audioRef)
 
     const { bufferedPercent, duration } = useAudioLoader(track, audioRef)
-    const { playNext, playPrev, togglePlayMode, playMode } =
-        useTrackQueue(audioRef)
+    const { playNext, playPrev } = useTrackQueue(audioRef)
 
     return (
-        <>
+        <div className="flex w-full flex-row items-center">
             <div className="flex flex-row items-center justify-center gap-x-2">
                 <Button
                     onClick={playPrev}
@@ -58,7 +57,7 @@ export default function TrackTimeSlider({ audioRef, track }: Props) {
                     <SkipForwardIcon />
                 </Button>
             </div>
-            <div className="flex w-full flex-row gap-x-4">
+            <div className="flex w-full flex-row items-center gap-x-4">
                 <Slider
                     value={[sliderValue]}
                     onValueChange={(val) => startSeek(val[0])}
@@ -70,6 +69,6 @@ export default function TrackTimeSlider({ audioRef, track }: Props) {
                 />
                 <p>{milSecToMins(currentTrackTime)}</p>
             </div>
-        </>
+        </div>
     )
 }

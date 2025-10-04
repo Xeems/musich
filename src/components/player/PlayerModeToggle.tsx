@@ -11,7 +11,7 @@ export default function PlayerModeToggle({ audioRef }: Props) {
     const { togglePlayMode, playMode } = useTrackQueue(audioRef)
 
     return (
-        <Button variant={'ghost'} onClick={togglePlayMode}>
+        <Button variant={'ghost'} onClick={togglePlayMode} className="m-1">
             {playMode === 'queue' && <RepeatIcon />}
             {playMode === 'random' && <ShuffleIcon />}
             {playMode === 'loop' && <Repeat1Icon />}
