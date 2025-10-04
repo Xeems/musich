@@ -9,8 +9,6 @@ export function usePlayerControls(
     const setIsPlaying = usePlayerStore((s) => s.setIsPlaying)
     const setCurrentTrackTime = usePlayerStore((s) => s.setCurrentTrackTime)
 
-    const [volume, setVolume] = useState(0.7)
-    const [isMuted, setIsMuted] = useState(false)
     const [seekingValue, setSeekingValue] = useState<number | null>(null)
 
     const togglePlay = () => {
@@ -62,26 +60,14 @@ export function usePlayerControls(
         setSeekingValue(null)
     }
 
-    useEffect(() => {
-        const audio = audioRef.current
-        if (!audio) return
-
-        audio.volume = volume
-        audio.muted = isMuted
-    }, [volume, isMuted])
-
     return {
         isPlaying,
         togglePlay,
         handleSeek,
         startSeek,
         commitSeek,
-        setVolume,
         currentTrackTime,
-        volume,
         seekingValue,
         sliderValue: seekingValue ?? currentTrackTime,
-        isMuted,
-        setIsMuted,
     }
 }

@@ -1,36 +1,17 @@
 'use client'
 
-import {
-    PauseIcon,
-    PlayIcon,
-    Repeat1Icon,
-    RepeatIcon,
-    ShuffleIcon,
-    SkipBackIcon,
-    SkipForwardIcon,
-    Volume2Icon,
-    VolumeXIcon,
-} from 'lucide-react'
-import { Button } from '../ui/button'
-import { Slider } from '../ui/slider'
 import TrackCover from '../TrackCover'
 import { useRef } from 'react'
 import { usePlayerStore } from '@/store/playerStore'
-import { usePlayerControls } from '@/hooks/usePlayerControls'
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card'
-import { useTrackQueue } from '@/hooks/useTrackQueue'
 import TrackTimeSlider from './TrackTimeSlider'
+import PlayerModeToggle from './PlayerModeToggle'
+import PlayerVolume from './PlayerVolume'
 
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement>(null)
 
     const currentTrack = usePlayerStore((s) => s.currentTrack)
-
-    const { isPlaying, volume, togglePlay, setVolume, isMuted, setIsMuted } =
-        usePlayerControls(audioRef)
-
-    const { playNext, playPrev, togglePlayMode, playMode } =
-        useTrackQueue(audioRef)
 
     return (
         <Card className="fixed inset-x-0 bottom-0 z-50 flex w-full flex-row items-center rounded-none px-3 py-3">
@@ -46,59 +27,11 @@ export default function AudioPlayer() {
                     </CardDescription>
                 </CardHeader>
 
-                <div className="flex flex-row items-center justify-center"></div>
-                <div className="flex flex-row items-center justify-center gap-x-2">
-                    <Button
-                        onClick={playPrev}
-                        variant="ghost"
-                        className="h-8 w-8 rounded-full p-0">
-                        <SkipBackIcon />
-                    </Button>
-                    <Button
-                        disabled={!currentTrack}
-                        onClick={togglePlay}
-                        className="flex h-10 w-10 items-center justify-center rounded-4xl p-0">
-                        {isPlaying ? (
-                            <PauseIcon className="size-6" />
-                        ) : (
-                            <PlayIcon className="size-6" />
-                        )}
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        className="h-8 w-8 rounded-full p-0"
-                        onClick={playNext}>
-                        <SkipForwardIcon />
-                    </Button>
-                </div>
-
-                <Button variant={'ghost'} onClick={togglePlayMode}>
-                    {playMode === 'queue' && <RepeatIcon />}
-                    {playMode === 'random' && <ShuffleIcon />}
-                    {playMode === 'loop' && <Repeat1Icon />}
-                </Button>
+                <PlayerModeToggle audioRef={audioRef} />
 
                 <TrackTimeSlider audioRef={audioRef} track={currentTrack} />
 
-                <div className="flex flex-row items-center gap-x-4">
-                    <Button
-                        variant="ghost"
-                        onClick={() => setIsMuted((prev) => !prev)}>
-                        {volume === 0 || isMuted ? (
-                            <VolumeXIcon className="size-6" />
-                        ) : (
-                            <Volume2Icon className="size-6" />
-                        )}
-                    </Button>
-                    <Slider
-                        className="w-20"
-                        max={1.0}
-                        min={0.0}
-                        step={0.01}
-                        value={[volume]}
-                        onValueChange={(value) => setVolume(value[0])}
-                    />
-                </div>
+                <PlayerVolume audioRef={audioRef} />
             </div>
         </Card>
     )
