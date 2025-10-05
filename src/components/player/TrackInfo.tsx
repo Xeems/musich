@@ -8,9 +8,9 @@ type Props = {
 
 export default function TrackInfo({ track }: Props) {
     return (
-        <div className="flex flex-row gap-x-4">
+        <div className="mx-2 flex flex-row gap-x-2">
             <TrackCover imageName={track?.imageName} size="small" />
-            <div className="flex w-40 flex-col justify-end">
+            <div className="flex flex-col justify-end md:w-24 lg:w-40">
                 <p className="line-clamp-1 w-full truncate font-semibold">
                     {track?.name}
                 </p>

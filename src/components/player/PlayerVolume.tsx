@@ -18,7 +18,7 @@ export default function PlayerVolume({ audioRef }: Props) {
     }
 
     return (
-        <div className="mx-4 flex flex-row items-center gap-x-4">
+        <div className="mx-4 flex flex-row items-center gap-x-2">
             <Button
                 variant="ghost"
                 onClick={() => setIsMuted((prev) => !prev)}

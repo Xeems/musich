@@ -28,7 +28,7 @@ export default function TrackTimeSlider({ audioRef, track }: Props) {
                     className="z-10 hover:cursor-pointer"
                     buffered={bufferedPercent}
                 />
-                <p className="hidden md:block">
+                <p className="hidden font-medium md:block">
                     {milSecToMins(currentTrackTime)}
                 </p>
             </div>
