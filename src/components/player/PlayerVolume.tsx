@@ -12,9 +12,17 @@ export default function PlayerVolume({ audioRef }: Props) {
     const { volume, setVolume, isMuted, setIsMuted } =
         usePlayerVolumeControls(audioRef)
 
+    function handleVolumeChange(value: number[]) {
+        setIsMuted(false)
+        setVolume(value[0])
+    }
+
     return (
-        <div className="flex flex-row items-center gap-x-4">
-            <Button variant="ghost" onClick={() => setIsMuted((prev) => !prev)}>
+        <div className="mx-4 flex flex-row items-center gap-x-4">
+            <Button
+                variant="ghost"
+                onClick={() => setIsMuted((prev) => !prev)}
+                className="!p-2">
                 {volume === 0 || isMuted ? (
                     <VolumeXIcon className="size-6" />
                 ) : (
@@ -27,7 +35,7 @@ export default function PlayerVolume({ audioRef }: Props) {
                 min={0.0}
                 step={0.01}
                 value={[volume]}
-                onValueChange={(value) => setVolume(value[0])}
+                onValueChange={handleVolumeChange}
             />
         </div>
     )

@@ -10,8 +10,8 @@ export default function TrackInfo({ track }: Props) {
     return (
         <div className="flex flex-row gap-x-4">
             <TrackCover imageName={track?.imageName} size="small" />
-            <div className="flex w-40 flex-col">
-                <p className="line-clamp-1 w-full max-w-40 truncate font-semibold">
+            <div className="flex w-40 flex-col justify-end">
+                <p className="line-clamp-1 w-full truncate font-semibold">
                     {track?.name}
                 </p>
 
