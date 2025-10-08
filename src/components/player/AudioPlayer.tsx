@@ -8,6 +8,7 @@ import PlayerModeToggle from './PlayerModeToggle'
 import PlayerVolume from './PlayerVolume'
 import TrackInfo from './TrackInfo'
 import PlayerControls from './PlayerControls'
+import Link from 'next/link'
 
 export default function AudioPlayer() {
     const audioRef = useRef<HTMLAudioElement>(null)
@@ -19,7 +20,9 @@ export default function AudioPlayer() {
             <audio ref={audioRef} />
             <div className="grid w-full grid-rows-[auto_auto] gap-2 md:flex md:grid-rows-1 md:flex-row md:items-center xl:max-w-[95%]">
                 <div className="row-start-2 flex flex-row justify-between px-2 pb-2 md:pb-0">
-                    <TrackInfo track={currentTrack} />
+                    <Link href={`/player`}>
+                        <TrackInfo track={currentTrack} />
+                    </Link>
 
                     <div className="flex flex-row items-center gap-x-2">
                         <PlayerModeToggle audioRef={audioRef} />
