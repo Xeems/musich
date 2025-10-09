@@ -14,7 +14,6 @@ import TrackCover from '../TrackCover'
 import { usePlayerStore } from '@/store/playerStore'
 import TrackLikes from './TrackLikes'
 import TrackCardMenu from './TrackCardMenu'
-import { useTrackListStore } from '@/store/trackListStore'
 
 type Props = {
     track: TrackType
@@ -29,13 +28,11 @@ function TrackCardBase({ track, onClick }: Props) {
         s.currentTrack?.id === track.id ? s.currentTrackTime : 0,
     )
 
-    const displayOption = useTrackListStore((s) => s.displayOption)
-
     return (
         <Card
             tabIndex={0}
             onClick={() => onClick?.(track)}
-            className="hover:bg-primary/10 focus:bg-primary/10 relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-3 shadow-none">
+            className="hover:bg-primary/10 focus:bg-primary/10 @container relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-3 shadow-none">
             {isCurrentTrack && (
                 <div
                     className="bg-primary/10 pointer-events-none absolute top-0 bottom-0 left-0"
@@ -52,7 +49,7 @@ function TrackCardBase({ track, onClick }: Props) {
                 <CardDescription>{track.author}</CardDescription>
             </CardHeader>
 
-            <CardContent className="flex flex-row items-center justify-center gap-4">
+            <div className="flex flex-row items-center justify-center gap-4">
                 <div className="flex flex-row gap-x-1">
                     {isCurrentTrack && (
                         <>
@@ -65,7 +62,7 @@ function TrackCardBase({ track, onClick }: Props) {
 
                 <TrackLikes track={track} />
                 <TrackCardMenu />
-            </CardContent>
+            </div>
         </Card>
     )
 }

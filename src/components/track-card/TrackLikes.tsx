@@ -37,7 +37,7 @@ export default function TrackLikes({ track }: Props) {
             variant={isUnClickable ? 'ghost' : 'outline'}
             className={cn(isUnClickable && 'disabled:opacity-100')}>
             <HeartIcon className={cn(isLiked && 'fill-red-400 stroke-0')} />
-            {likesCount}
+            <p className="hidden @md:block">{likesCount}</p>
         </Button>
     )
 }
