@@ -3,7 +3,7 @@ import { TrackType } from '../../../../../@types/track'
 import { db } from '@/db'
 import { PlaylistTable, PlaylistTrackTable, TrackTable } from '@/db/schema'
 import { desc, eq, sql } from 'drizzle-orm'
-import getUserBySession from '@/actions/getUserBySession'
+import getUserBySession from '@/authentification/actions/getUserBySession'
 
 export async function GET(req: NextRequest) {
     try {

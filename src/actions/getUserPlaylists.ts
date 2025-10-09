@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/db'
-import getUserBySession from './getUserBySession'
+import getUserBySession from '../authentification/actions/getUserBySession'
 import { ActionResultType } from '../../@types/actionResult'
 import { PlaylistType } from '../../@types/playlist'
 

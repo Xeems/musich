@@ -1,4 +1,4 @@
-import getUserBySession from '@/actions/getUserBySession'
+import getUserBySession from '@/authentification/actions/getUserBySession'
 import AuthLinks from './AuthLinks'
 import UserInfo from './UserInfo'
 

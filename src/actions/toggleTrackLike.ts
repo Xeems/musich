@@ -3,7 +3,7 @@
 import { db } from '@/db'
 import { eq, and, sql } from 'drizzle-orm'
 import { PlaylistTable, PlaylistTrackTable } from '@/db/schema'
-import getUserBySession from './getUserBySession'
+import getUserBySession from '../authentification/actions/getUserBySession'
 import { LikeResult } from '../../@types/actionResult'
 
 export async function toggleTrackLike(trackId: string): Promise<LikeResult> {

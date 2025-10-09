@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from 'react'
-import { TrackType } from '../../@types/track'
 import Hls from 'hls.js'
+import { TrackType } from '../../../@types/track'
 
 export function useAudioLoader(
     currentTrack: TrackType | null,

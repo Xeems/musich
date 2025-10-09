@@ -10,9 +10,11 @@ export default function Layout({
 }) {
     return (
         <div className="pb-40">
-            {modal}
             <Header />
-            <div>{children}</div>
+            <div>
+                {children}
+                {modal}
+            </div>
             <AudioPlayer />
         </div>
     )

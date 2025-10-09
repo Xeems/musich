@@ -4,7 +4,7 @@ import { db } from '@/db'
 import { UserSessionTable } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { cookies } from 'next/headers'
-import { MinimalUserType } from '../../@types/user'
+import { MinimalUserType } from '../../../@types/user'
 
 export default async function getUserBySession(): Promise<
     MinimalUserType | undefined
