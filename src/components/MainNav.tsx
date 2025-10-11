@@ -20,13 +20,13 @@ export default function MainNav() {
     const pathname = usePathname()
 
     return (
-        <nav className="flex flex-row items-center justify-between gap-x-4">
+        <nav className="flex w-full flex-col items-start justify-center gap-x-4 gap-y-2 md:flex-row md:items-center">
             {navLinks.map((link) => (
                 <Link
                     href={link.href}
                     key={link.href}
                     className={cn(
-                        `rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200`,
+                        `w-full rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200 md:w-fit`,
                         pathname === link.href
                             ? 'bg-gradient-to-r from-orange-100 to-orange-200 font-semibold text-orange-700 shadow-sm'
                             : 'hover:text-primary',
