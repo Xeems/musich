@@ -41,12 +41,17 @@ export const useTrackListStore = create<State>((set, get) => ({
 
     loadMore: async () => {
         const { loading, hasMore, offset, limit, source } = get()
-        if (loading || !hasMore) return
+        if (loading || !hasMore || !source) return
 
         set({ loading: true })
 
         try {
-            const res = await fetch(`${source}?offset=${offset}&limit=${limit}`)
+            const url = new URL(source, window.location.origin)
+
+            url.searchParams.set('offset', offset.toString())
+            url.searchParams.set('limit', limit.toString())
+
+            const res = await fetch(url.toString())
             const data: TrackType[] = await res.json()
 
             if (data.length === 0) {

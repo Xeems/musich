@@ -13,7 +13,7 @@ type LinkType = {
 const navLinks: LinkType[] = [
     { href: '/', name: 'Main Page' },
     { href: '/tracks', name: 'My tracks' },
-    { href: '/Search', name: 'Search' },
+    { href: '/search', name: 'Search' },
 ]
 
 export default function MainNav() {

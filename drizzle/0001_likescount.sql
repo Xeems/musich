@@ -1,0 +1,1 @@
+ALTER TABLE "track_table" ALTER COLUMN "likes_count" DROP EXPRESSION;

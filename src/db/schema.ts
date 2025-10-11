@@ -1,6 +1,7 @@
-import { relations } from 'drizzle-orm'
+import { relations, sql, SQL } from 'drizzle-orm'
 import {
     boolean,
+    integer,
     pgEnum,
     pgTable,
     primaryKey,
@@ -62,6 +63,7 @@ export const TrackTable = pgTable('track_table', {
     trackDir: varchar({ length: 222 }).notNull(),
     duration: real().notNull(),
     createdAt: timestamp().defaultNow().notNull(),
+    //likesCount: integer('likes_count'),
 })
 
 export const PlaylistTypeEnum = pgEnum('playlist_type_enum', [

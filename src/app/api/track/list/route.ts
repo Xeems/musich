@@ -8,6 +8,8 @@ import getUserBySession from '@/authentification/actions/getUserBySession'
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url)
+        console.log(searchParams)
+        const search = Number(searchParams.get('search') || '')
         const offset = Number(searchParams.get('offset') || '0')
         const limit = Number(searchParams.get('limit') || '20')
         const user = await getUserBySession()
@@ -24,9 +26,9 @@ export async function GET(req: NextRequest) {
                 trackDir: TrackTable.trackDir,
                 likesCount: sql<number>`
                             COUNT(
-                                CASE 
-                                    WHEN ${PlaylistTable.type} = 'default' 
-                                    THEN ${PlaylistTrackTable.trackId} 
+                                CASE
+                                    WHEN ${PlaylistTable.type} = 'default'
+                                    THEN ${PlaylistTrackTable.trackId}
                                 END
                             )
                         `,

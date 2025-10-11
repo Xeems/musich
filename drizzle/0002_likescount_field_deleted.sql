@@ -1,0 +1,1 @@
+ALTER TABLE "track_table" DROP COLUMN "likes_count";
