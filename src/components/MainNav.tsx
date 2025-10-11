@@ -20,7 +20,7 @@ export default function MainNav() {
     const pathname = usePathname()
 
     return (
-        <nav className="flex w-full flex-col items-start justify-center gap-x-4 gap-y-2 md:flex-row md:items-center">
+        <nav className="flex w-full flex-col items-start justify-center gap-x-4 gap-y-2 md:w-fit md:flex-row md:items-center">
             {navLinks.map((link) => (
                 <Link
                     href={link.href}

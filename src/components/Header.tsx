@@ -27,11 +27,11 @@ export default function Header() {
                     <div className="rounded-xl bg-gradient-to-br from-orange-200 to-orange-300 p-2.5 shadow-md">
                         <MusicIcon className="h-6 w-6 text-orange-700" />
                     </div>
-                    <div>
+                    <div className="w-full">
                         <h1 className="text-brand-primary text-xl font-bold">
                             Musich
                         </h1>
-                        <p className="text-muted-content text-xs">
+                        <p className="text-muted-content line-clamp-1 text-xs">
                             Share your sound
                         </p>
                     </div>
