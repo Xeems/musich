@@ -38,6 +38,7 @@ export default async function getUserBySession(): Promise<
             id: session.user.id,
             email: session.user.email,
             username: session.user.username,
+            picture: session.user.picture,
         }
 
         return minimalUser

@@ -52,10 +52,11 @@ function connectUserToAccount(
     provider: oAuthProvidersType,
 ) {
     return db.transaction(async (trx) => {
-        let user = await trx.query.UserTable.findFirst({
-            where: eq(UserTable.email, email),
-            columns: { id: true },
-        })
+        let [user] = await trx
+            .select({ id: UserTable.id })
+            .from(UserTable)
+            .where(eq(UserTable.email, email))
+            .limit(1)
 
         if (user == null) {
             const [newUser] = await trx

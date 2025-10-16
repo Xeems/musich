@@ -1,7 +1,6 @@
-import { relations, sql, SQL } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import {
     boolean,
-    integer,
     pgEnum,
     pgTable,
     primaryKey,
@@ -17,6 +16,7 @@ export const UserTable = pgTable('user_table', {
     id: uuid('id').primaryKey().unique().defaultRandom(),
     username: varchar({ length: 255 }).notNull(),
     email: varchar({ length: 255 }).unique().notNull(),
+    picture: text(),
     password: text(),
     salt: text(),
     createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),

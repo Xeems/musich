@@ -26,6 +26,7 @@ import {
 } from './ui/accordion'
 
 export default function UserInfo({ user }: { user: MinimalUserType }) {
+    console.log(user)
     return (
         <ResponsiveWrapper>
             <MobileWrapper>
@@ -37,10 +38,7 @@ export default function UserInfo({ user }: { user: MinimalUserType }) {
                         <AccordionTrigger className="flex w-full flex-row items-center justify-between px-4">
                             <div className="flex flex-row items-center gap-x-4">
                                 <Avatar>
-                                    <AvatarImage
-                                        src="https://github.com/shadcn.png"
-                                        alt="@shadcn"
-                                    />
+                                    <AvatarImage src={user.picture} alt="" />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                                 <p>{user.username}</p>
@@ -58,7 +56,7 @@ export default function UserInfo({ user }: { user: MinimalUserType }) {
                             variant={'ghost'}
                             className="bg-muted w-full justify-start border px-4 py-8 md:border-none md:bg-transparent md:py-4">
                             <Avatar>
-                                <AvatarImage src="" alt="@shadcn" />
+                                <AvatarImage src={user.picture} alt="" />
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>
                             <p>{user.username}</p>
