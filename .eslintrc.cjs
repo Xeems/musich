@@ -18,7 +18,7 @@ module.exports = {
                 ecmaVersion: 'latest',
                 sourceType: 'module',
             },
-            plugins: ['react-hooks'],
+            plugins: ['react-hooks', '@ts-safeql/eslint-plugin'],
             rules: {
                 'react-hooks/exhaustive-deps': 'off',
                 'simple-import-sort/imports': [

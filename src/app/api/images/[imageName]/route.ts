@@ -18,7 +18,12 @@ export async function GET(
         const imageBuffer = await fs.readFile(filePath)
         const ext = path.extname(imageName).slice(1)
 
-        return new NextResponse(imageBuffer, {
+        const arrayBuffer = imageBuffer.buffer.slice(
+            imageBuffer.byteOffset,
+            imageBuffer.byteOffset + imageBuffer.byteLength,
+        ) as ArrayBuffer
+
+        return new NextResponse(arrayBuffer, {
             headers: {
                 'Content-Type': `image/${ext}`,
             },

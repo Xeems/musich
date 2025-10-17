@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json()
         const userData = await newUserSchema.parseAsync(body)
-        const data = await signUp(userData.username)
+        const data = await signUp(userData)
 
         console.log(data)
         return new NextResponse('')

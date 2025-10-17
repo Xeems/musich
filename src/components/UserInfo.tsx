@@ -26,7 +26,6 @@ import {
 } from './ui/accordion'
 
 export default function UserInfo({ user }: { user: MinimalUserType }) {
-    console.log(user)
     return (
         <ResponsiveWrapper>
             <MobileWrapper>

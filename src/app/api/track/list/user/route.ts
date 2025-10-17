@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         if (!user?.id) throw new Error('User not found')
 
         const data = await db.execute(sql`
-            SELECT 
+            SELECT
                 t.id,
                 t.name,
                 t.author,

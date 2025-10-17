@@ -22,7 +22,12 @@ export class OAuthClient<T> {
     }
     private readonly userInfo: {
         schema: z.ZodSchema<T>
-        parser: (data: T) => { id: string; email: string; name: string }
+        parser: (data: T) => {
+            id: string
+            email: string
+            name: string
+            picture: string
+        }
     }
     private readonly tokenSchema = z.object({
         access_token: z.string(),
@@ -48,7 +53,12 @@ export class OAuthClient<T> {
         }
         userInfo: {
             schema: z.ZodSchema<T>
-            parser: (data: T) => { id: string; email: string; name: string }
+            parser: (data: T) => {
+                id: string
+                email: string
+                name: string
+                picture: string
+            }
         }
     }) {
         this.provider = provider

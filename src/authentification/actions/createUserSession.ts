@@ -30,6 +30,6 @@ export default async function createUserSession(userId: string) {
             expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         })
     } catch (e) {
-        console.log(e)
+        console.error(e)
     }
 }
