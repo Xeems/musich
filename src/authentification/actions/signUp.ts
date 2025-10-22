@@ -8,11 +8,8 @@ import { newUserSchema } from '../../../@types/validators'
 import { generateSalt, hashPassword } from '../passwordHasher'
 import createUserSession from './createUserSession'
 import { redirect } from 'next/navigation'
-import { ActionResultType } from '../../../@types/actionResult'
 
-export default async function signUp(
-    data: z.infer<typeof newUserSchema>,
-): Promise<ActionResultType> {
+export default async function signUp(data: z.infer<typeof newUserSchema>) {
     try {
         const parsed = await newUserSchema.safeParseAsync(data)
         if (!parsed.data || parsed.error)

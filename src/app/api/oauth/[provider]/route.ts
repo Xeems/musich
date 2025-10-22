@@ -5,7 +5,9 @@ import { redirect } from 'next/navigation'
 import { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { oAuthProviders, oAuthProvidersType } from '@/authentification/const'
-import { db } from '@/db/postgres'
+import { db } from '@/db'
+import { OAuthAccountTable, UserTable } from '@/db/schema'
+import { eq } from 'drizzle-orm'
 
 export async function GET(
     request: NextRequest,
@@ -54,22 +56,33 @@ async function connectUserToAccount(
     }: { id: string; email: string; name: string; picture: string },
     provider: oAuthProvidersType,
 ) {
-    const user = (
-        await db.query(`SELECT id FROM users WHERE email = $1`, [email])
-    ).rows[0]
+    const user = await db.query.UserTable.findFirst({
+        where: eq(UserTable.email, email),
+    })
 
-    if (!user) {
-        const newUser = await db.query(
-            `INSERT INTO users (username, email, picture) VALUES ($1, $2, $3) RETURNING id`,
-            [name, email, picture],
-        )
-        await db.query(
-            `INSERT INTO oauth_accounts (provider, provider_account_id, user_id) VALUES ($1, $2, $3)`,
-            [provider, id, newUser.rows[0].id],
-        )
+    if (!user?.id) {
+        const newUser = await db
+            .insert(UserTable)
+            .values({
+                email: email,
+                username: name,
+                picture: picture,
+            })
+            .returning({ id: UserTable.id })
 
-        return newUser.rows[0].id as string
+        const oauth_account = await db
+            .insert(OAuthAccountTable)
+            .values({
+                userId: newUser[0].id,
+                provider: provider,
+                providerAccountId: id,
+            })
+            .returning()
+
+        if (!oauth_account) throw new Error('oAuth connection undefined')
+
+        return newUser[0].id
     }
 
-    return user.rows[0].id as string
+    return user.id
 }
