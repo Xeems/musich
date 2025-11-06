@@ -3,7 +3,7 @@
 import { create } from 'zustand'
 import { TrackType } from '../../@types/track'
 
-export type TrackListDisplayOption = 'default' | 'userLibary'
+export type TrackListDisplayOption = 'default' | 'user'
 
 type State = {
     tracks: TrackType[]
@@ -20,7 +20,7 @@ type State = {
     setDisplayOption: (displauOption: TrackListDisplayOption) => void
 }
 
-const DEFFAULTLIMIT = 1 as const
+const DEFFAULTLIMIT = 20 as const
 
 export const useTrackListStore = create<State>((set, get) => ({
     tracks: [],

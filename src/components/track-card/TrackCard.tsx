@@ -1,9 +1,8 @@
 'use client'
 
-import React, { memo, useCallback } from 'react'
+import React, { memo } from 'react'
 import {
     Card,
-    CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
@@ -14,13 +13,15 @@ import TrackCover from '../TrackCover'
 import { usePlayerStore } from '@/store/playerStore'
 import TrackLikes from './TrackLikes'
 import TrackCardMenu from './TrackCardMenu'
+import { TrackListDisplayOption } from '@/store/trackListStore'
 
 type Props = {
     track: TrackType
+    displayOption?: TrackListDisplayOption
     onClick?: (track: TrackType) => void
 }
 
-function TrackCardBase({ track, onClick }: Props) {
+function TrackCard({ track, onClick, displayOption = 'default' }: Props) {
     const isCurrentTrack = usePlayerStore(
         (s) => s.currentTrack?.id === track.id,
     )
@@ -32,7 +33,7 @@ function TrackCardBase({ track, onClick }: Props) {
         <Card
             tabIndex={0}
             onClick={() => onClick?.(track)}
-            className="hover:bg-primary/10 focus:bg-primary/10 @container relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-3 shadow-none">
+            className="hover:bg-primary/10 focus:bg-primary/10 @container relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-2 shadow-none">
             {isCurrentTrack && (
                 <div
                     className="bg-primary/10 pointer-events-none absolute top-0 bottom-0 left-0"
@@ -61,10 +62,10 @@ function TrackCardBase({ track, onClick }: Props) {
                 </div>
 
                 <TrackLikes track={track} />
-                <TrackCardMenu />
+                {displayOption === 'user' && <TrackCardMenu />}
             </div>
         </Card>
     )
 }
 
-export default memo(TrackCardBase)
+export default memo(TrackCard)

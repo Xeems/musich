@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import InfiniteScrollTrigger from './InfiniteScrollTrigger'
 
 export default function TrackList() {
-    const { tracks, hasMore, loadMore } = useTrackListStore()
+    const { tracks, hasMore, loadMore, displayOption } = useTrackListStore()
 
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const setQueue = usePlayerStore((s) => s.setQueue)
@@ -30,7 +30,12 @@ export default function TrackList() {
     return (
         <div className="flex w-full flex-col space-y-2">
             {tracks.map((track) => (
-                <TrackCard key={track.id} track={track} onClick={handlePlay} />
+                <TrackCard
+                    key={track.id}
+                    track={track}
+                    onClick={handlePlay}
+                    displayOption={displayOption}
+                />
             ))}
 
             <InfiniteScrollTrigger
