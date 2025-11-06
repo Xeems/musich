@@ -16,7 +16,7 @@ export default async function TracksPage() {
                     <TrackUploadForm />
                     <TrackListProvider
                         displayOption="userLibary"
-                        source="/api/track/list/user"
+                        source="/api/track/list?type=user"
                     />
                 </div>
             </div>

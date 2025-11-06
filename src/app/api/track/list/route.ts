@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/db'
-import { eq, ilike, or, sql } from 'drizzle-orm'
+import { and, eq, ilike, or, sql } from 'drizzle-orm'
 import getUserBySession from '@/authentification/actions/getUserBySession'
 import { PlaylistTable, PlaylistTrackTable, TrackTable } from '@/db/schema'
 
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url)
-
+        const type = searchParams.get('type')?.trim() || ''
         const search = searchParams.get('q')?.trim() || ''
         const offset = Number(searchParams.get('offset') || '0')
         const limit = Number(searchParams.get('limit') || '20')
@@ -16,24 +16,39 @@ export async function GET(req: NextRequest) {
         const userId = user?.id ?? null
 
         const isLikedByCurrentUser = userId
-            ? sql<boolean>`
-            BOOL_OR(
+            ? sql<boolean>`BOOL_OR(
                 CASE
                     WHEN ${PlaylistTable.type} = 'default'
                     AND ${PlaylistTable.creatorId} = ${userId}
                     THEN TRUE
                     ELSE FALSE
                 END
-            )
-        `.as('isLikedByCurrentUser')
+            )`.as('isLikedByCurrentUser')
             : sql<boolean>`FALSE`.as('isLikedByCurrentUser')
 
-        const whereClause = search
-            ? or(
-                  ilike(TrackTable.name, `%${search}%`),
-                  ilike(TrackTable.author, `%${search}%`),
-              )
-            : undefined
+        const whereClause = []
+
+        if (search) {
+            whereClause.push(
+                or(
+                    ilike(TrackTable.name, `%${search}%`),
+                    ilike(TrackTable.author, `%${search}%`),
+                ),
+            )
+        }
+
+        if (type === 'user' && userId) {
+            whereClause.push(sql`
+                ${TrackTable.id} IN (
+                    SELECT pt."trackId"
+                    FROM ${PlaylistTrackTable} pt
+                    INNER JOIN ${PlaylistTable} p
+                        ON p.id = pt."playlistId"
+                    WHERE p."type" = 'default'
+                    AND p."creatorId" = ${userId}
+                )
+            `)
+        }
 
         const query = await db
             .select({
@@ -56,7 +71,7 @@ export async function GET(req: NextRequest) {
                 PlaylistTable,
                 eq(PlaylistTable.id, PlaylistTrackTable.playlistId),
             )
-            .where(whereClause ?? sql`TRUE`)
+            .where(whereClause.length > 0 ? and(...whereClause) : sql`TRUE`)
             .groupBy(TrackTable.id)
             .orderBy(sql`${TrackTable.createdAt} DESC`)
             .limit(limit)
