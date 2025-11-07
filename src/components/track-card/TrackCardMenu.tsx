@@ -10,8 +10,17 @@ import {
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
 import { EllipsisVerticalIcon, Trash2Icon } from 'lucide-react'
+import { toggleTrackLike } from '@/actions/toggleTrackLike'
+import { TrackType } from '../../../@types/track'
 
-export default function TrackCardMenu() {
+type Props = {
+    track: TrackType
+}
+
+export default function TrackCardMenu({ track }: Props) {
+    const handleLikeToggle = async () => {
+        const res = await toggleTrackLike(track.id)
+    }
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -25,7 +34,7 @@ export default function TrackCardMenu() {
                     <DropdownMenuItem>in-progress</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLikeToggle}>
                     <Trash2Icon className="text-destructive" />
                     Delete from мy library
                 </DropdownMenuItem>

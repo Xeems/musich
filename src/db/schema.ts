@@ -80,6 +80,11 @@ export const PlaylistTable = pgTable('playlist_table', {
     creatorId: uuid()
         .notNull()
         .references(() => UserTable.id, { onDelete: 'cascade' }),
+    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp({ withTimezone: true })
+        .notNull()
+        .defaultNow()
+        .$onUpdate(() => new Date()),
 })
 
 export const PlaylistTrackTable = pgTable('playlist_tracks_table', {

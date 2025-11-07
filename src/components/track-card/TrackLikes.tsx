@@ -18,7 +18,7 @@ export default function TrackLikes({ track }: Props) {
 
     const displayOption = useTrackListStore((s) => s.displayOption)
 
-    const isUnClickable = displayOption === 'userLibary'
+    const isUnClickable = displayOption === 'user'
 
     const handleLikeToggle = async () => {
         const res = await toggleTrackLike(track.id)

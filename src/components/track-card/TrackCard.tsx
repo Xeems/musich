@@ -33,7 +33,7 @@ function TrackCard({ track, onClick, displayOption = 'default' }: Props) {
         <Card
             tabIndex={0}
             onClick={() => onClick?.(track)}
-            className="hover:bg-primary/10 focus:bg-primary/10 @container relative flex flex-row justify-center overflow-hidden border-none bg-transparent px-4 py-2 shadow-none">
+            className="hover:bg-primary/10 focus:bg-primary/10 @container relative flex flex-row justify-center overflow-hidden rounded-sm border-none bg-transparent px-4 py-2 shadow-none">
             {isCurrentTrack && (
                 <div
                     className="bg-primary/10 pointer-events-none absolute top-0 bottom-0 left-0"
@@ -62,7 +62,7 @@ function TrackCard({ track, onClick, displayOption = 'default' }: Props) {
                 </div>
 
                 <TrackLikes track={track} />
-                {displayOption === 'user' && <TrackCardMenu />}
+                {displayOption === 'user' && <TrackCardMenu track={track} />}
             </div>
         </Card>
     )
