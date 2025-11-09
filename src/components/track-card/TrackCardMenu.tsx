@@ -32,7 +32,7 @@ export default function TrackCardMenu({ track }: Props) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant={'ghost'} onClick={(e) => {}}>
+                <Button variant={'ghost'}>
                     <EllipsisVerticalIcon />
                 </Button>
             </DropdownMenuTrigger>

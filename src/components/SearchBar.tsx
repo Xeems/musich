@@ -5,7 +5,7 @@ import { SearchIcon } from 'lucide-react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 
-export default function TrackSearch() {
+export default function SearchBar() {
     const searchParams = useSearchParams()
     const pathname = usePathname()
     const router = useRouter()

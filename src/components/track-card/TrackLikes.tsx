@@ -32,6 +32,7 @@ export default function TrackLikes({ track }: Props) {
         <Button
             disabled={isUnClickable}
             onClick={(e) => {
+                e.stopPropagation()
                 handleLikeToggle()
             }}
             variant={isUnClickable ? 'ghost' : 'outline'}
