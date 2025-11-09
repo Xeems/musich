@@ -15,9 +15,10 @@ type State = {
     displayOption?: TrackListDisplayOption
 
     setInitial: (tracks: TrackType[], limit?: number) => void
-    loadMore: () => Promise<void>
     setSource: (url: string) => void
     setDisplayOption: (displauOption: TrackListDisplayOption) => void
+    loadMore: () => Promise<void>
+    deleteTrackFromList: (trackId: string) => void
 }
 
 const DEFFAULTLIMIT = 20 as const
@@ -80,4 +81,11 @@ export const useTrackListStore = create<State>((set, get) => ({
 
     setDisplayOption: (option: TrackListDisplayOption) =>
         set({ displayOption: option }),
+
+    deleteTrackFromList: (trackId) => {
+        set((state) => ({
+            tracks: state.tracks.filter((track) => track.id !== trackId),
+            offset: Math.max(state.offset - 1, 0),
+        }))
+    },
 }))

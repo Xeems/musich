@@ -12,14 +12,22 @@ import { Button } from '../ui/button'
 import { EllipsisVerticalIcon, Trash2Icon } from 'lucide-react'
 import { toggleTrackLike } from '@/actions/toggleTrackLike'
 import { TrackType } from '../../../@types/track'
+import { useTrackListStore } from '@/store/trackListStore'
 
 type Props = {
     track: TrackType
 }
 
 export default function TrackCardMenu({ track }: Props) {
+    const deleteTrackFromList = useTrackListStore(
+        (state) => state.deleteTrackFromList,
+    )
+
     const handleLikeToggle = async () => {
         const res = await toggleTrackLike(track.id)
+        if (res.success) {
+            deleteTrackFromList(track.id)
+        }
     }
     return (
         <DropdownMenu>
