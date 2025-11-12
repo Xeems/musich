@@ -11,7 +11,7 @@ type LinkType = {
 }
 
 const navLinks: LinkType[] = [
-    { href: '/', name: 'Main Page' },
+    { href: '/trending', name: 'Trending' },
     { href: '/tracks', name: 'My tracks' },
     { href: '/search', name: 'Search' },
 ]

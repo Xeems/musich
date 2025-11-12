@@ -35,10 +35,10 @@ export default function HeroSection() {
 
                 <div className="flex flex-col items-center justify-center gap-4 pt-4 sm:flex-row">
                     <Link
-                        href={'/auth/signin'}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground gax-x-4 flex h-14 flex-row items-center rounded-md px-8 text-lg">
-                        <Play className="mr-2 h-5 w-5" />
-                        Sign In
+                        href={'/trending'}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-14 flex-row items-center gap-x-2 rounded-md px-4 text-lg font-semibold">
+                        <Play className="size-5" />
+                        Explore popular tracks
                     </Link>
                 </div>
 

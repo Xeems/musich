@@ -14,6 +14,8 @@ import { usePlayerStore } from '@/store/playerStore'
 import TrackLikes from './TrackLikes'
 import TrackCardMenu from './TrackCardMenu'
 import { TrackListDisplayOption } from '@/store/trackListStore'
+import TrackCardProgresbar from './TrackCardProgresbar'
+import TrackCardTimer from './TrackCardTimer'
 
 type Props = {
     track: TrackType
@@ -22,27 +24,12 @@ type Props = {
 }
 
 function TrackCard({ track, onClick, displayOption = 'default' }: Props) {
-    const isCurrentTrack = usePlayerStore(
-        (s) => s.currentTrack?.id === track.id,
-    )
-    const currentTrackTime = usePlayerStore((s) =>
-        s.currentTrack?.id === track.id ? s.currentTrackTime : 0,
-    )
-
     return (
         <Card
             tabIndex={0}
             onClick={() => onClick?.(track)}
             className="hover:bg-primary/10 focus:bg-primary/10 @container relative flex flex-row justify-center overflow-hidden rounded-sm border-none bg-transparent px-4 py-2 shadow-none">
-            {isCurrentTrack && (
-                <div
-                    className="bg-primary/10 pointer-events-none absolute top-0 bottom-0 left-0"
-                    style={{
-                        width: `${(currentTrackTime / track.duration) * 100}%`,
-                        transition: 'width 0.15s linear',
-                    }}
-                />
-            )}
+            <TrackCardProgresbar track={track} />
 
             <TrackCover imageName={track.imageName ?? null} />
 
@@ -52,15 +39,7 @@ function TrackCard({ track, onClick, displayOption = 'default' }: Props) {
             </CardHeader>
 
             <div className="flex flex-row items-center justify-center gap-4">
-                <div className="flex flex-row gap-x-1">
-                    {isCurrentTrack && (
-                        <>
-                            <span>{milSecToMins(currentTrackTime)}</span>
-                            <span>/</span>
-                        </>
-                    )}
-                    <span>{milSecToMins(track.duration)}</span>
-                </div>
+                <TrackCardTimer track={track} />
 
                 <TrackLikes track={track} />
                 {displayOption === 'user' && <TrackCardMenu track={track} />}
