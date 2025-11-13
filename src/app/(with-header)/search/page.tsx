@@ -17,7 +17,7 @@ export default async function page({
             </div>
             <TrackListProvider
                 source={`/api/track/list?${params}`}
-                displayOption="default"
+                displayMode="default"
             />
         </main>
     )

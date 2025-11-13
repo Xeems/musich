@@ -19,6 +19,10 @@ type Props = {
 }
 
 export default function TrackCardMenu({ track }: Props) {
+    const toggleLike = useTrackListStore((state) => state.toggleLike)
+
+    const displayMode = useTrackListStore((state) => state.displayMode)
+
     const deleteTrackFromList = useTrackListStore(
         (state) => state.deleteTrackFromList,
     )
@@ -26,7 +30,7 @@ export default function TrackCardMenu({ track }: Props) {
     const handleLikeToggle = async () => {
         const res = await toggleTrackLike(track.id)
         if (res.success) {
-            deleteTrackFromList(track.id)
+            toggleLike(track.id, !track.isLikedByCurrentUser)
         }
     }
     return (

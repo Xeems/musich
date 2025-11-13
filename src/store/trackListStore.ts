@@ -3,7 +3,7 @@
 import { create } from 'zustand'
 import { TrackType } from '../../@types/track'
 
-export type TrackListDisplayOption = 'default' | 'user'
+export type TrackListDisplayModeType = 'default' | 'user'
 
 type State = {
     tracks: TrackType[]
@@ -12,12 +12,13 @@ type State = {
     limit: number
     hasMore: boolean
     loading: boolean
-    displayOption?: TrackListDisplayOption
+    displayMode: TrackListDisplayModeType
 
     setInitial: (tracks: TrackType[], limit?: number) => void
     setSource: (url: string) => void
-    setDisplayOption: (displauOption: TrackListDisplayOption) => void
+    setDisplayMode: (displayMode: TrackListDisplayModeType) => void
     loadMore: () => Promise<void>
+    toggleLike: (id: string, liked: boolean) => void
     deleteTrackFromList: (trackId: string) => void
 }
 
@@ -30,7 +31,7 @@ export const useTrackListStore = create<State>((set, get) => ({
     limit: DEFFAULTLIMIT,
     hasMore: true,
     loading: false,
-    displayOption: 'default',
+    displayMode: 'default',
 
     setInitial: (tracks, limit = DEFFAULTLIMIT) =>
         set(() => ({
@@ -79,8 +80,21 @@ export const useTrackListStore = create<State>((set, get) => ({
         get().loadMore()
     },
 
-    setDisplayOption: (option: TrackListDisplayOption) =>
-        set({ displayOption: option }),
+    setDisplayMode: (option: TrackListDisplayModeType) =>
+        set({ displayMode: option }),
+
+    toggleLike: (id, liked) =>
+        set((state) => ({
+            tracks: state.tracks.map((t) =>
+                t.id === id
+                    ? {
+                          ...t,
+                          isLikedByCurrentUser: liked,
+                          likesCount: t.likesCount + (liked ? 1 : -1),
+                      }
+                    : t,
+            ),
+        })),
 
     deleteTrackFromList: (trackId) => {
         set((state) => ({

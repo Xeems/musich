@@ -13,7 +13,7 @@ export default async function TracksPage() {
             <div className="">
                 <TrackUploadForm />
                 <TrackListProvider
-                    displayOption="user"
+                    displayMode="user"
                     source="/api/track/list?type=user"
                 />
             </div>

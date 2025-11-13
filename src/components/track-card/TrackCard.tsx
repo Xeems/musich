@@ -8,22 +8,19 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import { TrackType } from '../../../@types/track'
-import { milSecToMins } from '@/lib/utils'
 import TrackCover from '../TrackCover'
-import { usePlayerStore } from '@/store/playerStore'
 import TrackLikes from './TrackLikes'
 import TrackCardMenu from './TrackCardMenu'
-import { TrackListDisplayOption } from '@/store/trackListStore'
+
 import TrackCardProgresbar from './TrackCardProgresbar'
 import TrackCardTimer from './TrackCardTimer'
 
 type Props = {
     track: TrackType
-    displayOption?: TrackListDisplayOption
     onClick?: (track: TrackType) => void
 }
 
-function TrackCard({ track, onClick, displayOption = 'default' }: Props) {
+function TrackCard({ track, onClick }: Props) {
     return (
         <Card
             tabIndex={0}
@@ -42,7 +39,7 @@ function TrackCard({ track, onClick, displayOption = 'default' }: Props) {
                 <TrackCardTimer track={track} />
 
                 <TrackLikes track={track} />
-                {displayOption === 'user' && <TrackCardMenu track={track} />}
+                <TrackCardMenu track={track} />
             </div>
         </Card>
     )
