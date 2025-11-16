@@ -5,7 +5,7 @@ import { Slider } from '../ui/slider'
 import usePlayerVolumeControls from '@/hooks/player/usePlayerVolumeControls'
 
 type Props = {
-    audioRef: React.RefObject<HTMLAudioElement | null>
+    audioRef: HTMLAudioElement | null
 }
 
 export default function PlayerVolume({ audioRef }: Props) {

@@ -4,7 +4,7 @@ import { useTrackQueue } from '@/hooks/player/useTrackQueue'
 import { Repeat1Icon, RepeatIcon, ShuffleIcon } from 'lucide-react'
 
 type Props = {
-    audioRef: React.RefObject<HTMLAudioElement | null>
+    audioRef: HTMLAudioElement | null
 }
 
 export default function PlayerModeToggle({ audioRef }: Props) {

@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
-import { EllipsisVerticalIcon, Trash2Icon } from 'lucide-react'
+import { EllipsisVerticalIcon, HeartIcon, Trash2Icon } from 'lucide-react'
 import { toggleTrackLike } from '@/actions/toggleTrackLike'
 import { TrackType } from '../../../@types/track'
 import { useTrackListStore } from '@/store/trackListStore'
@@ -19,6 +19,10 @@ type Props = {
 }
 
 export default function TrackCardMenu({ track }: Props) {
+    const trackState = useTrackListStore((state) =>
+        state.tracks.find((t) => t.id === track.id),
+    )
+
     const toggleLike = useTrackListStore((state) => state.toggleLike)
 
     const displayMode = useTrackListStore((state) => state.displayMode)
@@ -31,6 +35,7 @@ export default function TrackCardMenu({ track }: Props) {
         const res = await toggleTrackLike(track.id)
         if (res.success) {
             toggleLike(track.id, !track.isLikedByCurrentUser)
+            if (displayMode === 'user') deleteTrackFromList(track.id)
         }
     }
     return (
@@ -47,8 +52,17 @@ export default function TrackCardMenu({ track }: Props) {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLikeToggle}>
-                    <Trash2Icon className="text-destructive" />
-                    Delete from мy library
+                    {trackState?.isLikedByCurrentUser ? (
+                        <>
+                            <Trash2Icon className="text-destructive" />
+                            Delete from мy library
+                        </>
+                    ) : (
+                        <>
+                            <HeartIcon className="text-red-500" />
+                            Add to my library
+                        </>
+                    )}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

@@ -1,13 +1,13 @@
-import { RefObject, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function usePlayerVolumeControls(
-    audioRef: RefObject<HTMLAudioElement | null>,
+    audioRef: HTMLAudioElement | null,
 ) {
     const [volume, setVolume] = useState(0.7)
     const [isMuted, setIsMuted] = useState(false)
 
     useEffect(() => {
-        const audio = audioRef.current
+        const audio = audioRef
         if (!audio) return
 
         audio.volume = volume

@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default function TrackLikes({ track }: Props) {
-    const storeTrack = useTrackListStore((state) =>
+    const trackState = useTrackListStore((state) =>
         state.tracks.find((t) => t.id === track.id),
     )
 
@@ -20,11 +20,11 @@ export default function TrackLikes({ track }: Props) {
             <HeartIcon
                 className={cn(
                     'size-4 stroke-2',
-                    storeTrack?.isLikedByCurrentUser &&
+                    trackState?.isLikedByCurrentUser &&
                         'fill-red-400 text-red-400',
                 )}
             />
-            <p className="hidden @md:block">{storeTrack?.likesCount}</p>
+            <p className="hidden @md:block">{trackState?.likesCount}</p>
         </div>
     )
 }

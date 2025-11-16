@@ -1,5 +1,6 @@
 import AudioPlayer from '@/components/player/AudioPlayer'
 import Header from '@/components/Header'
+import GlobalAudio from '@/components/player/GlobalAudio'
 
 export default function Layout({
     children,
@@ -16,6 +17,7 @@ export default function Layout({
                 {modal}
             </div>
             <AudioPlayer />
+            <GlobalAudio />
         </div>
     )
 }

@@ -11,7 +11,7 @@ import { usePlayerControls } from '@/hooks/player/usePlayerControls'
 import { TrackType } from '../../../@types/track'
 
 type Props = {
-    audioRef: React.RefObject<HTMLAudioElement | null>
+    audioRef: HTMLAudioElement | null
     track: TrackType | null
 }
 

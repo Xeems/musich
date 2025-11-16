@@ -6,7 +6,7 @@ import { milSecToMins } from '@/lib/utils'
 import { TrackType } from '../../../@types/track'
 
 type Props = {
-    audioRef: React.RefObject<HTMLAudioElement | null>
+    audioRef: HTMLAudioElement | null
     track: TrackType | null
 }
 

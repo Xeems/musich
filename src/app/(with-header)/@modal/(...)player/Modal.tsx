@@ -13,6 +13,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
 
         const handleClose = () => router.back()
         dialog?.addEventListener('close', handleClose)
+        dialog?.addEventListener('', handleClose)
         return () => dialog?.removeEventListener('close', handleClose)
     }, [router])
 

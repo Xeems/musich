@@ -1,6 +1,5 @@
 'use client'
 
-import { useRef } from 'react'
 import { usePlayerStore } from '@/store/playerStore'
 import { Card } from '../ui/card'
 import TrackTimeSlider from './TrackTimeSlider'
@@ -11,13 +10,13 @@ import PlayerControls from './PlayerControls'
 import Link from 'next/link'
 
 export default function AudioPlayer() {
-    const audioRef = useRef<HTMLAudioElement>(null)
-
     const currentTrack = usePlayerStore((s) => s.currentTrack)
+    const audioRef = usePlayerStore((s) => s.audioRef)
+
+    if (audioRef === null) return <></>
 
     return (
         <Card className="fixed inset-x-0 bottom-0 z-50 flex w-full items-center justify-center rounded-none border-none p-0 md:border-t md:border-solid md:p-3">
-            <audio ref={audioRef} />
             <div className="grid w-full grid-rows-[auto_auto] gap-2 md:flex md:grid-rows-1 md:flex-row md:items-center xl:max-w-[95%]">
                 <div className="row-start-2 flex flex-row justify-between px-2 pb-2 md:pb-0">
                     <Link href={`/player`}>
