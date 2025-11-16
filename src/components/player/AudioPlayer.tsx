@@ -11,9 +11,6 @@ import Link from 'next/link'
 
 export default function AudioPlayer() {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
-    const audioRef = usePlayerStore((s) => s.audioRef)
-
-    if (audioRef === null) return <></>
 
     return (
         <Card className="fixed inset-x-0 bottom-0 z-50 flex w-full items-center justify-center rounded-none border-none p-0 md:border-t md:border-solid md:p-3">
@@ -24,20 +21,17 @@ export default function AudioPlayer() {
                     </Link>
 
                     <div className="flex flex-row items-center gap-x-2">
-                        <PlayerModeToggle audioRef={audioRef} />
-                        <PlayerControls
-                            audioRef={audioRef}
-                            track={currentTrack}
-                        />
+                        <PlayerModeToggle />
+                        <PlayerControls track={currentTrack} />
                     </div>
                 </div>
 
                 <div className="row-start-1 w-full md:col-auto md:row-auto">
-                    <TrackTimeSlider audioRef={audioRef} track={currentTrack} />
+                    <TrackTimeSlider track={currentTrack} />
                 </div>
 
                 <div className="hidden md:block">
-                    <PlayerVolume audioRef={audioRef} />
+                    <PlayerVolume />
                 </div>
             </div>
         </Card>

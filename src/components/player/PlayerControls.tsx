@@ -9,13 +9,14 @@ import {
 import { useTrackQueue } from '@/hooks/player/useTrackQueue'
 import { usePlayerControls } from '@/hooks/player/usePlayerControls'
 import { TrackType } from '../../../@types/track'
+import { usePlayerStore } from '@/store/playerStore'
 
 type Props = {
-    audioRef: HTMLAudioElement | null
     track: TrackType | null
 }
 
-export default function PlayerControls({ audioRef, track }: Props) {
+export default function PlayerControls({ track }: Props) {
+    const audioRef = usePlayerStore((s) => s.audioRef)
     const { playNext, playPrev } = useTrackQueue(audioRef)
     const { togglePlay, isPlaying } = usePlayerControls(audioRef)
 

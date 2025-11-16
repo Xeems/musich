@@ -8,9 +8,9 @@ export default function GlobalAudio() {
 
     useEffect(() => {
         if (audioRef.current) {
-            setAudioRef(audioRef.current)
+            setAudioRef(audioRef as React.RefObject<HTMLAudioElement>)
         }
-    }, [audioRef.current])
+    }, [audioRef])
 
     return <audio ref={audioRef} />
 }

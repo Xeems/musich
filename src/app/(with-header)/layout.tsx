@@ -11,13 +11,13 @@ export default function Layout({
 }) {
     return (
         <div className="pb-40">
+            <GlobalAudio />
             <Header />
             <div>
                 {children}
                 {modal}
             </div>
             <AudioPlayer />
-            <GlobalAudio />
         </div>
     )
 }

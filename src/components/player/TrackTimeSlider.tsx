@@ -4,13 +4,14 @@ import { usePlayerControls } from '@/hooks/player/usePlayerControls'
 import { useAudioLoader } from '@/hooks/player/useAudioLoader'
 import { milSecToMins } from '@/lib/utils'
 import { TrackType } from '../../../@types/track'
+import { usePlayerStore } from '@/store/playerStore'
 
 type Props = {
-    audioRef: HTMLAudioElement | null
     track: TrackType | null
 }
 
-export default function TrackTimeSlider({ audioRef, track }: Props) {
+export default function TrackTimeSlider({ track }: Props) {
+    const audioRef = usePlayerStore((s) => s.audioRef)
     const { currentTrackTime, sliderValue, commitSeek, startSeek } =
         usePlayerControls(audioRef)
 

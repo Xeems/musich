@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from 'react'
+import { RefObject, useCallback, useEffect, useState } from 'react'
 import { usePlayerStore } from '@/store/playerStore'
 
 type PlayModeType = 'queue' | 'random' | 'loop'
 
-export function useTrackQueue(audioRef: HTMLAudioElement | null) {
+export function useTrackQueue(audioRef: RefObject<HTMLAudioElement> | null) {
     const [playMode, setPlayMode] = useState<PlayModeType>('queue')
     const queue = usePlayerStore((s) => s.queue)
     const currentTrack = usePlayerStore((s) => s.currentTrack)
@@ -36,7 +36,7 @@ export function useTrackQueue(audioRef: HTMLAudioElement | null) {
 
     const playNextTrack = useCallback(() => {
         const currentIndex = getCurrentTrackIndex()
-        const audio = audioRef
+        const audio = audioRef?.current
         if (currentIndex === undefined || !audio) return
 
         switch (playMode) {
@@ -55,7 +55,7 @@ export function useTrackQueue(audioRef: HTMLAudioElement | null) {
     }, [audioRef, playMode, queue, getCurrentTrackIndex, playTrackByIndex])
 
     useEffect(() => {
-        const audio = audioRef
+        const audio = audioRef?.current
         if (!audio) return
 
         const handleEnded = () => {

@@ -2,12 +2,10 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { useTrackQueue } from '@/hooks/player/useTrackQueue'
 import { Repeat1Icon, RepeatIcon, ShuffleIcon } from 'lucide-react'
+import { usePlayerStore } from '@/store/playerStore'
 
-type Props = {
-    audioRef: HTMLAudioElement | null
-}
-
-export default function PlayerModeToggle({ audioRef }: Props) {
+export default function PlayerModeToggle() {
+    const audioRef = usePlayerStore((s) => s.audioRef)
     const { togglePlayMode, playMode } = useTrackQueue(audioRef)
 
     return (

@@ -1,20 +1,23 @@
-import { useEffect, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 import Hls from 'hls.js'
 import { TrackType } from '../../../@types/track'
 
 export function useAudioLoader(
     currentTrack: TrackType | null,
-    audioRef: HTMLAudioElement | null,
+    audioRef: RefObject<HTMLAudioElement> | null,
 ) {
     const [bufferedPercent, setBufferedPercent] = useState(0)
     const [duration, setDuration] = useState(0)
 
     useEffect(() => {
-        if (!currentTrack || !audioRef) return
-        const audio = audioRef
+        if (!currentTrack) return
+        if (!audioRef?.current) return
+
+        const audio = audioRef.current
         const hls = new Hls()
+
         hls.loadSource(`/api/hls/${currentTrack.trackDir}/index.m3u8`)
-        hls.attachMedia(audioRef)
+        hls.attachMedia(audio)
 
         const updateBuffer = () => {
             try {
@@ -37,6 +40,7 @@ export function useAudioLoader(
                 }
             } catch {}
         }
+
         audio.addEventListener('progress', updateBuffer)
         audio.addEventListener('loadedmetadata', updateBuffer)
 
@@ -45,7 +49,7 @@ export function useAudioLoader(
             audio.removeEventListener('progress', updateBuffer)
             audio.removeEventListener('loadedmetadata', updateBuffer)
         }
-    }, [currentTrack, audioRef, setBufferedPercent, setDuration])
+    }, [currentTrack, audioRef])
 
     return { bufferedPercent, duration }
 }

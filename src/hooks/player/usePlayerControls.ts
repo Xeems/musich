@@ -1,7 +1,9 @@
 import { usePlayerStore } from '@/store/playerStore'
-import { useEffect, useState } from 'react'
+import { RefObject, useEffect, useState } from 'react'
 
-export function usePlayerControls(audioRef: HTMLAudioElement | null) {
+export function usePlayerControls(
+    audioRef: RefObject<HTMLAudioElement> | null,
+) {
     const isPlaying = usePlayerStore((s) => s.isPlaying)
     const currentTrackTime = usePlayerStore((s) => s.currentTrackTime)
     const setIsPlaying = usePlayerStore((s) => s.setIsPlaying)
@@ -10,7 +12,7 @@ export function usePlayerControls(audioRef: HTMLAudioElement | null) {
     const [seekingValue, setSeekingValue] = useState<number | null>(null)
 
     const togglePlay = () => {
-        const audio = audioRef
+        const audio = audioRef?.current
         if (!audio) return
         if (audio.paused) {
             audio.play()
@@ -20,7 +22,7 @@ export function usePlayerControls(audioRef: HTMLAudioElement | null) {
     }
 
     useEffect(() => {
-        const audio = audioRef
+        const audio = audioRef?.current
         if (!audio) return
 
         const updateTime = () => setCurrentTrackTime(audio.currentTime)
@@ -42,7 +44,7 @@ export function usePlayerControls(audioRef: HTMLAudioElement | null) {
     }, [audioRef, setCurrentTrackTime, setIsPlaying])
 
     const handleSeek = (seconds: number) => {
-        const audio = audioRef
+        const audio = audioRef?.current
         if (!audio) return
 
         audio.currentTime = seconds

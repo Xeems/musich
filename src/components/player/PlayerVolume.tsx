@@ -3,12 +3,10 @@ import { Button } from '../ui/button'
 import { Volume2Icon, VolumeXIcon } from 'lucide-react'
 import { Slider } from '../ui/slider'
 import usePlayerVolumeControls from '@/hooks/player/usePlayerVolumeControls'
+import { usePlayerStore } from '@/store/playerStore'
 
-type Props = {
-    audioRef: HTMLAudioElement | null
-}
-
-export default function PlayerVolume({ audioRef }: Props) {
+export default function PlayerVolume() {
+    const audioRef = usePlayerStore((s) => s.audioRef)
     const { volume, setVolume, isMuted, setIsMuted } =
         usePlayerVolumeControls(audioRef)
 
