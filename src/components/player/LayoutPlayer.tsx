@@ -9,7 +9,7 @@ import TrackInfo from './TrackInfo'
 import PlayerControls from './PlayerControls'
 import Link from 'next/link'
 
-export default function AudioPlayer() {
+export default function LayoutPlayer() {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
 
     return (

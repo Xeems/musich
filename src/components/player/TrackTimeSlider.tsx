@@ -15,7 +15,7 @@ export default function TrackTimeSlider({ track }: Props) {
     const { currentTrackTime, sliderValue, commitSeek, startSeek } =
         usePlayerControls(audioRef)
 
-    const { bufferedPercent, duration } = useAudioLoader(track, audioRef)
+    //const { bufferedPercent, duration } = useAudioLoader(track, audioRef)
 
     return (
         <div className="flex w-full flex-row items-center">
@@ -24,10 +24,10 @@ export default function TrackTimeSlider({ track }: Props) {
                     value={[sliderValue]}
                     onValueChange={(val) => startSeek(val[0])}
                     onValueCommit={(val) => commitSeek(val[0])}
-                    max={duration || 100}
+                    //max={duration || 100}
                     step={0.1}
                     className="z-10 hover:cursor-pointer"
-                    buffered={bufferedPercent}
+                    //buffered={bufferedPercent}
                 />
                 <p className="hidden font-medium md:block">
                     {milSecToMins(currentTrackTime)}
