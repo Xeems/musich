@@ -20,7 +20,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
     return (
         <dialog
             ref={dialogRef}
-            className="flex w-[90%] max-w-md items-center justify-center rounded-2xl bg-white p-6 shadow-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm">
+            className="mx-auto mt-10 flex w-fit items-center justify-center rounded-2xl bg-white p-6 shadow-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm">
             {children}
         </dialog>
     )

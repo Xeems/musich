@@ -11,7 +11,7 @@ type Props = {
 const sizeClasses = {
     small: 'h-11 w-11',
     medium: 'h-14 w-14',
-    large: 'h-24 w-24',
+    large: 'h-36 w-36',
 }
 
 export default function TrackCover({ imageName, size = 'medium' }: Props) {
