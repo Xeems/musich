@@ -5,7 +5,11 @@ import { Slider } from '../ui/slider'
 import usePlayerVolumeControls from '@/hooks/player/usePlayerVolumeControls'
 import { usePlayerStore } from '@/store/playerStore'
 
-export default function PlayerVolume() {
+export default function PlayerVolume({
+    isSliderHidden = false,
+}: {
+    isSliderHidden?: boolean
+}) {
     const audioRef = usePlayerStore((s) => s.audioRef)
     const { volume, setVolume, isMuted, setIsMuted } =
         usePlayerVolumeControls(audioRef)
@@ -27,14 +31,16 @@ export default function PlayerVolume() {
                     <Volume2Icon className="size-6" />
                 )}
             </Button>
-            <Slider
-                className="w-20"
-                max={1.0}
-                min={0.0}
-                step={0.01}
-                value={[volume]}
-                onValueChange={handleVolumeChange}
-            />
+            {!isSliderHidden && (
+                <Slider
+                    className="w-20"
+                    max={1.0}
+                    min={0.0}
+                    step={0.01}
+                    value={[volume]}
+                    onValueChange={handleVolumeChange}
+                />
+            )}
         </div>
     )
 }
