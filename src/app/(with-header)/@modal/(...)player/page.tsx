@@ -1,14 +1,10 @@
-import React from 'react'
-import Modal from '../../../../components/Modal'
 import Player from '../../player/Player'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import Modal from './Modal'
 
-export default function page() {
+export default function Page() {
     return (
-        <Dialog open={true}>
-            <DialogContent className=" ">
-                <Player />
-            </DialogContent>
-        </Dialog>
+        <Modal>
+            <Player />
+        </Modal>
     )
 }
