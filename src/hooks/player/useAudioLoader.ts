@@ -4,7 +4,7 @@ import { TrackType } from '../../../@types/track'
 
 export function useAudioLoader(
     currentTrack: TrackType | null,
-    audioRef: RefObject<HTMLAudioElement> | null,
+    audioRef: RefObject<HTMLAudioElement | null>,
 ) {
     const [bufferedPercent, setBufferedPercent] = useState(0)
     const [duration, setDuration] = useState(0)
