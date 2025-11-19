@@ -9,6 +9,7 @@ type Store = {
     isPlaying: boolean
     currentTrackTime: number
     currentTrackBufferedPercent: number
+    volume: number
 
     queue: TrackType[]
 
@@ -18,6 +19,7 @@ type Store = {
     togglePlay: () => void
     setQueue: (tracks: TrackType[]) => void
     setCurrentTrackTime: (time: number) => void
+    setVolume: (val: number) => void
 
     clearQueue: () => void
 }
@@ -28,6 +30,7 @@ export const usePlayerStore = create<Store>((set, get) => ({
     isPlaying: false,
     currentTrackTime: 0,
     currentTrackBufferedPercent: 0,
+    volume: 0.7,
     queue: [],
 
     setAudioRef: (ref) => set({ audioRef: ref }),
@@ -54,6 +57,14 @@ export const usePlayerStore = create<Store>((set, get) => ({
         if (!audioRef?.current) return
         audioRef.current.currentTime = time
         set({ currentTrackTime: time })
+    },
+
+    setVolume: (value) => {
+        const { audioRef } = get()
+        if (!audioRef?.current) return
+
+        audioRef.current.volume = value
+        set({ volume: value })
     },
 
     clearQueue: () => set({ queue: [] }),

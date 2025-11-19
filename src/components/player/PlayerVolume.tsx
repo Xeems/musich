@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { Volume2Icon, VolumeXIcon } from 'lucide-react'
 import { Slider } from '../ui/slider'
-import usePlayerVolumeControls from '@/hooks/player/usePlayerVolumeControls'
 import { usePlayerStore } from '@/store/playerStore'
 
 export default function PlayerVolume({
@@ -10,12 +9,11 @@ export default function PlayerVolume({
 }: {
     isSliderHidden?: boolean
 }) {
-    const audioRef = usePlayerStore((s) => s.audioRef)
-    const { volume, setVolume, isMuted, setIsMuted } =
-        usePlayerVolumeControls(audioRef)
+    const volume = usePlayerStore((s) => s.volume)
+    const setVolume = usePlayerStore((s) => s.setVolume)
 
     function handleVolumeChange(value: number[]) {
-        setIsMuted(false)
+        //setIsMuted(false)
         setVolume(value[0])
     }
 
@@ -23,9 +21,9 @@ export default function PlayerVolume({
         <div className="flex flex-row items-center gap-x-2">
             <Button
                 variant="ghost"
-                onClick={() => setIsMuted((prev) => !prev)}
+                onClick={() => setVolume(0)}
                 className="!p-2">
-                {volume === 0 || isMuted ? (
+                {volume === 0 ? (
                     <VolumeXIcon className="size-6" />
                 ) : (
                     <Volume2Icon className="size-6" />
