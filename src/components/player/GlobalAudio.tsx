@@ -8,7 +8,7 @@ export default function GlobalAudio() {
     const track = usePlayerStore((s) => s.currentTrack)
     const setAudioRef = usePlayerStore((s) => s.setAudioRef)
 
-    const { bufferedPercent, duration } = useAudioLoader(track, audioRef)
+    const { bufferedPercent } = useAudioLoader(track, audioRef)
 
     useEffect(() => {
         if (audioRef.current) {
@@ -31,6 +31,12 @@ export default function GlobalAudio() {
             audio.removeEventListener('timeupdate', handleTimeUpdate)
         }
     }, [audioRef])
+
+    useEffect(() => {
+        usePlayerStore.setState({
+            currentTrackBufferedPercent: bufferedPercent,
+        })
+    }, [bufferedPercent])
 
     return <audio ref={audioRef} />
 }

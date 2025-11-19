@@ -6,11 +6,11 @@ import { milSecToMins } from '@/lib/utils'
 import { usePlayerStore } from '@/store/playerStore'
 
 export default function TrackTimeSlider() {
-    const setCurrentTrackTime = usePlayerStore((s) => s.setCurrentTrackTime)
+    const [seekingValue, setSeekingValue] = useState<number | null>(null)
     const currentTrackTime = usePlayerStore((s) => s.currentTrackTime)
     const duration = usePlayerStore((s) => s.currentTrack?.duration)
-
-    const [seekingValue, setSeekingValue] = useState<number | null>(null)
+    const bufferedPercent = usePlayerStore((s) => s.currentTrackBufferedPercent)
+    const setCurrentTrackTime = usePlayerStore((s) => s.setCurrentTrackTime)
 
     const startSeek = (seconds: number) => {
         setSeekingValue(seconds)
@@ -31,7 +31,7 @@ export default function TrackTimeSlider() {
                     max={duration || 100}
                     step={0.1}
                     className="z-10 hover:cursor-pointer"
-                    //buffered={bufferedPercent}
+                    buffered={bufferedPercent}
                 />
                 <p className="hidden font-medium md:block">
                     {milSecToMins(currentTrackTime)}
