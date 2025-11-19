@@ -11,13 +11,13 @@ type Store = {
 
     setAudioRef: (ref: RefObject<HTMLAudioElement>) => void
     setCurrentTrack: (track: TrackType) => void
-    setIsPlaying: (isPlaying: boolean) => void
+    togglePlay: () => void
     setQueue: (tracks: TrackType[]) => void
     setCurrentTrackTime: (time: number) => void
     clearQueue: () => void
 }
 
-export const usePlayerStore = create<Store>((set) => ({
+export const usePlayerStore = create<Store>((set, get) => ({
     audioRef: null,
     currentTrack: null,
     isPlaying: false,
@@ -25,9 +25,30 @@ export const usePlayerStore = create<Store>((set) => ({
     queue: [],
 
     setAudioRef: (ref) => set({ audioRef: ref }),
+
     setCurrentTrack: (track) => set({ currentTrack: track }),
-    setIsPlaying: (isPlaying) => set({ isPlaying: isPlaying }),
+
+    togglePlay: () => {
+        const { audioRef, isPlaying } = get()
+        if (!audioRef?.current) return
+
+        if (isPlaying) {
+            audioRef.current.pause()
+        } else {
+            audioRef.current.play()
+        }
+
+        set({ isPlaying: !isPlaying })
+    },
+
     setQueue: (tracks) => set({ queue: tracks }),
-    setCurrentTrackTime: (time) => set({ currentTrackTime: time }),
+
+    setCurrentTrackTime: (time) => {
+        const { audioRef } = get()
+        if (!audioRef?.current) return
+        audioRef.current.currentTime = time
+        set({ currentTrackTime: time })
+    },
+
     clearQueue: () => set({ queue: [] }),
 }))

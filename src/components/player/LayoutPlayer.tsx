@@ -27,7 +27,7 @@ export default function LayoutPlayer() {
                 </div>
 
                 <div className="row-start-1 w-full md:col-auto md:row-auto">
-                    <TrackTimeSlider track={currentTrack} />
+                    <TrackTimeSlider />
                 </div>
 
                 <div className="hidden md:block">

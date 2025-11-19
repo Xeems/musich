@@ -7,7 +7,6 @@ import {
     SkipForwardIcon,
 } from 'lucide-react'
 import { useTrackQueue } from '@/hooks/player/useTrackQueue'
-import { usePlayerControls } from '@/hooks/player/usePlayerControls'
 import { TrackType } from '../../../@types/track'
 import { usePlayerStore } from '@/store/playerStore'
 
@@ -17,8 +16,9 @@ type Props = {
 
 export default function PlayerControls({ track }: Props) {
     const audioRef = usePlayerStore((s) => s.audioRef)
+    const togglePlay = usePlayerStore((s) => s.togglePlay)
+    const isPlaying = usePlayerStore((s) => s.isPlaying)
     const { playNext, playPrev } = useTrackQueue(audioRef)
-    const { togglePlay, isPlaying } = usePlayerControls(audioRef)
 
     return (
         <div className="flex flex-row items-center justify-center gap-x-2">

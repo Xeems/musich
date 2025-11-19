@@ -1,27 +1,30 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import { Slider } from '../ui/slider'
-import { usePlayerControls } from '@/hooks/player/usePlayerControls'
-import { useAudioLoader } from '@/hooks/player/useAudioLoader'
 import { milSecToMins } from '@/lib/utils'
-import { TrackType } from '../../../@types/track'
 import { usePlayerStore } from '@/store/playerStore'
 
-type Props = {
-    track: TrackType | null
-}
+export default function TrackTimeSlider() {
+    const setCurrentTrackTime = usePlayerStore((s) => s.setCurrentTrackTime)
+    const currentTrackTime = usePlayerStore((s) => s.currentTrackTime)
 
-export default function TrackTimeSlider({ track }: Props) {
-    const audioRef = usePlayerStore((s) => s.audioRef)
-    const { currentTrackTime, sliderValue, commitSeek, startSeek } =
-        usePlayerControls(audioRef)
+    const [seekingValue, setSeekingValue] = useState<number | null>(null)
 
-    //const { bufferedPercent, duration } = useAudioLoader(track, audioRef)
+    const startSeek = (seconds: number) => {
+        setSeekingValue(seconds)
+    }
+
+    const commitSeek = (seconds: number) => {
+        setCurrentTrackTime(seconds)
+        setSeekingValue(null)
+    }
 
     return (
         <div className="flex w-full flex-row items-center">
             <div className="flex w-full flex-row items-center gap-x-4">
                 <Slider
-                    value={[sliderValue]}
+                    value={[seekingValue ?? currentTrackTime]}
                     onValueChange={(val) => startSeek(val[0])}
                     onValueCommit={(val) => commitSeek(val[0])}
                     //max={duration || 100}
