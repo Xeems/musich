@@ -34,7 +34,7 @@ export default function PlayerVolume({
                     className="w-20"
                     max={1.0}
                     min={0.0}
-                    step={0.01}
+                    step={0.05}
                     value={[volume]}
                     onValueChange={handleVolumeChange}
                 />

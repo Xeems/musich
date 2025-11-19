@@ -1,7 +1,7 @@
 'use client'
 import { useAudioLoader } from '@/hooks/player/useAudioLoader'
 import { usePlayerStore } from '@/store/playerStore'
-import React, { useEffect, useRef } from 'react'
+import React, { RefObject, useEffect, useLayoutEffect, useRef } from 'react'
 
 export default function GlobalAudio() {
     const audioRef = useRef<HTMLAudioElement>(null)
@@ -10,27 +10,19 @@ export default function GlobalAudio() {
 
     const { bufferedPercent } = useAudioLoader(track, audioRef)
 
-    useEffect(() => {
-        if (audioRef.current) {
-            setAudioRef(audioRef as React.RefObject<HTMLAudioElement>)
-        }
-    }, [audioRef])
-
-    useEffect(() => {
+    useLayoutEffect(() => {
         const audio = audioRef.current
         if (!audio) return
 
+        setAudioRef(audioRef as RefObject<HTMLAudioElement>)
+
         const handleTimeUpdate = () =>
-            usePlayerStore.setState({
-                currentTrackTime: audio.currentTime,
-            })
+            usePlayerStore.setState({ currentTrackTime: audio.currentTime })
 
         audio.addEventListener('timeupdate', handleTimeUpdate)
 
-        return () => {
-            audio.removeEventListener('timeupdate', handleTimeUpdate)
-        }
-    }, [audioRef])
+        return () => audio.removeEventListener('timeupdate', handleTimeUpdate)
+    })
 
     useEffect(() => {
         usePlayerStore.setState({
