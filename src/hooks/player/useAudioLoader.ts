@@ -10,8 +10,7 @@ export function useAudioLoader(
     const [duration, setDuration] = useState(0)
 
     useEffect(() => {
-        if (!currentTrack) return
-        if (!audioRef?.current) return
+        if (!currentTrack || !audioRef?.current) return
 
         const audio = audioRef.current
         const hls = new Hls()

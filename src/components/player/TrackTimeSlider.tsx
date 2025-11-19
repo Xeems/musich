@@ -8,6 +8,7 @@ import { usePlayerStore } from '@/store/playerStore'
 export default function TrackTimeSlider() {
     const setCurrentTrackTime = usePlayerStore((s) => s.setCurrentTrackTime)
     const currentTrackTime = usePlayerStore((s) => s.currentTrackTime)
+    const duration = usePlayerStore((s) => s.currentTrack?.duration)
 
     const [seekingValue, setSeekingValue] = useState<number | null>(null)
 
@@ -27,7 +28,7 @@ export default function TrackTimeSlider() {
                     value={[seekingValue ?? currentTrackTime]}
                     onValueChange={(val) => startSeek(val[0])}
                     onValueCommit={(val) => commitSeek(val[0])}
-                    //max={duration || 100}
+                    max={duration || 100}
                     step={0.1}
                     className="z-10 hover:cursor-pointer"
                     //buffered={bufferedPercent}

@@ -24,14 +24,11 @@ export default function GlobalAudio() {
             usePlayerStore.setState({
                 currentTrackTime: audio.currentTime,
             })
-        //const handleLoaded = () => setDuration(audio.duration)
 
         audio.addEventListener('timeupdate', handleTimeUpdate)
-        //audio.addEventListener('loadedmetadata', handleLoaded)
 
         return () => {
             audio.removeEventListener('timeupdate', handleTimeUpdate)
-            //audio.removeEventListener('loadedmetadata', handleLoaded)
         }
     }, [audioRef])
 
