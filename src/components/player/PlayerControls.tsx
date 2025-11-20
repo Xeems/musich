@@ -7,14 +7,9 @@ import {
     SkipForwardIcon,
 } from 'lucide-react'
 import { useTrackQueue } from '@/hooks/player/useTrackQueue'
-import { TrackType } from '../../../@types/track'
 import { usePlayerStore } from '@/store/playerStore'
 
-type Props = {
-    track: TrackType | null
-}
-
-export default function PlayerControls({ track }: Props) {
+export default function PlayerControls() {
     const audioRef = usePlayerStore((s) => s.audioRef)
     const togglePlay = usePlayerStore((s) => s.togglePlay)
     const isPlaying = usePlayerStore((s) => s.isPlaying)
@@ -29,7 +24,6 @@ export default function PlayerControls({ track }: Props) {
                 <SkipBackIcon />
             </Button>
             <Button
-                disabled={!track}
                 onClick={togglePlay}
                 className="flex h-10 w-10 items-center justify-center rounded-4xl p-0">
                 {isPlaying ? (

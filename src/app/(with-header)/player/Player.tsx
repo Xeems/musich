@@ -37,13 +37,13 @@ export default function Player() {
                         </div>
                         <div className="flex flex-row items-center justify-between">
                             <PlayerModeToggle />
-                            <PlayerControls track={currentTrack} />
+                            <PlayerControls />
                             <PlayerVolume isSliderHidden={true} />
                         </div>
                     </div>
                 </div>
 
-                <TrackTimeSlider track={currentTrack} />
+                <TrackTimeSlider />
             </div>
             <div>
                 <p className="text-lg font-medium">Queue</p>
