@@ -17,10 +17,10 @@ type Store = {
 
     setCurrentTrack: (track: TrackType) => void
     togglePlay: () => void
-    setQueue: (tracks: TrackType[]) => void
     setCurrentTrackTime: (time: number) => void
     setVolume: (val: number) => void
 
+    setQueue: (tracks: TrackType[]) => void
     clearQueue: () => void
 }
 

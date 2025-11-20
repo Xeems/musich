@@ -1,5 +1,6 @@
 import { useInfiniteScroll } from '@/hooks/useInfinteScroll'
 import React, { useRef } from 'react'
+import { Spinner } from '../ui/spinner'
 
 type Props = {
     hasMore: boolean
@@ -20,8 +21,11 @@ export default function InfiniteScrollTrigger({ hasMore, onIntersect }: Props) {
     return (
         <>
             {hasMore && (
-                <div ref={observerRef} className="text-center">
-                    Loading...
+                <div
+                    ref={observerRef}
+                    className="flex flex-row items-center justify-center gap-x-4 text-center">
+                    <Spinner className="size-5" />
+                    <p>Loading...</p>
                 </div>
             )}
         </>
