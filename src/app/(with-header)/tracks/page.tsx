@@ -1,6 +1,6 @@
 import React from 'react'
 import TrackUploadForm from './TrackUploadDialog'
-import TrackListProvider from '@/components/track-list/TrackListProvider'
+import TrackListStoreProvider from '@/components/track-list/TrackListStoreProvider'
 import getUserBySession from '@/authentification/actions/getUserBySession'
 import { redirect } from 'next/navigation'
 
@@ -12,7 +12,7 @@ export default async function TracksPage() {
             <h1 className="my-4 text-4xl font-bold">My music library</h1>
             <div className="">
                 <TrackUploadForm />
-                <TrackListProvider
+                <TrackListStoreProvider
                     displayMode="user"
                     source="/api/track/list?type=user"
                 />

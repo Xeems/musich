@@ -4,11 +4,12 @@ import PlayerControls from '@/components/player/PlayerControls'
 import PlayerModeToggle from '@/components/player/PlayerModeToggle'
 import PlayerVolume from '@/components/player/PlayerVolume'
 import TrackTimeSlider from '@/components/player/TrackTimeSlider'
-import TrackListProvider from '@/components/track-list/TrackListProvider'
+import TrackListStoreProvider, {
+    useTrackListStore,
+} from '@/components/track-list/TrackListStoreProvider'
 import TrackCover from '@/components/TrackCover'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { usePlayerStore } from '@/store/playerStore'
-import { useTrackListStore } from '@/store/trackListStore'
 import React from 'react'
 
 export default function Player() {
@@ -48,10 +49,7 @@ export default function Player() {
             <div>
                 <p className="text-lg font-medium">Queue</p>
                 <ScrollArea className="h-80">
-                    <TrackListProvider
-                        source="/api/track/list"
-                        initialTracks={initialTracks}
-                    />
+                    <TrackListStoreProvider source="/api/track/list" />
                 </ScrollArea>
             </div>
         </div>

@@ -4,7 +4,7 @@ import React from 'react'
 import { HeartIcon } from 'lucide-react'
 import { TrackType } from '../../../@types/track'
 import { cn } from '@/lib/utils'
-import { useTrackListStore } from '@/store/trackListStore'
+import { useTrackListStore } from '../track-list/TrackListStoreProvider'
 
 type Props = {
     track: TrackType

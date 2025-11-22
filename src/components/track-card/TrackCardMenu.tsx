@@ -12,7 +12,7 @@ import { Button } from '../ui/button'
 import { EllipsisVerticalIcon, HeartIcon, Trash2Icon } from 'lucide-react'
 import { toggleTrackLike } from '@/actions/toggleTrackLike'
 import { TrackType } from '../../../@types/track'
-import { useTrackListStore } from '@/store/trackListStore'
+import { useTrackListStore } from '../track-list/TrackListStoreProvider'
 
 type Props = {
     track: TrackType

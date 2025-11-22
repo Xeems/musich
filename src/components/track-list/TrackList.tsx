@@ -3,12 +3,15 @@
 import { TrackType } from '../../../@types/track'
 import TrackCard from '../track-card/TrackCard'
 import { usePlayerStore } from '@/store/playerStore'
-import { useTrackListStore } from '@/store/trackListStore'
+
 import { useCallback, useEffect, useRef } from 'react'
 import InfiniteScrollTrigger from './InfiniteScrollTrigger'
+import { useTrackListStore } from './TrackListStoreProvider'
 
 export default function TrackList() {
-    const { tracks, hasMore, loadMore } = useTrackListStore()
+    const tracks = useTrackListStore((s) => s.tracks)
+    const hasMore = useTrackListStore((s) => s.hasMore)
+    const loadMore = useTrackListStore((s) => s.loadMore)
 
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const setQueue = usePlayerStore((s) => s.setQueue)
