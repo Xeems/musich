@@ -1,4 +1,5 @@
-import TrackListStoreProvider from '@/components/track-list/TrackListStoreProvider'
+import TrackList from '@/components/track-list/TrackList'
+import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import { getTracks } from '@/lib/api/getTracks'
 import React from 'react'
 
@@ -12,11 +13,9 @@ export default async function TrendingPage() {
     })
     return (
         <main className="flex w-full flex-col sm:px-6 md:px-10 lg:px-20 xl:mx-auto xl:max-w-4xl">
-            <TrackListStoreProvider
-                source={loadSource}
-                displayMode="default"
-                initialTracks={initialTracks}
-            />
+            <TrackListProvider initialState={{ source: loadSource }}>
+                <TrackList />
+            </TrackListProvider>
         </main>
     )
 }

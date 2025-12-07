@@ -15,7 +15,7 @@ export type TrackListStoreType = {
     loading: boolean
     displayMode: TrackListDisplayModeType
 
-    setInitial: (tracks: TrackType[], limit?: number) => void
+    setQueue: (tracks: TrackType[], limit?: number) => void
     setSource: (url: string) => void
     setDisplayMode: (displayMode: TrackListDisplayModeType) => void
     loadMore: () => Promise<void>
@@ -25,7 +25,9 @@ export type TrackListStoreType = {
 
 const DEFFAULTLIMIT = 20 as const
 
-export const createTrackListStore = () => {
+export const createTrackListStore = (
+    initialState?: Partial<TrackListStoreType>,
+) => {
     return create<TrackListStoreType>((set, get) => ({
         tracks: [],
         source: '',
@@ -34,8 +36,9 @@ export const createTrackListStore = () => {
         hasMore: true,
         loading: false,
         displayMode: 'default',
+        ...initialState,
 
-        setInitial: (tracks, limit = DEFFAULTLIMIT) =>
+        setQueue: (tracks, limit = DEFFAULTLIMIT) =>
             set(() => ({
                 tracks,
                 offset: tracks.length || 0,

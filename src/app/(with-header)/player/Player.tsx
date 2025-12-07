@@ -4,9 +4,8 @@ import PlayerControls from '@/components/player/PlayerControls'
 import PlayerModeToggle from '@/components/player/PlayerModeToggle'
 import PlayerVolume from '@/components/player/PlayerVolume'
 import TrackTimeSlider from '@/components/player/TrackTimeSlider'
-import TrackListStoreProvider, {
-    useTrackListStore,
-} from '@/components/track-list/TrackListStoreProvider'
+import TrackList from '@/components/track-list/TrackList'
+import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackCover from '@/components/TrackCover'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { usePlayerStore } from '@/store/playerStore'
@@ -14,7 +13,6 @@ import React from 'react'
 
 export default function Player() {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
-    const initialTracks = useTrackListStore((s) => s.tracks)
 
     return (
         <div className="w-lg space-y-8">
@@ -49,7 +47,10 @@ export default function Player() {
             <div>
                 <p className="text-lg font-medium">Queue</p>
                 <ScrollArea className="h-80">
-                    <TrackListStoreProvider source="/api/track/list" />
+                    <TrackListProvider
+                        initialState={{ source: '/api/track/list' }}>
+                        <TrackList />
+                    </TrackListProvider>
                 </ScrollArea>
             </div>
         </div>

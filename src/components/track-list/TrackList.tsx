@@ -2,11 +2,11 @@
 
 import { TrackType } from '../../../@types/track'
 import TrackCard from '../track-card/TrackCard'
-import { usePlayerStore } from '@/store/playerStore'
 
 import { useCallback, useEffect, useRef } from 'react'
 import InfiniteScrollTrigger from './InfiniteScrollTrigger'
-import { useTrackListStore } from './TrackListStoreProvider'
+import { useTrackListStore } from './TrackListContext'
+import { usePlayerStore } from '@/store/playerStore'
 
 export default function TrackList() {
     const tracks = useTrackListStore((s) => s.tracks)
@@ -27,7 +27,7 @@ export default function TrackList() {
             setQueue(tracksRef.current)
             setCurrentTrack(trackToPlay)
         },
-        [setQueue, setCurrentTrack],
+        [setCurrentTrack, setQueue],
     )
 
     return (

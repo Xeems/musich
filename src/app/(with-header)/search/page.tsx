@@ -1,6 +1,7 @@
 import React from 'react'
 import SearchBar from '../../../components/SearchBar'
-import TrackListStoreProvider from '@/components/track-list/TrackListStoreProvider'
+import { TrackListProvider } from '@/components/track-list/TrackListContext'
+import TrackList from '@/components/track-list/TrackList'
 
 export default async function page({
     searchParams,
@@ -15,10 +16,10 @@ export default async function page({
             <div className="my-4">
                 <SearchBar />
             </div>
-            <TrackListStoreProvider
-                source={`/api/track/list?${params}`}
-                displayMode="default"
-            />
+            <TrackListProvider
+                initialState={{ source: `/api/track/list?${params}` }}>
+                <TrackList />
+            </TrackListProvider>
         </main>
     )
 }
