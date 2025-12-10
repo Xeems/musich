@@ -23,7 +23,7 @@ export type TrackListStoreType = {
     deleteTrackFromList: (trackId: string) => void
 }
 
-const DEFFAULTLIMIT = 20 as const
+const DEFFAULTLIMIT = 2 as const
 
 export const createTrackListStore = (
     initialState?: Partial<TrackListStoreType>,

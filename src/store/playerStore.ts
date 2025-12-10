@@ -2,8 +2,10 @@ import { RefObject } from 'react'
 import { TrackType } from '../../@types/track'
 import { create } from 'zustand'
 
-type Store = {
+type PlayerStoreType = {
     audioRef: RefObject<HTMLAudioElement> | null
+
+    setAudioRef: (ref: RefObject<HTMLAudioElement>) => void
 
     currentTrack: TrackType | null
     isPlaying: boolean
@@ -11,20 +13,19 @@ type Store = {
     currentTrackBufferedPercent: number
     volume: number
 
-    queue: TrackType[]
-
-    setAudioRef: (ref: RefObject<HTMLAudioElement>) => void
-
     setCurrentTrack: (track: TrackType) => void
     togglePlay: () => void
     setCurrentTrackTime: (time: number) => void
     setVolume: (val: number) => void
 
-    setQueue: (tracks: TrackType[]) => void
+    queue: TrackType[]
+    queueSource: string
+
+    bindTrackList: (params: { queue: TrackType[]; queueSource: string }) => void
     clearQueue: () => void
 }
 
-export const usePlayerStore = create<Store>((set, get) => ({
+export const usePlayerStore = create<PlayerStoreType>((set, get) => ({
     audioRef: null,
     currentTrack: null,
     isPlaying: false,
@@ -32,6 +33,7 @@ export const usePlayerStore = create<Store>((set, get) => ({
     currentTrackBufferedPercent: 0,
     volume: 0.7,
     queue: [],
+    queueSource: '',
 
     setAudioRef: (ref) => set({ audioRef: ref }),
 
@@ -50,7 +52,9 @@ export const usePlayerStore = create<Store>((set, get) => ({
         set({ isPlaying: !isPlaying })
     },
 
-    setQueue: (tracks) => set({ queue: tracks }),
+    bindTrackList: ({ queue, queueSource }) => {
+        set({ queue, queueSource })
+    },
 
     setCurrentTrackTime: (time) => {
         const { audioRef } = get()

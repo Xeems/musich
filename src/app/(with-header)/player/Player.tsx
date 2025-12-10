@@ -13,6 +13,8 @@ import React from 'react'
 
 export default function Player() {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
+    const tracks = usePlayerStore((s) => s.queue)
+    const source = usePlayerStore((s) => s.queueSource)
 
     return (
         <div className="w-lg space-y-8">
@@ -48,7 +50,10 @@ export default function Player() {
                 <p className="text-lg font-medium">Queue</p>
                 <ScrollArea className="h-80">
                     <TrackListProvider
-                        initialState={{ source: '/api/track/list' }}>
+                        initialState={{
+                            source: source,
+                            tracks: tracks,
+                        }}>
                         <TrackList />
                     </TrackListProvider>
                 </ScrollArea>

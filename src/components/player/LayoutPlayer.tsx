@@ -22,7 +22,7 @@ export default function LayoutPlayer() {
 
                     <div className="flex flex-row items-center gap-x-2">
                         <PlayerModeToggle />
-                        <PlayerControls track={currentTrack} />
+                        <PlayerControls />
                     </div>
                 </div>
 

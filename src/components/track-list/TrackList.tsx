@@ -12,9 +12,10 @@ export default function TrackList() {
     const tracks = useTrackListStore((s) => s.tracks)
     const hasMore = useTrackListStore((s) => s.hasMore)
     const loadMore = useTrackListStore((s) => s.loadMore)
+    const source = useTrackListStore((s) => s.source)
 
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
-    const setQueue = usePlayerStore((s) => s.setQueue)
+    const bindTrackList = usePlayerStore((s) => s.bindTrackList)
 
     const tracksRef = useRef(tracks)
 
@@ -24,10 +25,10 @@ export default function TrackList() {
 
     const handlePlay = useCallback(
         (trackToPlay: TrackType) => {
-            setQueue(tracksRef.current)
+            bindTrackList({ queue: tracks, queueSource: source })
             setCurrentTrack(trackToPlay)
         },
-        [setCurrentTrack, setQueue],
+        [setCurrentTrack, bindTrackList],
     )
 
     return (
