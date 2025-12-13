@@ -6,6 +6,7 @@ import PlayerVolume from '@/components/player/PlayerVolume'
 import TrackTimeSlider from '@/components/player/TrackTimeSlider'
 import TrackList from '@/components/track-list/TrackList'
 import { TrackListProvider } from '@/components/track-list/TrackListContext'
+import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInfiniteScrollTrigger'
 import TrackCover from '@/components/TrackCover'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { usePlayerStore } from '@/store/playerStore'
@@ -55,6 +56,7 @@ export default function Player() {
                             tracks: tracks,
                         }}>
                         <TrackList />
+                        <TrackListInfiniteScrollTrigger />
                     </TrackListProvider>
                 </ScrollArea>
             </div>

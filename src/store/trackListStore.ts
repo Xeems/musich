@@ -3,6 +3,7 @@
 import { create } from 'zustand'
 import { TrackType } from '../../@types/track'
 import { getTracks } from '@/lib/api/getTracks'
+import { d } from 'drizzle-kit/index-BAUrj6Ib'
 
 export type TrackListDisplayModeType = 'default' | 'user'
 
@@ -48,6 +49,11 @@ export const createTrackListStore = (
 
         loadMore: async () => {
             const { loading, hasMore, offset, limit, source } = get()
+            console.log('LOAD MORE', {
+                offset,
+                limit,
+                tracks: get().tracks.length,
+            })
             if (loading || !hasMore || !source) return
 
             set({ loading: true })
@@ -65,6 +71,7 @@ export const createTrackListStore = (
                     }))
                 }
             } finally {
+                console.log(hasMore)
                 set({ loading: false })
             }
         },

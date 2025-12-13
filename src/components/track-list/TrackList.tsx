@@ -2,18 +2,13 @@
 
 import { TrackType } from '../../../@types/track'
 import TrackCard from '../track-card/TrackCard'
-
 import { useCallback, useEffect, useRef } from 'react'
-import InfiniteScrollTrigger from './InfiniteScrollTrigger'
 import { useTrackListStore } from './TrackListContext'
 import { usePlayerStore } from '@/store/playerStore'
 
 export default function TrackList() {
     const tracks = useTrackListStore((s) => s.tracks)
-    const hasMore = useTrackListStore((s) => s.hasMore)
-    const loadMore = useTrackListStore((s) => s.loadMore)
     const source = useTrackListStore((s) => s.source)
-
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const bindTrackList = usePlayerStore((s) => s.bindTrackList)
 
@@ -36,13 +31,6 @@ export default function TrackList() {
             {tracks.map((track) => (
                 <TrackCard key={track.id} track={track} onClick={handlePlay} />
             ))}
-
-            <InfiniteScrollTrigger
-                hasMore={hasMore}
-                onIntersect={() => {
-                    loadMore()
-                }}
-            />
         </div>
     )
 }

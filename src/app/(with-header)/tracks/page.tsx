@@ -4,10 +4,11 @@ import getUserBySession from '@/authentification/actions/getUserBySession'
 import { redirect } from 'next/navigation'
 import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackList from '@/components/track-list/TrackList'
+import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInfiniteScrollTrigger'
 
 export default async function TracksPage() {
     const user = await getUserBySession()
-    if (!user) redirect('/auth/signin')
+    if (!user) redirect('/auth/signin') // TO DO: make function for authorization check or move to middleware
     return (
         <main className="flex w-full flex-col sm:px-6 md:px-10 lg:px-20 xl:mx-auto xl:max-w-4xl">
             <h1 className="my-4 text-4xl font-bold">My music library</h1>
@@ -16,6 +17,7 @@ export default async function TracksPage() {
                 <TrackListProvider
                     initialState={{ source: 'api/track/list?type=user' }}>
                     <TrackList />
+                    <TrackListInfiniteScrollTrigger />
                 </TrackListProvider>
             </div>
         </main>

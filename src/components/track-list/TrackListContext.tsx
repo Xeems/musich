@@ -39,9 +39,7 @@ export function useTrackListStore<T>(
     const store = useContext(TrackListContext)
 
     if (!store) {
-        throw new Error(
-            'useAudioPlayerStore must be used within an AudioPlayerProvider',
-        )
+        throw new Error('useTrackListStore must be used within an Provider')
     }
 
     return useStore(store, selector)
