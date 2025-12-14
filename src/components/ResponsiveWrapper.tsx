@@ -1,30 +1,49 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import {
+    createContext,
+    useContext,
+    useState,
+    useEffect,
+    useSyncExternalStore,
+} from 'react'
 
-interface ResponsiveContextValue {
-    isMobile: boolean
-}
-
-const ResponsiveContext = createContext<ResponsiveContextValue | null>(null)
+const ResponsiveContext = createContext<{ isMobile: boolean } | null>(null)
 
 interface ResponsiveWrapperProps {
     breakpoint?: number
     children: React.ReactNode
 }
 
+function createMediaQueryStore(breakpoint: number) {
+    const query = `(max-width: ${breakpoint - 1}px)`
+
+    const getSnapshot = () =>
+        typeof window !== 'undefined' ? window.matchMedia(query).matches : false
+
+    const getServerSnapshot = () => false
+
+    const subscribe = (callback: () => void) => {
+        const media = window.matchMedia(query)
+        media.addEventListener('change', callback)
+        return () => media.removeEventListener('change', callback)
+    }
+
+    return { getSnapshot, getServerSnapshot, subscribe }
+}
+
 export function ResponsiveWrapper({
     breakpoint = 768,
     children,
 }: ResponsiveWrapperProps) {
-    const [isMobile, setIsMobile] = useState(true)
+    const { subscribe, getSnapshot, getServerSnapshot } =
+        createMediaQueryStore(breakpoint)
 
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < breakpoint)
-        handleResize()
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [breakpoint])
+    const isMobile = useSyncExternalStore(
+        subscribe,
+        getSnapshot,
+        getServerSnapshot,
+    )
 
     return (
         <ResponsiveContext.Provider value={{ isMobile }}>
