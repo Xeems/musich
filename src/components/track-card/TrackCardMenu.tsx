@@ -45,7 +45,7 @@ export default function TrackCardMenu({ track }: Props) {
                     <EllipsisVerticalIcon />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="z-[51]">
                 <DropdownMenuGroup>
                     <DropdownMenuLabel>Playlists</DropdownMenuLabel>
                     <DropdownMenuItem>in-progress</DropdownMenuItem>

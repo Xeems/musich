@@ -23,7 +23,7 @@ export default function TrackList() {
             bindTrackList({ queue: tracks, queueSource: source })
             setCurrentTrack(trackToPlay)
         },
-        [setCurrentTrack, bindTrackList],
+        [bindTrackList, tracksRef, source, setCurrentTrack],
     )
 
     return (

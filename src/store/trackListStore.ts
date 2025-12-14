@@ -49,11 +49,7 @@ export const createTrackListStore = (
 
         loadMore: async () => {
             const { loading, hasMore, offset, limit, source } = get()
-            console.log('LOAD MORE', {
-                offset,
-                limit,
-                tracks: get().tracks.length,
-            })
+
             if (loading || !hasMore || !source) return
 
             set({ loading: true })
@@ -71,7 +67,6 @@ export const createTrackListStore = (
                     }))
                 }
             } finally {
-                console.log(hasMore)
                 set({ loading: false })
             }
         },

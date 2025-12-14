@@ -17,6 +17,8 @@ export default function Player() {
     const tracks = usePlayerStore((s) => s.queue)
     const source = usePlayerStore((s) => s.queueSource)
 
+    console.log(tracks)
+
     return (
         <div className="w-lg space-y-8">
             <div className="flex flex-col gap-y-8">
