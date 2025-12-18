@@ -53,7 +53,7 @@ export const usePlayerStore = create<PlayerStoreType>((set, get) => ({
     },
 
     bindTrackList: ({ queue, queueSource }) => {
-        set({ queue, queueSource })
+        set({ queue: queue, queueSource })
     },
 
     setCurrentTrackTime: (time) => {

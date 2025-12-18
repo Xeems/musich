@@ -3,7 +3,6 @@
 import { create } from 'zustand'
 import { TrackType } from '../../@types/track'
 import { getTracks } from '@/lib/api/getTracks'
-import { d } from 'drizzle-kit/index-BAUrj6Ib'
 
 export type TrackListDisplayModeType = 'default' | 'user'
 
@@ -29,15 +28,20 @@ const DEFFAULTLIMIT = 2 as const
 export const createTrackListStore = (
     initialState?: Partial<TrackListStoreType>,
 ) => {
+    const initialTracks = initialState?.tracks ?? []
+
     return create<TrackListStoreType>((set, get) => ({
-        tracks: [],
-        source: '',
-        offset: 0,
-        limit: DEFFAULTLIMIT,
-        hasMore: true,
+        tracks: initialTracks,
+        source: initialState?.source ?? '',
+        offset: initialTracks.length,
+        limit: initialState?.limit ?? DEFFAULTLIMIT,
+        hasMore:
+            initialTracks.length > 0
+                ? initialTracks.length ===
+                  (initialState?.limit ?? DEFFAULTLIMIT)
+                : true,
         loading: false,
-        displayMode: 'default',
-        ...initialState,
+        displayMode: initialState?.displayMode ?? 'default',
 
         setQueue: (tracks, limit = DEFFAULTLIMIT) =>
             set(() => ({

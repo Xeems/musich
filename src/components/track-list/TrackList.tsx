@@ -20,10 +20,10 @@ export default function TrackList() {
 
     const handlePlay = useCallback(
         (trackToPlay: TrackType) => {
-            bindTrackList({ queue: tracks, queueSource: source })
+            bindTrackList({ queue: tracksRef.current, queueSource: source })
             setCurrentTrack(trackToPlay)
         },
-        [bindTrackList, tracksRef, source, setCurrentTrack],
+        [bindTrackList, source, setCurrentTrack],
     )
 
     return (
