@@ -9,6 +9,7 @@ import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInfiniteScrollTrigger'
 import TrackCover from '@/components/TrackCover'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import getTrackById from '@/lib/api/getTrackById'
 import { usePlayerStore } from '@/store/playerStore'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
@@ -17,7 +18,11 @@ export default function Player() {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
     const tracks = usePlayerStore((s) => s.queue)
     const source = usePlayerStore((s) => s.queueSource)
-    //const { track } = useSearchParams()
+    const id = useSearchParams().get('track')
+
+    if (id) {
+        const data = getTrackById(id)
+    }
 
     return (
         <div className="w-full space-y-8">

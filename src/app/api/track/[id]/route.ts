@@ -10,6 +10,7 @@ export async function GET(
         const track = await db.query.TrackTable.findFirst({
             where: (tracks, { eq }) => eq(tracks.id, id),
         })
+
         if (!track) return NextResponse.json({}, { status: 404 })
 
         return NextResponse.json(
