@@ -10,12 +10,14 @@ import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInf
 import TrackCover from '@/components/TrackCover'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { usePlayerStore } from '@/store/playerStore'
+import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
 export default function Player() {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
     const tracks = usePlayerStore((s) => s.queue)
     const source = usePlayerStore((s) => s.queueSource)
+    //const { track } = useSearchParams()
 
     return (
         <div className="w-full space-y-8">

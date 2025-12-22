@@ -9,62 +9,50 @@ import {
     DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
-import { EllipsisVerticalIcon, HeartIcon, Trash2Icon } from 'lucide-react'
-import { toggleTrackLike } from '@/actions/toggleTrackLike'
+import { EllipsisVerticalIcon, Share2Icon } from 'lucide-react'
+
 import { TrackType } from '../../../@types/track'
-import { useTrackListStore } from '../track-list/TrackListContext'
+
+import { Dialog, DialogTrigger } from '../ui/dialog'
+import ToggleLikeDropdownItem from './ToggleLikeDropdownItem'
+
+import ShareTrackDialogContent from './ShareTrackDialogContent'
 
 type Props = {
     track: TrackType
 }
 
 export default function TrackCardMenu({ track }: Props) {
-    const trackState = useTrackListStore((state) =>
-        state.tracks.find((t) => t.id === track.id),
-    )
-
-    const toggleLike = useTrackListStore((state) => state.toggleLike)
-
-    const displayMode = useTrackListStore((state) => state.displayMode)
-
-    const deleteTrackFromList = useTrackListStore(
-        (state) => state.deleteTrackFromList,
-    )
-
-    const handleLikeToggle = async () => {
-        const res = await toggleTrackLike(track.id)
-        if (res.success) {
-            toggleLike(track.id, !track.isLikedByCurrentUser)
-            if (displayMode === 'user') deleteTrackFromList(track.id)
-        }
-    }
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant={'ghost'}>
-                    <EllipsisVerticalIcon />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="z-[51]">
-                <DropdownMenuGroup>
-                    <DropdownMenuLabel>Playlists</DropdownMenuLabel>
-                    <DropdownMenuItem>in-progress</DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLikeToggle}>
-                    {trackState?.isLikedByCurrentUser ? (
-                        <>
-                            <Trash2Icon className="text-destructive" />
-                            Delete from мy library
-                        </>
-                    ) : (
-                        <>
-                            <HeartIcon className="text-red-500" />
-                            Add to my library
-                        </>
-                    )}
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <Dialog>
+            <DropdownMenu modal={false}>
+                <DropdownMenuTrigger asChild>
+                    <Button variant={'ghost'}>
+                        <EllipsisVerticalIcon />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {/* Playlists */}
+                    <DropdownMenuGroup>
+                        <DropdownMenuLabel>Playlists</DropdownMenuLabel>
+                        <DropdownMenuItem>in-progress</DropdownMenuItem>
+                    </DropdownMenuGroup>
+
+                    <DropdownMenuSeparator />
+
+                    {/* Share track dialog trigger*/}
+                    <DialogTrigger asChild>
+                        <DropdownMenuItem>
+                            <Share2Icon /> Share track
+                        </DropdownMenuItem>
+                    </DialogTrigger>
+
+                    {/* Toggle like */}
+                    <ToggleLikeDropdownItem track={track} />
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <ShareTrackDialogContent track={track} />
+        </Dialog>
     )
 }
