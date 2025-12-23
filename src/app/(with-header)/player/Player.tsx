@@ -9,20 +9,25 @@ import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInfiniteScrollTrigger'
 import TrackCover from '@/components/TrackCover'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import getTrackById from '@/lib/api/getTrackById'
 import { usePlayerStore } from '@/store/playerStore'
-import { useSearchParams } from 'next/navigation'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { TrackType } from '../../../../@types/track'
 
-export default function Player() {
+type PlayerProps = {
+    initialTrack?: TrackType
+}
+
+export default function Player({ initialTrack }: PlayerProps) {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
     const tracks = usePlayerStore((s) => s.queue)
     const source = usePlayerStore((s) => s.queueSource)
-    const id = useSearchParams().get('track')
+    const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
 
-    if (id) {
-        const data = getTrackById(id)
-    }
+    useEffect(() => {
+        if (initialTrack) {
+            setCurrentTrack(initialTrack)
+        }
+    }, [])
 
     return (
         <div className="w-full space-y-8">

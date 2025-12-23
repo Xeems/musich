@@ -1,10 +1,20 @@
 import React from 'react'
 import Player from './Player'
+import getTrackById from '@/lib/api/getTrackById'
 
-export default function page() {
+type PlayerPageProps = {
+    searchParams: {
+        track?: string
+    }
+}
+
+export default async function page({ searchParams }: PlayerPageProps) {
+    const { track } = await searchParams
+    const initialTrack = track ? await getTrackById(track) : undefined
+
     return (
-        <div>
-            <Player />
-        </div>
+        <main>
+            <Player initialTrack={initialTrack} />
+        </main>
     )
 }

@@ -1,5 +1,3 @@
-import { TrackType } from '../../../@types/track'
-
 export default async function getTrackById(id: string) {
     const fullUrl = new URL(
         `track/${id}`,
@@ -10,7 +8,8 @@ export default async function getTrackById(id: string) {
         cache: 'no-store',
     })
 
-    if (!res.ok) throw new Error('Failed to load track')
+    if (!res.ok) return undefined
 
-    return (await res.json()) as TrackType
+    const json = await res.json()
+    return json.data
 }
