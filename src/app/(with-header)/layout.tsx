@@ -13,10 +13,10 @@ export default function Layout({
         <div className="pb-40">
             <GlobalAudio />
             <Header />
-            <div>
-                {children}
-                {modal}
-            </div>
+
+            {children}
+            {modal}
+
             <LayoutPlayer />
         </div>
     )

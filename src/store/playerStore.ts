@@ -1,6 +1,7 @@
 import { RefObject } from 'react'
 import { TrackType } from '../../@types/track'
 import { create } from 'zustand'
+import { subscribeWithSelector } from 'zustand/middleware'
 
 type PlayerStoreType = {
     audioRef: RefObject<HTMLAudioElement> | null
@@ -25,51 +26,53 @@ type PlayerStoreType = {
     clearQueue: () => void
 }
 
-export const usePlayerStore = create<PlayerStoreType>((set, get) => ({
-    audioRef: null,
-    currentTrack: null,
-    isPlaying: false,
-    currentTrackTime: 0,
-    currentTrackBufferedPercent: 0,
-    volume: 0.7,
-    queue: [],
-    queueSource: '',
+export const usePlayerStore = create<PlayerStoreType>()(
+    subscribeWithSelector((set, get) => ({
+        audioRef: null,
+        currentTrack: null,
+        isPlaying: false,
+        currentTrackTime: 0,
+        currentTrackBufferedPercent: 0,
+        volume: 0.7,
+        queue: [],
+        queueSource: '',
 
-    setAudioRef: (ref) => set({ audioRef: ref }),
+        setAudioRef: (ref) => set({ audioRef: ref }),
 
-    setCurrentTrack: (track) => set({ currentTrack: track }),
+        setCurrentTrack: (track) => set({ currentTrack: track }),
 
-    togglePlay: () => {
-        const { audioRef, isPlaying } = get()
-        if (!audioRef?.current) return
+        togglePlay: () => {
+            const { audioRef, isPlaying } = get()
+            if (!audioRef?.current) return
 
-        if (isPlaying) {
-            audioRef.current.pause()
-        } else {
-            audioRef.current.play()
-        }
+            if (isPlaying) {
+                audioRef.current.pause()
+            } else {
+                audioRef.current.play()
+            }
 
-        set({ isPlaying: !isPlaying })
-    },
+            set({ isPlaying: !isPlaying })
+        },
 
-    bindTrackList: ({ queue, queueSource }) => {
-        set({ queue: queue, queueSource })
-    },
+        bindTrackList: ({ queue, queueSource }) => {
+            set({ queue: queue, queueSource })
+        },
 
-    setCurrentTrackTime: (time) => {
-        const { audioRef } = get()
-        if (!audioRef?.current) return
-        audioRef.current.currentTime = time
-        set({ currentTrackTime: time })
-    },
+        setCurrentTrackTime: (time) => {
+            const { audioRef } = get()
+            if (!audioRef?.current) return
+            audioRef.current.currentTime = time
+            set({ currentTrackTime: time })
+        },
 
-    setVolume: (value) => {
-        const { audioRef } = get()
-        if (!audioRef?.current) return
+        setVolume: (value) => {
+            const { audioRef } = get()
+            if (!audioRef?.current) return
 
-        audioRef.current.volume = value
-        set({ volume: value })
-    },
+            audioRef.current.volume = value
+            set({ volume: value })
+        },
 
-    clearQueue: () => set({ queue: [] }),
-}))
+        clearQueue: () => set({ queue: [] }),
+    })),
+)
