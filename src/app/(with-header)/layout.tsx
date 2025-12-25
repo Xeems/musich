@@ -1,6 +1,5 @@
 import LayoutPlayer from '@/components/player/LayoutPlayer'
 import Header from '@/components/Header'
-import GlobalAudio from '@/components/player/GlobalAudio'
 
 export default function Layout({
     children,
@@ -11,7 +10,6 @@ export default function Layout({
 }) {
     return (
         <div className="pb-40">
-            <GlobalAudio />
             <Header />
 
             {children}
