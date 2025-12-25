@@ -11,7 +11,7 @@ import TrackCover from '@/components/TrackCover'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { usePlayerStore } from '@/store/playerStore'
 import React, { useEffect } from 'react'
-import { TrackType } from '../../../../@types/track'
+import { TrackType } from '../../../@types/track'
 import { useShallow } from 'zustand/shallow'
 
 type PlayerProps = {
@@ -37,19 +37,19 @@ export default function Player({ initialTrack }: PlayerProps) {
     return (
         <div className="@container w-full space-y-8">
             <div className="flex flex-col gap-y-8">
-                <div className="flex flex-col gap-x-8 @lg:flex-row">
-                    <div>
+                <div className="flex h-full flex-col items-center justify-between gap-x-8 gap-y-4 @md:flex-row">
+                    <div className="flex size-full max-w-72 justify-center @md:size-36 @md:w-fit">
                         <TrackCover
                             imageName={currentTrack?.imageName}
                             size="full"
                         />
                     </div>
 
-                    <div className="flex w-full flex-col justify-between">
-                        <div className="flex flex-col">
-                            <h2 className="text-player-title mb-2 text-4xl font-bold text-balance">
+                    <div className="flex w-full flex-col items-stretch justify-between gap-8">
+                        <div className="flex flex-col items-center @md:items-start">
+                            <h1 className="text-player-title mb-2 text-4xl font-bold text-balance">
                                 {currentTrack?.name}
-                            </h2>
+                            </h1>
                             <p className="text-player-artist text-muted-foreground text-2xl">
                                 {currentTrack?.author}
                             </p>

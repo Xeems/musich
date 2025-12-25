@@ -9,13 +9,17 @@ type Props = {
 }
 
 const sizeClasses = {
-    small: 'h-11 w-11',
-    medium: 'h-14 w-14',
-    large: 'h-36 w-36',
-    full: 'size-full max-w-64',
+    small: 'size-11',
+    medium: 'size-14',
+    large: 'size-36',
+    full: 'size-full ',
 } as const
 
-export default function TrackCover({ imageName, size = 'medium' }: Props) {
+export default function TrackCover({
+    imageName,
+
+    size = 'medium',
+}: Props) {
     const [hasError, setHasError] = useState(false)
 
     return (
