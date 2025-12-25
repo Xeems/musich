@@ -13,8 +13,8 @@ export default async function page({ searchParams }: PlayerPageProps) {
     const initialTrack = track ? await getTrackById(track) : undefined
 
     return (
-        <main className="flex h-full items-center justify-center p-4">
-            <div className="flex h-full w-full max-w-xl">
+        <main className="flex flex-1 justify-center p-4">
+            <div className="flex w-full max-w-xl flex-1">
                 <Player initialTrack={initialTrack} />
             </div>
         </main>

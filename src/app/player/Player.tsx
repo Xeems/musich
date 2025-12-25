@@ -35,10 +35,10 @@ export default function Player({ initialTrack }: PlayerProps) {
     }, [initialTrack, setCurrentTrack])
 
     return (
-        <div className="@container w-full space-y-8">
-            <div className="flex flex-col gap-y-8">
-                <div className="flex h-full flex-col items-center justify-between gap-x-8 gap-y-4 @md:flex-row">
-                    <div className="flex size-full max-w-72 justify-center @md:size-36 @md:w-fit">
+        <div className="@container flex w-full flex-1 flex-col space-y-8">
+            <div className="flex h-full flex-col gap-y-8">
+                <div className="flex flex-col items-center gap-x-8 gap-y-4 @md:flex-row">
+                    <div className="flex size-full max-h-72 max-w-72 @md:size-36 @md:w-fit">
                         <TrackCover
                             imageName={currentTrack?.imageName}
                             size="full"
