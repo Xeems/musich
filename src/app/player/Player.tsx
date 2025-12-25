@@ -36,37 +36,8 @@ export default function Player({ initialTrack }: PlayerProps) {
 
     return (
         <div className="@container flex w-full flex-1 flex-col space-y-8">
-            {/* <div className="flex h-full flex-col gap-y-8">
-                <div className="flex flex-col items-center gap-x-8 gap-y-4 @md:flex-row">
-                    <div className="flex size-full max-h-72 max-w-72 @md:size-36 @md:w-fit">
-                        <TrackCover
-                            imageName={currentTrack?.imageName}
-                            size="full"
-                        />
-                    </div>
-
-                    <div className="flex w-full flex-col items-stretch justify-between gap-8">
-                        <div className="flex flex-col items-center @md:items-start">
-                            <h1 className="text-player-title mb-2 text-4xl font-bold text-balance">
-                                {currentTrack?.name}
-                            </h1>
-                            <p className="text-player-artist text-muted-foreground text-2xl">
-                                {currentTrack?.author}
-                            </p>
-                        </div>
-                        <div className="flex flex-row items-center justify-between">
-                            <PlayerModeToggle />
-                            <PlayerControls />
-                            <PlayerVolume isSliderHidden={true} />
-                        </div>
-                    </div>
-                </div>
-
-                <TrackTimeSlider />
-            </div> */}
-
-            <div className="flex flex-1 flex-col items-center justify-between gap-4 @md:grid @md:grid-cols-[auto_1fr] @md:grid-rows-[auto_1fr]">
-                <div className="flex size-full max-w-full @md:size-36 @md:w-fit">
+            <div className="flex flex-col items-center justify-center gap-y-10 @md:grid @md:grid-cols-[auto_1fr] @md:grid-rows-[auto_1fr] @md:gap-4">
+                <div className="flex w-full justify-center @md:size-36 @md:w-fit">
                     <TrackCover
                         imageName={currentTrack?.imageName}
                         size="full"

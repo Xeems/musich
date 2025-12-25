@@ -10,8 +10,6 @@ export default function Layout({
 }) {
     return (
         <div className="pb-40">
-            <Header />
-
             {children}
             {modal}
 

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import React from 'react'
 import GlobalAudio from '@/components/player/GlobalAudio'
+import Header from '@/components/Header'
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -28,6 +29,7 @@ export default function RootLayout({
         <html lang="en">
             <body
                 className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}>
+                <Header />
                 {children}
                 <GlobalAudio />
             </body>

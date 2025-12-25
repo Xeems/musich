@@ -12,7 +12,7 @@ const sizeClasses = {
     small: 'size-11',
     medium: 'size-14',
     large: 'size-36',
-    full: 'size-full ',
+    full: 'size-full max-w-72 max-h-72',
 } as const
 
 export default function TrackCover({ imageName, size = 'medium' }: Props) {
