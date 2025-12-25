@@ -11,6 +11,7 @@ import Link from 'next/link'
 
 export default function LayoutPlayer() {
     const currentTrack = usePlayerStore((s) => s.currentTrack)
+    if (!currentTrack) return
 
     return (
         <Card className="fixed inset-x-0 bottom-0 flex w-full items-center justify-center rounded-none border-none p-0 md:border-t md:border-solid md:p-3">
