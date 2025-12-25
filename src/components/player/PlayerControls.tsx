@@ -8,35 +8,61 @@ import {
 } from 'lucide-react'
 import { useTrackQueue } from '@/hooks/player/useTrackQueue'
 import { usePlayerStore } from '@/store/playerStore'
+import { useShallow } from 'zustand/shallow'
 
-export default function PlayerControls() {
-    const audioRef = usePlayerStore((s) => s.audioRef)
-    const togglePlay = usePlayerStore((s) => s.togglePlay)
-    const isPlaying = usePlayerStore((s) => s.isPlaying)
+type PlayerControlsProps = {
+    size?: keyof typeof sizeClasses
+}
+
+const sizeClasses = {
+    medium: {
+        button: 'size-10',
+        icon: 'size-5',
+    },
+    large: {
+        button: 'size-13',
+        icon: 'size-6',
+    },
+} as const
+
+export default function PlayerControls({
+    size = 'medium',
+}: PlayerControlsProps) {
+    const { audioRef, togglePlay, isPlaying } = usePlayerStore(
+        useShallow((s) => ({
+            audioRef: s.audioRef,
+            togglePlay: s.togglePlay,
+            isPlaying: s.isPlaying,
+        })),
+    )
+
     const { playNext, playPrev } = useTrackQueue(audioRef)
+    const classes = sizeClasses[size]
 
     return (
-        <div className="flex flex-row items-center justify-center gap-x-2">
+        <div className="flex items-center justify-center gap-x-2">
             <Button
                 onClick={playPrev}
                 variant="ghost"
-                className="h-8 w-8 rounded-full p-0">
-                <SkipBackIcon />
+                className={`rounded-full p-0 ${classes.button}`}>
+                <SkipBackIcon className={classes.icon} />
             </Button>
+
             <Button
                 onClick={togglePlay}
-                className="flex h-10 w-10 items-center justify-center rounded-4xl p-0">
+                className={`rounded-full p-0 ${classes.button}`}>
                 {isPlaying ? (
-                    <PauseIcon className="size-6" />
+                    <PauseIcon className={classes.icon} />
                 ) : (
-                    <PlayIcon className="size-6" />
+                    <PlayIcon className={classes.icon} />
                 )}
             </Button>
+
             <Button
+                onClick={playNext}
                 variant="ghost"
-                className="h-8 w-8 rounded-full p-0"
-                onClick={playNext}>
-                <SkipForwardIcon />
+                className={`rounded-full p-0 ${classes.button}`}>
+                <SkipForwardIcon className={classes.icon} />
             </Button>
         </div>
     )

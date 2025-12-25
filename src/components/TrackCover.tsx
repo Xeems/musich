@@ -15,26 +15,18 @@ const sizeClasses = {
     full: 'size-full ',
 } as const
 
-export default function TrackCover({
-    imageName,
-
-    size = 'medium',
-}: Props) {
+export default function TrackCover({ imageName, size = 'medium' }: Props) {
     const [hasError, setHasError] = useState(false)
 
     return (
-        <div
-            className={cn(
-                'relative aspect-square h-16 w-16',
-                sizeClasses[size],
-            )}>
+        <div className={cn('relative aspect-square', sizeClasses[size])}>
             {imageName && !hasError ? (
                 <Image
                     src={`/api/images/${imageName}`}
                     alt={imageName}
                     fill
                     sizes="full"
-                    className="rounded-sm object-cover"
+                    className="aspect-square rounded-sm object-cover"
                     quality={75}
                     onError={() => setHasError(true)}
                 />
