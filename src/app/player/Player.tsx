@@ -36,15 +36,16 @@ export default function Player({ initialTrack }: PlayerProps) {
 
     return (
         <div className="@container flex w-full flex-1 flex-col space-y-8">
-            <div className="flex flex-col items-center justify-center gap-y-10 @md:grid @md:grid-cols-[auto_1fr] @md:grid-rows-[auto_1fr] @md:gap-4">
+            <div className="flex min-h-svw flex-col items-center justify-center gap-y-10 @md:grid @md:min-h-fit @md:grid-cols-[auto_1fr] @md:grid-rows-[auto_1fr] @md:gap-4">
                 <div className="flex w-full justify-center @md:size-36 @md:w-fit">
                     <TrackCover
                         imageName={currentTrack?.imageName}
                         size="full"
+                        quality={100}
                     />
                 </div>
 
-                <div className="flex w-full flex-col items-stretch justify-between gap-8">
+                <div className="flex h-full w-full flex-col items-stretch justify-between gap-y-8 @md:gap-4">
                     <div className="flex flex-col items-center @md:items-start">
                         <h1 className="text-player-title mb-2 text-4xl font-bold text-balance">
                             {currentTrack?.name}
@@ -55,7 +56,7 @@ export default function Player({ initialTrack }: PlayerProps) {
                     </div>
                     <div className="flex flex-row items-center justify-between">
                         <PlayerModeToggle />
-                        <PlayerControls size="large" />
+                        <PlayerControls />
                         <PlayerVolume isSliderHidden={true} />
                     </div>
                 </div>
@@ -65,23 +66,19 @@ export default function Player({ initialTrack }: PlayerProps) {
                 </div>
             </div>
 
-            <div>
-                {tracks.length > 1 && (
-                    <>
-                        <p className="text-lg font-medium">Queue</p>
-                        <ScrollArea className="h-80">
-                            <TrackListProvider
-                                initialState={{
-                                    source: source,
-                                    tracks: tracks,
-                                }}>
-                                <TrackList />
-                                <TrackListInfiniteScrollTrigger />
-                            </TrackListProvider>
-                        </ScrollArea>
-                    </>
-                )}
-            </div>
+            {tracks.length > 1 && (
+                <div>
+                    <p className="text-lg font-medium">Queue</p>
+                    <TrackListProvider
+                        initialState={{
+                            source: source,
+                            tracks: tracks,
+                        }}>
+                        <TrackList />
+                        <TrackListInfiniteScrollTrigger />
+                    </TrackListProvider>
+                </div>
+            )}
         </div>
     )
 }

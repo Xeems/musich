@@ -6,6 +6,7 @@ import { useState } from 'react'
 type Props = {
     imageName: string | undefined | null
     size?: keyof typeof sizeClasses
+    quality?: number
 }
 
 const sizeClasses = {
@@ -15,7 +16,11 @@ const sizeClasses = {
     full: 'size-full max-w-72 max-h-72',
 } as const
 
-export default function TrackCover({ imageName, size = 'medium' }: Props) {
+export default function TrackCover({
+    imageName,
+    size = 'medium',
+    quality = 75,
+}: Props) {
     const [hasError, setHasError] = useState(false)
 
     return (
@@ -27,7 +32,8 @@ export default function TrackCover({ imageName, size = 'medium' }: Props) {
                     fill
                     sizes="full"
                     className="aspect-square rounded-sm object-cover"
-                    quality={75}
+                    loading="eager"
+                    quality={quality}
                     onError={() => setHasError(true)}
                 />
             ) : (

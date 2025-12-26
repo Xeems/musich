@@ -1,5 +1,4 @@
-import React from 'react'
-import { DialogContent, DialogTitle } from '../ui/dialog'
+import { DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
 import { CopyInput } from '../CopyInput'
 import { TrackType } from '../../../@types/track'
 
@@ -8,15 +7,17 @@ type Props = {
 }
 
 export default function ShareTrackDialogContent({ track }: Props) {
-    if (typeof window === 'undefined') return ''
-
-    const origin = window.location.origin
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
 
     const link = `${origin}/player?track=${track.id}`
     return (
-        <DialogContent className="z-[51]">
-            <DialogTitle>Share track</DialogTitle>
+        <>
+            <DialogHeader>
+                <DialogTitle>Share track</DialogTitle>
+                <DialogDescription />
+            </DialogHeader>
+
             <CopyInput value={link} />
-        </DialogContent>
+        </>
     )
 }

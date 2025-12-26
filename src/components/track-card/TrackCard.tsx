@@ -23,23 +23,25 @@ type Props = {
 function TrackCard({ track, onClick }: Props) {
     return (
         <Card
-            tabIndex={0}
             onClick={() => onClick?.(track)}
-            className="hover:bg-primary/10 focus:bg-primary/10 @container relative flex flex-row justify-center overflow-hidden rounded-sm border-none bg-transparent px-4 py-2 shadow-none">
-            <TrackCardProgresbar track={track} />
+            className="hover:bg-primary/10 focus-within:bg-primary/10 @container relative flex items-center overflow-hidden rounded-sm border-none bg-transparent px-4 py-2 shadow-none">
+            <div className="flex w-full items-center gap-4">
+                <TrackCardProgresbar track={track} />
 
-            <TrackCover imageName={track.imageName ?? null} />
+                <TrackCover imageName={track.imageName ?? null} />
 
-            <CardHeader className="text-md flex w-full flex-col items-start justify-center gap-1 px-0">
-                <CardTitle>{track.name}</CardTitle>
-                <CardDescription>{track.author}</CardDescription>
-            </CardHeader>
+                <CardHeader className="flex w-full flex-col gap-1 px-0">
+                    <CardTitle>{track.name}</CardTitle>
+                    <CardDescription>{track.author}</CardDescription>
+                </CardHeader>
 
-            <div className="flex flex-row items-center justify-center gap-4">
-                <TrackCardTimer track={track} />
-
-                <TrackLikes track={track} />
-                <TrackCardMenu track={track} />
+                <div className="flex items-center gap-4">
+                    <TrackCardTimer track={track} />
+                    <TrackLikes track={track} />
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <TrackCardMenu track={track} />
+                    </div>
+                </div>
             </div>
         </Card>
     )
