@@ -1,13 +1,13 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Player from '../../../player/Player'
-import Modal from './Modal'
+import DrawerDialog from './DrawerDialog'
 
 export default function Page() {
     return (
-        <Modal>
+        <DrawerDialog>
             <ScrollArea className="h-svh">
                 <Player />
             </ScrollArea>
-        </Modal>
+        </DrawerDialog>
     )
 }

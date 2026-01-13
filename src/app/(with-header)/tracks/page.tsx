@@ -1,10 +1,11 @@
-import React from 'react'
 import TrackUploadForm from './TrackUploadDialog'
 import getUserBySession from '@/authentification/actions/getUserBySession'
 import { redirect } from 'next/navigation'
 import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackList from '@/components/track-list/TrackList'
 import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInfiniteScrollTrigger'
+
+const loadSource = 'api/track/list?type=user' as const
 
 export default async function TracksPage() {
     const user = await getUserBySession()
@@ -14,8 +15,7 @@ export default async function TracksPage() {
             <h1 className="my-4 text-4xl font-bold">My music library</h1>
             <div className="">
                 <TrackUploadForm />
-                <TrackListProvider
-                    initialState={{ source: 'api/track/list?type=user' }}>
+                <TrackListProvider initialState={{ source: loadSource }}>
                     <TrackList />
                     <TrackListInfiniteScrollTrigger />
                 </TrackListProvider>

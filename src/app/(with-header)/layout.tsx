@@ -12,7 +12,6 @@ export default function Layout({
         <div className="pb-40">
             {children}
             {modal}
-
             <LayoutPlayer />
         </div>
     )

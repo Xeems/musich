@@ -1,7 +1,6 @@
 import TrackList from '@/components/track-list/TrackList'
 import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInfiniteScrollTrigger'
-import React from 'react'
 
 const loadSource = '/api/track/list' as const
 

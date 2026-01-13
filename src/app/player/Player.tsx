@@ -36,7 +36,7 @@ export default function Player({ initialTrack }: PlayerProps) {
 
     return (
         <div className="@container flex w-full flex-1 flex-col space-y-8">
-            <div className="flex min-h-svw flex-col items-center justify-center gap-y-10 @md:grid @md:min-h-fit @md:grid-cols-[auto_1fr] @md:grid-rows-[auto_1fr] @md:gap-4">
+            <div className="flex flex-col items-center justify-center gap-y-10 @md:grid @md:grid-cols-[auto_1fr] @md:grid-rows-[auto_1fr] @md:gap-4">
                 <div className="flex w-full justify-center @md:size-36 @md:w-fit">
                     <TrackCover
                         imageName={currentTrack?.imageName}
@@ -67,8 +67,9 @@ export default function Player({ initialTrack }: PlayerProps) {
             </div>
 
             {tracks.length > 1 && (
-                <div>
+                <>
                     <p className="text-lg font-medium">Queue</p>
+
                     <TrackListProvider
                         initialState={{
                             source: source,
@@ -77,7 +78,7 @@ export default function Player({ initialTrack }: PlayerProps) {
                         <TrackList />
                         <TrackListInfiniteScrollTrigger />
                     </TrackListProvider>
-                </div>
+                </>
             )}
         </div>
     )
