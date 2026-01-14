@@ -1,5 +1,5 @@
 import React from 'react'
-import Player from './Player'
+import PagePlayer from './PagePlayer'
 import getTrackById from '@/lib/api/getTrackById'
 
 type PlayerPageProps = {
@@ -15,7 +15,7 @@ export default async function page({ searchParams }: PlayerPageProps) {
     return (
         <main className="flex flex-1 justify-center p-4">
             <div className="flex w-full max-w-xl flex-1 items-center">
-                <Player initialTrack={initialTrack} />
+                <PagePlayer initialTrack={initialTrack} />
             </div>
         </main>
     )
