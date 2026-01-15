@@ -32,8 +32,8 @@ export default function PagePlayer({ initialTrack }: PlayerProps) {
     }, [initialTrack, setCurrentTrack])
 
     return (
-        <div className="flex w-full flex-col items-center justify-center gap-y-10">
-            <div className="flex w-full justify-center">
+        <div className="flex h-fit w-full flex-col items-stretch justify-center gap-4">
+            <div className="-mb-2 flex w-full justify-center">
                 <TrackCover
                     imageName={currentTrack?.imageName}
                     size="full"
@@ -41,20 +41,19 @@ export default function PagePlayer({ initialTrack }: PlayerProps) {
                 />
             </div>
 
-            <div className="flex h-full w-full flex-col items-stretch justify-between gap-y-8">
-                <div className="flex flex-col items-center">
-                    <h1 className="text-player-title mb-2 text-4xl font-bold text-balance">
-                        {currentTrack?.name}
-                    </h1>
-                    <p className="text-player-artist text-muted-foreground text-2xl">
-                        {currentTrack?.author}
-                    </p>
-                </div>
-                <div className="flex flex-row items-center justify-between">
-                    <PlayerModeToggle />
-                    <PlayerControls size="large" />
-                    <PlayerVolume isSliderHidden />
-                </div>
+            <div className="flex flex-col items-center">
+                <h1 className="text-player-title text-4xl font-bold text-balance">
+                    {currentTrack?.name}
+                </h1>
+                <p className="text-player-artist text-muted-foreground text-2xl">
+                    {currentTrack?.author}
+                </p>
+            </div>
+
+            <div className="flex flex-row items-center justify-between">
+                <PlayerModeToggle />
+                <PlayerControls size="large" />
+                <PlayerVolume isSliderHidden />
             </div>
 
             <div className="col-span-2 row-start-2 w-full">
