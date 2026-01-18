@@ -23,7 +23,7 @@ export default function PlayerDialog({
             onOpenChange={() => {
                 router.back()
             }}>
-            <DialogContent className="flex h-screen max-h-screen w-full max-w-screen rounded-none sm:max-w-screen md:max-w-screen lg:max-h-[80dvh] lg:max-w-5xl lg:rounded-lg">
+            <DialogContent className="flex h-screen max-h-screen w-full max-w-screen gap-x-0 rounded-none px-0 md:max-w-screen md:px-6 lg:max-h-[80dvh] lg:max-w-5xl lg:rounded-lg">
                 <DialogHeader className="shrink-0">
                     <DialogTitle />
                     <DialogDescription />

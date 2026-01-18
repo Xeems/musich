@@ -32,7 +32,7 @@ export default function PagePlayer({ initialTrack }: PlayerProps) {
     }, [initialTrack, setCurrentTrack])
 
     return (
-        <div className="flex h-fit w-full flex-col items-stretch justify-center gap-4">
+        <div className="flex h-fit w-full flex-col items-center justify-center gap-y-4">
             <div className="-mb-2 flex w-full justify-center">
                 <TrackCover
                     imageName={currentTrack?.imageName}
