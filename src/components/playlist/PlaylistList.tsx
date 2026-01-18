@@ -1,7 +1,7 @@
 import getUserPlaylists from '@/actions/getUserPlaylists'
 import React from 'react'
 import PlaylistCard from './PlaylistCard'
-import { PlaylistType } from '../../@types/playlist'
+import { PlaylistType } from '../../../@types/playlist'
 
 // to-do find a better name for component
 export default async function PlaylistList() {

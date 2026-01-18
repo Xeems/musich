@@ -1,5 +1,5 @@
 import LayoutPlayer from '@/components/player/LayoutPlayer'
-import Header from '@/components/Header'
+import Header from '@/components/visual/Header'
 
 export default function Layout({
     children,

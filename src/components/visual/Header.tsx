@@ -1,5 +1,5 @@
 import React from 'react'
-import UserCard from './UserCard'
+import UserCard from '../user/UserCard'
 import { LogOutIcon, MenuIcon } from 'lucide-react'
 import MainNav from './MainNav'
 import {
@@ -10,8 +10,8 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from './ui/sheet'
-import { Button } from './ui/button'
+} from '../ui/sheet'
+import { Button } from '../ui/button'
 import SignOut from '@/authentification/actions/signOut'
 import Logo from './Logo'
 

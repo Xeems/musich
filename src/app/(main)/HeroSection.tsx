@@ -1,4 +1,4 @@
-import SearchBar from '@/components/SearchBar'
+import SearchBar from '@/app/(with-header)/search/SearchBar'
 import { MusicIcon, Play } from 'lucide-react'
 import Link from 'next/link'
 

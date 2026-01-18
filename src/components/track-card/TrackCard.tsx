@@ -8,7 +8,7 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import { TrackType } from '../../../@types/track'
-import TrackCover from '../TrackCover'
+import TrackCover from './TrackCover'
 import TrackLikes from './TrackLikes'
 import TrackCardMenu from './TrackCardMenu'
 

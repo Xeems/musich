@@ -1,6 +1,6 @@
 import React from 'react'
 import { TrackType } from '../../../@types/track'
-import TrackCover from '../TrackCover'
+import TrackCover from '../track-card/TrackCover'
 
 type Props = {
     track: TrackType | null

@@ -7,16 +7,14 @@ import {
     DesktopWrapper,
     MobileWrapper,
     ResponsiveWrapper,
-} from '@/components/ResponsiveWrapper'
+} from '@/components/functional/ResponsiveWrapper'
 
 export default function Page() {
     return (
         <PlayerDialog>
             <ResponsiveWrapper breakpoint={1024}>
                 <MobileWrapper>
-                    <Tabs
-                        defaultValue="player"
-                        className="flex h-full w-full items-center">
+                    <Tabs defaultValue="player" className="flex w-full">
                         <TabsContent value="player">
                             <PagePlayer />
                         </TabsContent>
@@ -27,8 +25,12 @@ export default function Page() {
                         </TabsContent>
 
                         <TabsList>
-                            <TabsTrigger value="player">Player</TabsTrigger>
-                            <TabsTrigger value="queue">Queue</TabsTrigger>
+                            <TabsTrigger value="player" asChild>
+                                <div>Player</div>
+                            </TabsTrigger>
+                            <TabsTrigger value="queue" asChild>
+                                <div>Queue</div>
+                            </TabsTrigger>
                         </TabsList>
                     </Tabs>
                 </MobileWrapper>

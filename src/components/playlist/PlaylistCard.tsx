@@ -1,6 +1,6 @@
 import React from 'react'
-import { PlaylistType } from '../../@types/playlist'
-import { Card, CardHeader } from './ui/card'
+import { PlaylistType } from '../../../@types/playlist'
+import { Card, CardHeader } from '../ui/card'
 
 type Props = {
     playlist: PlaylistType

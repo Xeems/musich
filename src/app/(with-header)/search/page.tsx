@@ -1,5 +1,5 @@
 import React from 'react'
-import SearchBar from '../../../components/SearchBar'
+import SearchBar from './SearchBar'
 import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackList from '@/components/track-list/TrackList'
 

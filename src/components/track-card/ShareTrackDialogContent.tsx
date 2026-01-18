@@ -1,5 +1,5 @@
 import { DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
-import { CopyInput } from '../CopyInput'
+import { CopyInput } from '../functional/CopyInput'
 import { TrackType } from '../../../@types/track'
 
 type Props = {

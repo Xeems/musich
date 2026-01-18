@@ -1,4 +1,4 @@
-import AuthLinks from '@/components/AuthLinks'
+import AuthLinks from '@/components/visual/AuthLinks'
 import { Music2 } from 'lucide-react'
 
 export function CTASection() {

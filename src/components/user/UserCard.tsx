@@ -1,5 +1,5 @@
 import getUserBySession from '@/authentification/actions/getUserBySession'
-import AuthLinks from './AuthLinks'
+import AuthLinks from '../visual/AuthLinks'
 import UserInfo from './UserInfo'
 
 export default async function UserCard() {

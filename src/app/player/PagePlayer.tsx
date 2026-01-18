@@ -4,7 +4,7 @@ import PlayerControls from '@/components/player/PlayerControls'
 import PlayerModeToggle from '@/components/player/PlayerModeToggle'
 import PlayerVolume from '@/components/player/PlayerVolume'
 import TrackTimeSlider from '@/components/player/TrackTimeSlider'
-import TrackCover from '@/components/TrackCover'
+import TrackCover from '@/components/track-card/TrackCover'
 
 import { usePlayerStore } from '@/store/playerStore'
 import { useEffect } from 'react'
@@ -16,7 +16,7 @@ type PlayerProps = {
 }
 
 export default function PagePlayer({ initialTrack }: PlayerProps) {
-    const { currentTrack, tracks, source, setCurrentTrack } = usePlayerStore(
+    const { currentTrack, setCurrentTrack } = usePlayerStore(
         useShallow((s) => ({
             currentTrack: s.currentTrack,
             tracks: s.queue,
