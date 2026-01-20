@@ -19,7 +19,7 @@ export default function Page() {
                 </MobileWrapper>
 
                 <DesktopWrapper>
-                    <div className="flex w-2/5 items-center">
+                    <div className="flex w-2/5 flex-row items-center">
                         <PagePlayer />
                     </div>
 

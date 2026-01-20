@@ -50,6 +50,7 @@ export default function MobilePlayer() {
                     {tab === 'player' && <PagePlayer />}
                     {tab === 'queue' && (
                         <ScrollArea className="h-full">
+                            <div className="h-12"></div>
                             <PlayerQueue />
                         </ScrollArea>
                     )}

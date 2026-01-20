@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogContent,
@@ -7,6 +8,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog'
+import { ChevronLeftIcon } from 'lucide-react'
 
 import { useRouter } from 'next/navigation'
 
@@ -23,8 +25,18 @@ export default function PlayerDialog({
             onOpenChange={() => {
                 router.back()
             }}>
-            <DialogContent className="flex h-screen max-h-screen w-full max-w-screen gap-x-0 rounded-none px-0 md:max-w-screen md:px-6 lg:max-h-[80dvh] lg:max-w-5xl lg:rounded-lg">
-                <DialogHeader className="shrink-0">
+            <DialogContent
+                showCloseButton={false}
+                className="flex h-screen max-h-screen w-full max-w-screen gap-x-0 rounded-none p-0 sm:max-w-screen lg:max-h-[80dvh] lg:max-w-5xl lg:rounded-lg">
+                <Button
+                    className="absolute top-2 left-2 z-51 rounded-full font-black lg:hidden"
+                    size={'icon'}
+                    onClick={() => {
+                        router.back()
+                    }}>
+                    <ChevronLeftIcon className="font-black" />
+                </Button>
+                <DialogHeader className="hidden">
                     <DialogTitle />
                     <DialogDescription />
                 </DialogHeader>

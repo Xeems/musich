@@ -32,7 +32,7 @@ export default function PagePlayer({ initialTrack }: PlayerProps) {
     }, [initialTrack, setCurrentTrack])
 
     return (
-        <div className="flex h-fit w-full flex-col items-center justify-center gap-y-4">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-y-8 px-4 py-8">
             <div className="-mb-2 flex w-full justify-center">
                 <TrackCover
                     imageName={currentTrack?.imageName}
@@ -50,7 +50,7 @@ export default function PagePlayer({ initialTrack }: PlayerProps) {
                 </p>
             </div>
 
-            <div className="flex flex-row items-center justify-between">
+            <div className="flex w-full flex-row items-center justify-between">
                 <PlayerModeToggle />
                 <PlayerControls size="large" />
                 <PlayerVolume isSliderHidden />
