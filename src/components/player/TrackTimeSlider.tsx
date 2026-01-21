@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Slider } from '../ui/slider'
 import { milSecToMins } from '@/lib/utils'
 import { usePlayerStore } from '@/store/playerStore'
+import { motion } from 'framer-motion'
 
 export default function TrackTimeSlider() {
     const [seekingValue, setSeekingValue] = useState<number | null>(null)
@@ -23,8 +24,12 @@ export default function TrackTimeSlider() {
 
     return (
         <div className="flex w-full flex-row items-center">
-            <div className="flex w-full flex-row items-center gap-x-4">
+            <div
+                onPointerDown={(e) => e.stopPropagation()}
+                onPointerMove={(e) => e.stopPropagation()}
+                className="flex w-full flex-row items-center gap-x-4">
                 <Slider
+                    onPointerDown={(e) => e.stopPropagation}
                     value={[seekingValue ?? currentTrackTime]}
                     onValueChange={(val) => startSeek(val[0])}
                     onValueCommit={(val) => commitSeek(val[0])}

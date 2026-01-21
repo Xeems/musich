@@ -51,6 +51,14 @@ export function PagerView({
     return (
         <div className="relative h-full w-full touch-pan-y overflow-hidden">
             <motion.div
+                dragPropagation={false}
+                onDrag={(e) => {
+                    console.log('drag')
+
+                    if (!(e.target as HTMLElement).closest('.slider-class')) {
+                        e.stopPropagation()
+                    }
+                }}
                 className="flex h-full"
                 style={{
                     width: `${count * 100}%`,
@@ -90,15 +98,13 @@ export function PagerView({
                         ),
                 )}
             </motion.div>
-            <div className="absolute bottom-2 left-0 flex w-screen justify-center">
-                <div className="relative flex gap-x-8">
-                    {Children.map(children, (child, i) => (
-                        <div
-                            key={i}
-                            className="bg-muted-foreground/50 size-2 rounded-full"
-                        />
-                    ))}
-                </div>
+            <div className="absolute bottom-2 left-0 flex w-screen justify-center gap-x-8">
+                {Children.map(children, (child, i) => (
+                    <motion.div
+                        key={i}
+                        className="bg-muted-foreground/50 size-2 rounded-full"
+                    />
+                ))}
             </div>
         </div>
     )
