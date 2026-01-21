@@ -1,10 +1,11 @@
 'use client'
 
+import { useSize } from '@/hooks/useSize'
 import { animate, motion, useMotionValue } from 'framer-motion'
 import { Children, ReactElement, useEffect, useState } from 'react'
 
 type PagerViewProps = {
-    children: ReactElement<PagerItemProps>[]
+    children: ReactElement[]
     index?: number
     onIndexChange?: (i: number) => void
 }
@@ -18,16 +19,9 @@ export function PagerView({
 
     const [uncontrolledIndex, setUncontrolledIndex] = useState(0)
     const index = controlledIndex ?? uncontrolledIndex
-
-    const [width, setWidth] = useState(0)
     const x = useMotionValue(0)
 
-    useEffect(() => {
-        const update = () => setWidth(window.innerWidth)
-        update()
-        window.addEventListener('resize', update)
-        return () => window.removeEventListener('resize', update)
-    }, [])
+    const { ref, width } = useSize()
 
     useEffect(() => {
         x.set(-index * width)
@@ -49,19 +43,11 @@ export function PagerView({
     }
 
     return (
-        <div className="relative h-full w-full touch-pan-y overflow-hidden">
+        <div className="h-full w-full touch-pan-y overflow-hidden" ref={ref}>
             <motion.div
-                dragPropagation={false}
-                onDrag={(e) => {
-                    console.log('drag')
-
-                    if (!(e.target as HTMLElement).closest('.slider-class')) {
-                        e.stopPropagation()
-                    }
-                }}
-                className="flex h-full"
+                className="flex h-full w-full"
                 style={{
-                    width: `${count * 100}%`,
+                    width: `${100 * count}%`,
                     x,
                 }}
                 drag="x"
@@ -88,32 +74,20 @@ export function PagerView({
 
                     snapTo(index)
                 }}>
-                {Children.map(
-                    children,
-                    (child, i) =>
-                        child && (
-                            <PagerItem key={i}>
-                                {child.props.children}
-                            </PagerItem>
-                        ),
-                )}
+                {Children.map(children, (child, i) => (
+                    <div key={i} className="w-full">
+                        {child}
+                    </div>
+                ))}
             </motion.div>
-            <div className="absolute bottom-2 left-0 flex w-screen justify-center gap-x-8">
+            {/* <div className="absolute bottom-2 left-0 flex w-screen justify-center gap-x-8">
                 {Children.map(children, (child, i) => (
                     <motion.div
                         key={i}
                         className="bg-muted-foreground/50 size-2 rounded-full"
                     />
                 ))}
-            </div>
+            </div> */}
         </div>
     )
-}
-
-type PagerItemProps = {
-    children: React.ReactNode
-}
-
-export function PagerItem({ children }: PagerItemProps) {
-    return <div className="w-full">{children}</div>
 }
