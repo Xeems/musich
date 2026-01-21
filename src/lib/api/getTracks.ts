@@ -18,7 +18,6 @@ export async function getTracks({ url, limit, offset }: Props) {
     const res = await fetch(fullUrl.toString(), {
         cache: 'no-store',
     })
-    console.log(res)
 
     if (!res.ok) throw new Error('Failed to load tracks')
 

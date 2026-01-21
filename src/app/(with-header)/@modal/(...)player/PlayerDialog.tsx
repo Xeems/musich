@@ -27,7 +27,7 @@ export default function PlayerDialog({
             }}>
             <DialogContent
                 showCloseButton={false}
-                className="flex h-screen max-h-screen w-full max-w-screen gap-x-0 rounded-none p-0 sm:max-w-screen lg:max-h-[80dvh] lg:max-w-5xl lg:rounded-lg">
+                className="flex h-dvh max-h-screen w-full max-w-screen gap-x-0 rounded-none p-0 sm:max-w-screen lg:max-h-[80dvh] lg:max-w-5xl lg:rounded-lg">
                 <Button
                     className="absolute top-2 left-2 z-51 rounded-full font-black lg:hidden"
                     size={'icon'}
