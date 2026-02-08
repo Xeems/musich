@@ -1,4 +1,3 @@
-import React from 'react'
 import PagePlayer from './PagePlayer'
 import getTrackById from '@/lib/api/getTrackById'
 

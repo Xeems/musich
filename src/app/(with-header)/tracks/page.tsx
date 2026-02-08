@@ -5,7 +5,7 @@ import { TrackListProvider } from '@/components/track-list/TrackListContext'
 import TrackList from '@/components/track-list/TrackList'
 import TrackListInfiniteScrollTrigger from '@/components/track-list/TrackListInfiniteScrollTrigger'
 
-const loadSource = 'api/track/list?type=user' as const
+const loadSource = '/track/list?type=user' as const
 
 export default async function TracksPage() {
     const user = await getUserBySession()
