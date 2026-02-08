@@ -4,7 +4,13 @@ import {
     createTrackListStore,
     TrackListStoreType,
 } from '@/store/trackListStore'
-import { createContext, useContext, useRef, type ReactNode } from 'react'
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    type ReactNode,
+} from 'react'
 import { useStore, type StoreApi } from 'zustand'
 
 const TrackListContext = createContext<StoreApi<TrackListStoreType> | null>(
@@ -25,6 +31,11 @@ export function TrackListProvider({
     if (!storeRef.current) {
         storeRef.current = createTrackListStore(initialState)
     }
+    useEffect(() => {
+        if (initialState?.source) {
+            storeRef.current?.getState().setSource(initialState.source)
+        }
+    }, [initialState?.source])
 
     return (
         <TrackListContext.Provider value={storeRef.current}>

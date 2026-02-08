@@ -57,6 +57,7 @@ export const createTrackListStore = (
             if (loading || !hasMore || !source) return
 
             set({ loading: true })
+            console.log(source)
 
             try {
                 const data = await getTracks({ url: source, limit, offset })
