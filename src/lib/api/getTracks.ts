@@ -8,12 +8,13 @@ type Props = {
 
 export async function getTracks({ url, limit, offset }: Props) {
     const fullUrl = new URL(
-        url,
+        url ?? '/api/track/list',
         process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3000',
     )
 
     fullUrl.searchParams.set('limit', String(limit))
     fullUrl.searchParams.set('offset', String(offset))
+    console.log(fullUrl)
 
     const res = await fetch(fullUrl.toString(), {
         cache: 'no-store',

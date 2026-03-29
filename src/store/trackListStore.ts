@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { TrackType } from '../../@types/track'
 import { getTracks } from '@/lib/api/getTracks'
 
-export type TrackListDisplayModeType = 'default' | 'user'
+export type TrackListDisplayModeType = 'default' | 'user' | 'stream'
 
 export type TrackListStoreType = {
     tracks: TrackType[]
@@ -32,7 +32,7 @@ export const createTrackListStore = (
 
     return create<TrackListStoreType>((set, get) => ({
         tracks: initialTracks,
-        source: initialState?.source ?? '',
+        source: initialState?.source ?? 'track/list',
         offset: initialTracks.length,
         limit: initialState?.limit ?? DEFFAULTLIMIT,
         hasMore:
@@ -57,12 +57,13 @@ export const createTrackListStore = (
             if (loading || !hasMore || !source) return
 
             set({ loading: true })
-            console.log(source)
 
             try {
                 const data = await getTracks({ url: source, limit, offset })
 
-                if (data.length === 0) {
+                set({ hasMore: false })
+
+                if (data.length === 0 || !data.length) {
                     set({ hasMore: false })
                 } else {
                     set((state) => ({
@@ -71,6 +72,8 @@ export const createTrackListStore = (
                         hasMore: data.length === state.limit,
                     }))
                 }
+            } catch (e) {
+                set({ hasMore: false })
             } finally {
                 set({ loading: false })
             }
@@ -83,7 +86,6 @@ export const createTrackListStore = (
                 offset: 0,
                 hasMore: true,
             }))
-            get().loadMore()
         },
 
         setDisplayMode: (option: TrackListDisplayModeType) =>

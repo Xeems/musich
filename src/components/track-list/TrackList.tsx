@@ -5,12 +5,19 @@ import TrackCard from '../track-card/TrackCard'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTrackListStore } from './TrackListContext'
 import { usePlayerStore } from '@/store/playerStore'
+import { useShallow } from 'zustand/shallow'
 
 export default function TrackList() {
-    const tracks = useTrackListStore((s) => s.tracks)
-    const source = useTrackListStore((s) => s.source)
     const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
     const bindTrackList = usePlayerStore((s) => s.bindTrackList)
+
+    const { tracks, source, displayMode } = useTrackListStore(
+        useShallow((s) => ({
+            tracks: s.tracks,
+            source: s.source,
+            displayMode: s.displayMode,
+        })),
+    )
 
     const tracksRef = useRef(tracks)
 
@@ -18,10 +25,20 @@ export default function TrackList() {
         tracksRef.current = tracks
     }, [tracks])
 
-    const handlePlay = useCallback(
+    const handleClick = useCallback(
         (trackToPlay: TrackType) => {
-            bindTrackList({ queue: tracksRef.current, queueSource: source })
-            setCurrentTrack(trackToPlay)
+            switch (displayMode) {
+                case 'default':
+                    bindTrackList({
+                        queue: tracksRef.current,
+                        queueSource: source,
+                    })
+                    setCurrentTrack(trackToPlay)
+                    break
+
+                case 'stream':
+                    break
+            }
         },
         [bindTrackList, source, setCurrentTrack],
     )
@@ -29,7 +46,7 @@ export default function TrackList() {
     return (
         <div className="flex w-full flex-col space-y-2">
             {tracks.map((track) => (
-                <TrackCard key={track.id} track={track} onClick={handlePlay} />
+                <TrackCard key={track.id} track={track} onClick={handleClick} />
             ))}
         </div>
     )

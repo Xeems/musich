@@ -2,6 +2,7 @@ import { RefObject } from 'react'
 import { TrackType } from '../../@types/track'
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
+import getTrackById from '@/lib/api/getTrackById'
 
 type PlayerStoreType = {
     audioRef: RefObject<HTMLAudioElement> | null
@@ -15,6 +16,7 @@ type PlayerStoreType = {
     volume: number
 
     setCurrentTrack: (track: TrackType) => void
+    setCurrentTrackById: (id: string) => void
     togglePlay: () => void
     setCurrentTrackTime: (time: number) => void
     setVolume: (val: number) => void
@@ -40,6 +42,13 @@ export const usePlayerStore = create<PlayerStoreType>()(
         setAudioRef: (ref) => set({ audioRef: ref }),
 
         setCurrentTrack: (track) => set({ currentTrack: track }),
+
+        setCurrentTrackById: async (id) => {
+            const track = await getTrackById(id)
+            if (track) {
+                set({ currentTrack: track })
+            }
+        },
 
         togglePlay: () => {
             const { audioRef, isPlaying } = get()

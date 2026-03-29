@@ -1,15 +1,17 @@
-import React from 'react'
 import { TrackType } from '../../../@types/track'
 import { DropdownMenuItem } from '../ui/dropdown-menu'
 import { useTrackListStore } from '../track-list/TrackListContext'
 import { toggleTrackLike } from '@/actions/toggleTrackLike'
 import { HeartIcon, Trash2Icon } from 'lucide-react'
+import useSession from '@/hooks/useSession'
 
 type Props = {
     track: TrackType
 }
 
 export default function ToggleLikeDropdownItem({ track }: Props) {
+    const session = useSession()
+
     const trackState = useTrackListStore((state) =>
         state.tracks.find((t) => t.id === track.id),
     )
@@ -22,6 +24,8 @@ export default function ToggleLikeDropdownItem({ track }: Props) {
             toggleLike(track.id, !track.isLikedByCurrentUser)
         }
     }
+
+    if (!session) return null
 
     return (
         <DropdownMenuItem onClick={handleLikeToggle}>
