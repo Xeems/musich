@@ -8,8 +8,12 @@ import { usePlayerStore } from '@/store/playerStore'
 import { useShallow } from 'zustand/shallow'
 
 export default function TrackList() {
-    const setCurrentTrack = usePlayerStore((s) => s.setCurrentTrack)
-    const bindTrackList = usePlayerStore((s) => s.bindTrackList)
+    const { setCurrentTrack, bindTrackList } = usePlayerStore(
+        useShallow((s) => ({
+            setCurrentTrack: s.setCurrentTrack,
+            bindTrackList: s.bindTrackList,
+        })),
+    )
 
     const { tracks, source, displayMode } = useTrackListStore(
         useShallow((s) => ({
