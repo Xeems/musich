@@ -1,7 +1,7 @@
 'use client'
 
-import { Canvas, useFrame } from '@react-three/fiber'
-import { useEffect, useRef, useState } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { useRef } from 'react'
 import * as THREE from 'three'
 
 const fragmentShader = `
@@ -89,7 +89,6 @@ export default function ShaderPlane() {
         <mesh>
             <planeGeometry args={[2, 2]} />
             <shaderMaterial
-                extensions={{ derivatives: true }}
                 ref={materialRef}
                 uniforms={{
                     u_time: { value: 0 },

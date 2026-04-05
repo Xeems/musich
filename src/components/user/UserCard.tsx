@@ -1,8 +1,9 @@
-import getUserBySession from '@/authentification/actions/getUserBySession'
+'use client'
 import AuthLinks from '../visual/AuthLinks'
 import UserInfo from './UserInfo'
+import useSession from '@/hooks/useSession'
 
-export default async function UserCard() {
-    const user = await getUserBySession()
-    return <div>{user ? <UserInfo user={user} /> : <AuthLinks />}</div>
+export default function UserCard() {
+    const session = useSession()
+    return <div>{session ? <UserInfo user={session} /> : <AuthLinks />}</div>
 }
