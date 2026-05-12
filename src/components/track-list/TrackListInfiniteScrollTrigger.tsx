@@ -1,7 +1,7 @@
 'use client'
 
 import { useInfiniteScroll } from '@/hooks/useInfinteScroll'
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { Spinner } from '../ui/spinner'
 import { useTrackListStore } from './TrackListContext'
 

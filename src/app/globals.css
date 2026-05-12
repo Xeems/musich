@@ -1,6 +1,14 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* html {
+    scrollbar-gutter: stable;
+} */
+
+body {
+    overflow-y: scroll;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

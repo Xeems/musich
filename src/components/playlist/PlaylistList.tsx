@@ -1,5 +1,5 @@
 import getUserPlaylists from '@/actions/getUserPlaylists'
-import React from 'react'
+
 import PlaylistCard from './PlaylistCard'
 import { PlaylistType } from '../../../@types/playlist'
 
